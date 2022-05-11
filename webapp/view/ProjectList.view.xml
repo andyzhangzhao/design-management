@@ -1,0 +1,169 @@
+<mvc:View
+    controllerName="projectmanagement.controller.ProjectList"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core"
+	height="100%">
+
+	<Shell id="shell" appWidthLimited='false'>
+		<semantic:SemanticPage
+			id="projectPage"
+			headerPinnable="true"
+			toggleHeaderOnTitleClick="true">
+			<semantic:titleHeading>
+				<Title
+					text="项目"
+					level="H2"/>
+			</semantic:titleHeading>
+			<semantic:headerContent>
+				<fb:FilterBar id="filterbar" reset="onReset" search="onFilter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="djh" label="开发项目"  visibleInFilterBar="true" >
+							<fb:control>
+								<Input id="devProjectInput" type="Text"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="companyCode" label="设计项目"  visibleInFilterBar="true">
+							<fb:control>
+								<Input id="designProjectInput" type="Text"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</semantic:headerContent>
+			<semantic:content>
+				<Table
+					id="projectTable"
+					width="auto"
+					items="{
+						path: '/zrre_c_dmcp',
+						parameters: {
+							$count: true
+						}
+					}"
+					growingThreshold='40'
+					growing="true"
+					growingScrollToLoad="true"
+					sticky="ColumnHeaders,HeaderToolbar"
+					class="sapUiMediumMarginBottom"
+					updateFinished=".tableUpdateFinished">
+					<headerToolbar>
+						<OverflowToolbar>
+							<Title
+								id="tableHeader"
+								text="项目"
+								level="H3"/>
+							<ToolbarSpacer />
+							<Button text="新建项目" enabled='{ui>/tableSelected}' press=".onCreateRootProject"/>
+						</OverflowToolbar>
+					</headerToolbar>
+					<columns>
+						<Column id='column1' width='10%' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+							<Text text="开发项目" />
+						</Column>
+						<Column id='column2' width='10%' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+							<Text text="设计项目" />
+						</Column>
+						<Column id='column3' width='5%' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+							<Text text="业态"/>
+						</Column>
+						<Column id='column4' width='5%'>
+							<Text text="专业" />
+						</Column>	
+						<Column id='column5' width='5%'>
+							<Text text="设计专题会评审" />
+						</Column>
+						<Column id='column6' width='5%'>
+							<Text text="设计审查委员会评审" />
+						</Column>	
+						<Column id='column7' width='5%'>
+							<Text text="品控管理" />
+						</Column>
+						<Column id='column8' width='5%'>
+							<Text text="图纸管理" />
+						</Column>
+						<Column id='column9' width='5%'>
+							<Text text="设计封样" />
+						</Column>	
+						<Column id='column10' width='5%'>
+							<Text text="施工封样" />
+						</Column>	
+						<Column id='column11' width='5%'>
+							<Text text="样板段/样板间验收" />
+						</Column>
+						<Column id='column12' width='5%'>
+							<Text text="设计变更" />
+						</Column>		
+						<Column id='column13' width='5%'>
+							<Text text="设计限额" />
+						</Column>		
+						<Column id='column14' width='5%'>
+							<Text text="设计后评估" />
+						</Column>	
+						<Column id='column15' width='10%' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+							<Text text="操作" />
+						</Column>																							
+					</columns>
+
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{itmnm}">
+									<customData>
+										<core:CustomData key="mergeKey" value="{itmnm}" />
+									</customData>
+								</Text>
+								<HBox alignItems="Center">
+									<customData>
+										<core:CustomData key="mergeKey" value="{itmnm}{Dspnm}" />
+									</customData>
+									<Text text="{Dspnm}" />
+								</HBox>
+								<Text text="{ytdesc}">
+									<customData>
+										<core:CustomData key="mergeKey" value="{itmnm}{Dspnm}{ytdesc}" />
+									</customData>
+								</Text>
+								<Text
+									text="{majordesc}"/>
+								<Text
+									text="{zthps}"/>
+								<Text
+									text="{wyhps}"/>
+								<Text
+									text="{pkgl}"/>
+								<Text
+									text="{tzgl}"/>
+								<Text
+									text="{sjfy}"/>
+								<Text
+									text="{sgfy}"/>
+								<Text
+									text="{ybj}"/>
+								<Text
+									text="{sjbg}"/>
+								<Text
+									text="{xesj}"/>
+								<Text
+									text="{hpg}"/>
+								<HBox alignItems="Center">
+									<customData>
+										<core:CustomData key="mergeKey" value="{itmnm}{Dspnm}" />
+									</customData>
+									<Button icon='sap-icon://add' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
+									<Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEditProject' />
+									<Button icon='sap-icon://detail-view' press='.toDetail' />
+								</HBox>	
+
+								
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+				
+			</semantic:content>
+		</semantic:SemanticPage>
+	</Shell>
+</mvc:View>

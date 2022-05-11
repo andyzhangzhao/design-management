@@ -1,0 +1,129 @@
+<mvc:View
+	controllerName="projectmanagement.controller.DesignResultManagement"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+    xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+
+	<semantic:SemanticPage
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false">
+        <semantic:titleHeading>
+			<Title
+				text="设计成果管理"
+				level="H2"/>
+		</semantic:titleHeading>
+
+
+		<semantic:headerContent>
+            <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业"  visibleInFilterBar="true" >
+                        <fb:control>
+                            <Input id="majorInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="version" label="版本"  visibleInFilterBar="true" >
+                        <fb:control>
+                            <Input id="versionInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="status" label="状态"  visibleInFilterBar="true">
+                        <fb:control>
+                            <Input id="statusInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+			</fb:FilterBar>
+		</semantic:headerContent>
+        <semantic:content>
+            <Table
+                id="designResultManagementTable"
+                width="auto"
+                items="{
+                    path: 'details>/ZRRE_C_DMCG',
+                    parameters: {
+                        $count: true
+                    }
+                }"
+                growingThreshold='40'
+                growing="true"
+                growingScrollToLoad="true"
+                sticky="ColumnHeaders,HeaderToolbar"
+                class="sapUiMediumMarginBottom"
+                updateFinished=".tableUpdateFinished">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="设计成果管理 ({ui>/designResultManagementCount})"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateInvoice"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id='column1' width='200px'>
+                        <Text text="成果名称" />
+                    </Column>
+                    <Column id='column2' width='100px' >
+                        <Text text="成果类型" />
+                    </Column>
+                    <Column id='column3' width='100px'>
+                        <Text text="专业"/>
+                    </Column>
+                    <Column id='column4' width='100px'>
+                        <Text text="版本" />
+                    </Column>	
+                    <Column id='column5' width='100px'>
+                        <Text text="状态" />
+                    </Column>
+                    <Column id='column6' width='100px'>
+                        <Text text="创建日期" />
+                    </Column>	
+                    <Column id='column7' width='100px'>
+                        <Text text="创建人" />
+                    </Column>
+                    <Column id='column8' width='100px'>
+                        <Text text="操作" />
+                    </Column>																			
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text
+                                text="{details>cgnm}"/>
+                            <Text
+                                text="{details>cgtyp}"/>
+                            <Text
+                                text="专业"/>
+                            <Text
+                                text="{details>version}"/>
+                            <Text
+                                text="{details>status}"/>
+                            <Text
+                                text="创建日期"/>
+                            <Text
+                                text="创建人"/>
+                            
+                            <HBox alignItems="Center">
+                                <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' />
+                                <Button icon='sap-icon://detail-view' press='.toDetail' />
+                            </HBox>	
+
+                            
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </semantic:content>
+
+
+
+	</semantic:SemanticPage>
+
+</mvc:View>

@@ -1,0 +1,110 @@
+<mvc:View
+	controllerName="projectmanagement.controller.BlueprintManagement"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+    xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+
+	<semantic:SemanticPage
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false">
+        <semantic:titleHeading>
+			<Title
+				text="图纸会审和交底"
+				level="H2"/>
+		</semantic:titleHeading>
+
+
+		<semantic:headerContent>
+            <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业类别"  visibleInFilterBar="true" >
+                        <fb:control>
+                            <Input id="majorInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="version" label="方案类型"  visibleInFilterBar="true" >
+                        <fb:control>
+                            <Input id="solutionTypeInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="status" label="评审类别"  visibleInFilterBar="true">
+                        <fb:control>
+                            <Input id="judgeTypeInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+			</fb:FilterBar>
+		</semantic:headerContent>
+        <semantic:content>
+            <Table
+                id="blueprintManagementTable"
+                width="auto"
+                items="{
+                    path: 'details>/ZRRE_c_DMTZ',
+                    parameters: {
+                        $count: true
+                    }
+                }"
+                growingThreshold='40'
+                growing="true"
+                growingScrollToLoad="true"
+                sticky="ColumnHeaders,HeaderToolbar"
+                class="sapUiMediumMarginBottom"
+                updateFinished=".tableUpdateFinished">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="图纸管理 ({ui>/blueprintManagementCount})"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateInvoice"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id='column1' width='100px'>
+                        <Text text="项目" />
+                    </Column>
+                    <Column id='column2' width='100px' >
+                        <Text text="专业类别" />
+                    </Column>
+                    <Column id='column3' width='100px'>
+                        <Text text="图纸类型"/>
+                    </Column>
+                    <Column id='column4' width='100px'>
+                        <Text text="相关设计成果" />
+                    </Column>	
+                    <Column id='column5' width='100px'>
+                        <Text text="完成时间" />
+                    </Column>
+                    <Column id='column6' width='100px'>
+                        <Text text="附件" />
+                    </Column>																	
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text
+                                text="项目"/>
+                            <Text
+                                text="{details>majorid}"/>
+                            <Text
+                                text="图纸类型"/>
+                            <Text
+                                text="相关设计成果"/>
+                            <Text
+                                text="{details>wcdate}"/>
+                            <Text
+                                text="附件"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>

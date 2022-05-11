@@ -1,0 +1,62 @@
+<mvc:View
+	controllerName="projectmanagement.controller.ProjectDetails"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:tnt="sap.tnt"
+	height="100%">
+	<Shell id="shell">
+		<Page title="{ui>/projectTitle}" showNavButton="true" navButtonPress=".onNavBack">
+			<headerContent>
+			</headerContent>
+			<subHeader>
+			</subHeader>
+			<content>
+				<tnt:ToolPage id="toolPage">
+					<tnt:sideContent>
+						<tnt:SideNavigation
+							id="sideNavigation"
+							expanded="true"
+							selectedKey="{/selectedKey}"
+							itemSelect=".onItemSelect">
+							<tnt:NavigationList items="{path: 'ui>/items'}">
+								<tnt:NavigationListItem
+									text="{ui>title}"
+									items="{ui>items}"
+									key="{ui>key}">
+									<tnt:NavigationListItem
+										text="{ui>title}"
+										key="{ui>key}" />
+								</tnt:NavigationListItem>
+							</tnt:NavigationList>
+						</tnt:SideNavigation>
+					</tnt:sideContent>
+					<tnt:mainContents>
+						<NavContainer id="pageContainer" initialPage="A">
+							<pages>
+								<mvc:XMLView id="A" viewName="projectmanagement.view.BasicProjectInfo"/>
+								<mvc:XMLView id="C" viewName="projectmanagement.view.DesignResultManagement"/>
+								<mvc:XMLView id="C1" viewName="projectmanagement.view.DesignResultManagement"/>
+								<mvc:XMLView id="C2" viewName="projectmanagement.view.DesignResultManagement"/>
+								<mvc:XMLView id="C3" viewName="projectmanagement.view.DesignResultManagement"/>
+								<mvc:XMLView id="E" viewName="projectmanagement.view.DesignResultJudge"/>
+								<mvc:XMLView id="E1" viewName="projectmanagement.view.DesignResultJudge"/>
+								<mvc:XMLView id="E2" viewName="projectmanagement.view.DesignResultJudge"/>
+								<mvc:XMLView id="F" viewName="projectmanagement.view.QualityManagement"/>
+								<mvc:XMLView id="F1" viewName="projectmanagement.view.QualityManagement"/>
+								<mvc:XMLView id="F2" viewName="projectmanagement.view.QualityManagement"/>
+								<mvc:XMLView id="G" viewName="projectmanagement.view.BlueprintManagement"/>
+								<mvc:XMLView id="H" viewName="projectmanagement.view.MaterialManagement"/>
+								<mvc:XMLView id="H1" viewName="projectmanagement.view.MaterialManagement"/>
+								<mvc:XMLView id="H2" viewName="projectmanagement.view.MaterialManagement"/>
+								<mvc:XMLView id="H3" viewName="projectmanagement.view.MaterialManagement"/>
+								<mvc:XMLView id="I" viewName="projectmanagement.view.DesignChangeManagement"/>
+								<mvc:XMLView id="J" viewName="projectmanagement.view.QuotaManagement"/>
+								<mvc:XMLView id="K" viewName="projectmanagement.view.DesignEvaluate"/>
+							</pages>
+						</NavContainer>
+					</tnt:mainContents>
+				</tnt:ToolPage>
+			</content>
+		</Page>
+	</Shell>
+</mvc:View>

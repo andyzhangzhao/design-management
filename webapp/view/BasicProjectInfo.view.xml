@@ -1,0 +1,190 @@
+<mvc:View
+	controllerName="projectmanagement.controller.BasicProjectInfo"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+    xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+
+	<semantic:SemanticPage
+		id="projectBasicInfoPage"
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false"
+		class="customerInformationPage">
+		<semantic:titleHeading>
+			<Title
+				text="项目基本信息"
+				level="H2"/>
+		</semantic:titleHeading>
+
+		<semantic:titleMainAction>
+			<semantic:TitleMainAction text="编辑" visible="{= !${ui>/editMode}}" press='.onEdit'/>
+		</semantic:titleMainAction>
+		<semantic:titleCustomTextActions>
+            <Button text="保存" visible="{ui>/editMode}" press='.onSave' type='Emphasized'/>
+			<Button text="取消" visible="{ui>/editMode}" press='.onCancel'/>
+        </semantic:titleCustomTextActions>
+		<semantic:headerContent>
+		
+			<f:GridContainer>
+				<f:layout>
+					<f:GridContainerSettings rowSize="2rem" columnSize="1.9rem" gap="0.5rem" />
+				</f:layout>
+				<f:items>
+					<Label text="项目编码:" class="labelMargin" >
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="2" />
+						</layoutData>
+					</Label>
+					<Text text="{ui>/projectBasicInfo/db_key}" visible="{= !${ui>/editMode}}" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="6" />
+						</layoutData>
+					</Text>
+					<Input visible="{ui>/editMode}">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="6" />
+						</layoutData>
+					</Input>
+					<Label text="项目名称:" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="2" />
+						</layoutData>
+					</Label>
+					<Text text="{ui>/projectBasicInfo/prjnm}" visible="{= !${ui>/editMode}}" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="6" />
+						</layoutData>
+					</Text>
+					<Input visible="{ui>/editMode}" value="{ui>/projectBasicInfo/prjnm}">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="6" />
+						</layoutData>
+					</Input>
+					<Label text="项目状态:" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="2" />
+						</layoutData>
+					</Label>
+					<Text text="{ui>/projectBasicInfo/status}" visible="{= !${ui>/editMode}}" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="6" />
+						</layoutData>
+					</Text>
+					<Input visible="{ui>/editMode}" value="{ui>/projectBasicInfo/status}">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="6" />
+						</layoutData>
+					</Input>
+
+					<Label text="项目地址:" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="2" />
+						</layoutData>
+					</Label>
+					<Text text="{ui>/projectBasicInfo/address}" visible="{= !${ui>/editMode}}" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="22" />
+						</layoutData>
+					</Text>
+					<Input visible="{ui>/editMode}" value="{ui>/projectBasicInfo/address}">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="22" />
+						</layoutData>
+					</Input>
+
+					<Label text="项目简介:" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="2" columns="2" />
+						</layoutData>
+					</Label>
+					<Text text="{ui>/projectBasicInfo/prjdesc}" visible="{= !${ui>/editMode}}" class="labelMargin">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="8" columns="10" />
+						</layoutData>
+					</Text>
+					<TextArea visible="{ui>/editMode}" value="{ui>/projectBasicInfo/prjdesc}" width='380px' height="250px">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="8" columns="10" />
+						</layoutData>
+					</TextArea>
+					<Image src='../img/des.jpeg'>
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="8" columns="10" />
+						</layoutData>
+					</Image>
+				</f:items>
+			</f:GridContainer>
+          
+
+
+
+
+		</semantic:headerContent>
+        <semantic:titleMainAction>
+		</semantic:titleMainAction>
+		<semantic:content>
+			<Table
+                id="basicProjectInfoTable"
+                width="auto"
+                items="{
+                    path: 'details>/ZRRE_c_DMPS',
+                    parameters: {
+                        $count: true
+                    }
+                }"
+                growingThreshold='40'
+                growing="true"
+                growingScrollToLoad="true"
+                sticky="ColumnHeaders,HeaderToolbar"
+                class="sapUiMediumMarginBottom"
+                updateFinished=".tableUpdateFinished">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="分期、楼栋、业态信息 ({ui>/basicProjectInfoCount})"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id='column1' width='100px'>
+                        <Text text="分期编码" />
+                    </Column>
+                    <Column id='column2' width='100px' >
+                        <Text text="分期" />
+                    </Column>
+                    <Column id='column3' width='100px'>
+                        <Text text="主要业态"/>
+                    </Column>
+                    <Column id='column4' width='100px'>
+                        <Text text="楼栋数量" />
+                    </Column>																
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text
+                                text="{details>phasid}"/>
+                            <Text
+                                text="{details>phsnm}"/>
+                            <Text
+                                text="{details>mainyt}"/>
+                            <Text
+                                text="{details>bld_num}"/>
+                           
+
+                            
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+		</semantic:content>
+
+	</semantic:SemanticPage>
+
+</mvc:View>

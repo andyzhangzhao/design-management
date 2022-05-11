@@ -1,0 +1,275 @@
+sap.ui.define(
+  [
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/core/Fragment',
+    'sap/ui/model/Filter',
+    'sap/ui/core/BusyIndicator',
+    'sap/m/MessageToast',
+    'sap/m/MessageBox',
+  ],
+  /**
+   * @param {typeof sap.ui.core.mvc.Controller} Controller
+   */
+  function (
+    Controller,
+    JSONModel,
+    Fragment,
+    Filter,
+    BusyIndicator,
+    MessageToast,
+    MessageBox
+  ) {
+    'use strict'
+
+    return Controller.extend('projectmanagement.controller.ProjectList', {
+      onInit: function () {
+        this.oView = this.getView()
+        this.oRouter = this.getOwnerComponent().getRouter()
+
+        this.oProjectListModel = this.getOwnerComponent().getModel()
+        this.oDetailsModel = this.getOwnerComponent().getModel('details')
+
+        this.getYtMajorMapping()
+
+        this.oView.setModel(new JSONModel({}), 'ui')
+      },
+      getYtMajorMapping: function () {
+        this.oDetailsModel.read('/ZRRE_i_DWCC', {
+          success: function (response) {
+            var ytText = {}
+            var ytObject = {}
+            var aProjectInfo = []
+            response.results.forEach(function (item) {
+              ytText[item.Ytid] = item.ytdesc
+              if (!ytObject[item.Ytid]) {
+                ytObject[item.Ytid] = [
+                  { majorId: item.Majorid, majorDesc: item.Majordesc },
+                ]
+              } else {
+                ytObject[item.Ytid].push({
+                  majorId: item.Majorid,
+                  majorDesc: item.Majordesc,
+                })
+              }
+            })
+            for (var property in ytObject) {
+              aProjectInfo.push({
+                yt: { ytId: property, ytDesc: ytText[property] },
+                major: ytObject[property],
+              })
+            }
+            this.aProjectInfo = aProjectInfo
+          }.bind(this),
+        })
+      },
+      toDetail: function (oEvent) {
+        this.oRouter.navTo('projectDetails', {
+          projectID: oEvent.getSource().getBindingContext().getObject('DbKey'),
+          section: 'A',
+        })
+      },
+      cleanProjectInfo: function () {
+        this.aProjectInfo.forEach(function (ytItem) {
+          ytItem.yt.selected = false
+          ytItem.major.forEach(function (majorItem) {
+            majorItem.enabled = false
+            majorItem.selected = false
+          })
+        })
+      },
+      onCreateRootProject: function () {
+        this.cleanProjectInfo()
+        this.oView.getModel('ui').setProperty('/projectPopup', {
+          projectInfo: this.aProjectInfo,
+          title: '创建项目',
+          projectDescEnabled: true,
+          relatedProjectSelectEnabled: true,
+        })
+        this.openProjectPopup()
+      },
+      onCreateChildProject: function (oEvent) {
+        this.cleanProjectInfo()
+        var oObject = oEvent.getSource().getBindingContext().getObject()
+        this.oView.getModel('ui').setProperty('/projectPopup', {
+          projectInfo: this.aProjectInfo,
+          title: '创建子项目',
+          projectDescEnabled: true,
+          relatedProjectId: oObject.Itmnr,
+          relatedProjectSelectEnabled: false,
+          parentDspid: oObject.Dspid,
+        })
+        this.openProjectPopup()
+      },
+      onEditProject: function (oEvent) {
+        this.cleanProjectInfo()
+        var oObject = oEvent.getSource().getBindingContext().getObject()
+        this.oProjectListModel.read('/zrre_c_dmcp', {
+          filters: [
+            new Filter({
+              path: 'DbKey',
+              operator: 'EQ',
+              value1: oObject.DbKey,
+            }),
+          ],
+          success: function (response) {
+            var existProjectInfo = {}
+            response.results.forEach(function (item) {
+              if (existProjectInfo[item.Ytid]) {
+                existProjectInfo[item.Ytid].push(item.Majorid)
+              } else {
+                existProjectInfo[item.Ytid] = [item.Majorid]
+              }
+            })
+            this.aProjectInfo.forEach(function (item) {
+              if (existProjectInfo[item.yt.ytId]) {
+                item.yt.selected = true
+                item.major.forEach(function (majorItem) {
+                  majorItem.enabled = true
+                  if (
+                    existProjectInfo[item.yt.ytId].includes(majorItem.majorId)
+                  ) {
+                    majorItem.selected = true
+                  }
+                })
+              }
+            })
+            this.oView.getModel('ui').setProperty('/projectPopup', {
+              projectInfo: this.aProjectInfo,
+              title: '编辑项目',
+              projectDesc: oObject.Dspnm,
+              projectDescEnabled: false,
+              relatedProjectId: oObject.Itmnr,
+              relatedProjectSelectEnabled: false,
+              dspid: oObject.Dspid,
+            })
+            this.openProjectPopup()
+          }.bind(this),
+        })
+      },
+      openProjectPopup: function () {
+        if (!this._projectPopup) {
+          this._projectPopup = Fragment.load({
+            name: 'projectmanagement.view.ProjectPopup',
+            controller: this,
+          }).then(
+            function (oProjectPopup) {
+              this.oView.addDependent(oProjectPopup)
+              return oProjectPopup
+            }.bind(this)
+          )
+        }
+        this._projectPopup.then(function (oProjectPopup) {
+          oProjectPopup.open()
+        })
+      },
+      onSelectYt: function (oEvent) {
+        var aMajorCheckBox = oEvent
+          .getSource()
+          .getParent()
+          .getParent()
+          .getItems()[1]
+          .getItems()[1]
+          .getItems()
+        aMajorCheckBox.forEach(function (checkBox) {
+          checkBox.setEnabled(oEvent.getParameter('selected'))
+          checkBox.setSelected(false)
+        })
+      },
+      getControlById: function (id) {
+        return sap.ui.getCore().byId(id)
+      },
+      validateProjectDesc: function () {
+        var projectDescInput = this.getControlById('projectDescInput')
+        if (projectDescInput.getValue()) {
+          projectDescInput.setValueState('None')
+        } else {
+          projectDescInput.setValueState('Error')
+        }
+      },
+      validateRelatedProject: function () {
+        var projectDescInput = this.getControlById('relatedProjectSelect')
+        if (projectDescInput.getSelectedKey()) {
+          projectDescInput.setValueState('None')
+        } else {
+          projectDescInput.setValueState('Error')
+        }
+      },
+      validation: function () {
+        this.validateProjectDesc()
+        this.validateRelatedProject()
+        var oProjectData = this.oView
+          .getModel('ui')
+          .getProperty('/projectPopup')
+        var majorCheckedFlag = true
+        if (oProjectData.dspid) {
+          majorCheckedFlag = false
+          oProjectData.projectInfo.forEach(function (ytItem) {
+            ytItem.major.forEach(function (majorItem) {
+              if (majorItem.selected) {
+                majorCheckedFlag = true
+              }
+            })
+          })
+          if (!majorCheckedFlag) {
+            MessageBox.error('创建项目至少需要一个专业')
+          }
+        }
+
+        if (
+          majorCheckedFlag &&
+          oProjectData.projectDesc &&
+          oProjectData.relatedProjectId
+        ) {
+          return true
+        } else {
+          return false
+        }
+      },
+      onCancel: function (oEvent) {
+        oEvent.getSource().getParent().close()
+      },
+      onSave: function (oEvent) {
+        if (this.validation()) {
+          var oProjectData = this.oView
+            .getModel('ui')
+            .getProperty('/projectPopup')
+          var submitData = { YTMJ: [] }
+          submitData.DSPNM = oProjectData.projectDesc
+          submitData.ITMNR = oProjectData.relatedProjectId
+          submitData.DSPID = oProjectData.dspid
+          submitData.DSPID_P = oProjectData.parentDspid
+          oProjectData.projectInfo.forEach(function (ytItem) {
+            var majorInfo = []
+            ytItem.major.forEach(function (majorItem) {
+              if (majorItem.selected) {
+                majorInfo.push(majorItem.majorId)
+              }
+            })
+            if (majorInfo.length > 0) {
+              submitData.YTMJ.push({ YTID: ytItem.yt.ytId, MJID: majorInfo })
+            }
+          })
+          BusyIndicator.show(0)
+          jQuery.ajax({
+            method: 'POST',
+            url: '/sap/zrre_rest_dmcp',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(submitData),
+            success: function (response) {
+              oEvent.getSource().getParent().close()
+              MessageToast.show(response.MSGTXT)
+            },
+            error: function (err) {
+              MessageBox.Error(err.MSGTXT)
+            },
+            complete: function () {
+              BusyIndicator.hide()
+            },
+          })
+        }
+      },
+    })
+  }
+)
