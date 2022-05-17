@@ -6,12 +6,14 @@
     xmlns:f="sap.f"
 	xmlns:fb="sap.ui.comp.filterbar"
     xmlns:form="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
 	xmlns:core="sap.ui.core">
 
 	<semantic:SemanticPage
 		id="projectBasicInfoPage"
 		headerPinnable="false"
 		toggleHeaderOnTitleClick="false"
+		showFooter="{ui>/editMode}"
 		class="customerInformationPage">
 		<semantic:titleHeading>
 			<Title
@@ -20,12 +22,9 @@
 		</semantic:titleHeading>
 
 		<semantic:titleMainAction>
-			<semantic:TitleMainAction text="编辑" visible="{= !${ui>/editMode}}" press='.onEdit'/>
+			<semantic:TitleMainAction id="editAction" text="编辑" visible="{= !${ui>/editMode}}" press='.onEdit'/>
 		</semantic:titleMainAction>
-		<semantic:titleCustomTextActions>
-            <Button text="保存" visible="{ui>/editMode}" press='.onSave' type='Emphasized'/>
-			<Button text="取消" visible="{ui>/editMode}" press='.onCancel'/>
-        </semantic:titleCustomTextActions>
+
 		<semantic:headerContent>
 		
 			<f:GridContainer>
@@ -38,58 +37,43 @@
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{ui>/projectBasicInfo/db_key}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>prjid}" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="6" />
 						</layoutData>
 					</Text>
-					<Input visible="{ui>/editMode}">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="6" />
-						</layoutData>
-					</Input>
 					<Label text="项目名称:" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{ui>/projectBasicInfo/prjnm}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>prjnm}" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="6" />
 						</layoutData>
 					</Text>
-					<Input visible="{ui>/editMode}" value="{ui>/projectBasicInfo/prjnm}">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="6" />
-						</layoutData>
-					</Input>
 					<Label text="项目状态:" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{ui>/projectBasicInfo/status}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>to_xmtxt/TXT_DESC}" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="6" />
 						</layoutData>
 					</Text>
-					<Input visible="{ui>/editMode}" value="{ui>/projectBasicInfo/status}">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="6" />
-						</layoutData>
-					</Input>
 
 					<Label text="项目地址:" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{ui>/projectBasicInfo/address}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>address}" visible="{= !${ui>/editMode}}" class="labelMargin">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="22" />
 						</layoutData>
 					</Text>
-					<Input visible="{ui>/editMode}" value="{ui>/projectBasicInfo/address}">
+					<Input id="projectAddressInput" visible="{ui>/editMode}" value="{details>address}">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="22" />
 						</layoutData>
@@ -100,28 +84,43 @@
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{ui>/projectBasicInfo/prjdesc}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>prjdesc}" visible="{= !${ui>/editMode}}" class="labelMargin">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="8" columns="10" />
+							<f:GridContainerItemLayoutData rows="9" columns="10" />
 						</layoutData>
 					</Text>
-					<TextArea visible="{ui>/editMode}" value="{ui>/projectBasicInfo/prjdesc}" width='380px' height="250px">
+					<TextArea id="projectDescInput" visible="{ui>/editMode}" value="{details>prjdesc}" width='376px' height="350px">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="8" columns="10" />
+							<f:GridContainerItemLayoutData rows="9" columns="10" />
 						</layoutData>
 					</TextArea>
-					<Image src='../img/des.jpeg'>
+					<u:FileUploader
+						uploadUrl="/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet"
+						visible="{ui>/editMode}"
+						mimeType="image/png,image/jpeg"
+						fileType="jpg,png"
+						name="file"
+						uploadOnChange='false'
+						buttonOnly="true"
+						useMultipart="true"
+						sameFilenameAllowed="true"
+						maximumFileSize='4'
+						sendXHR="true"
+						buttonText="上传图片"
+						fileSizeExceed='.fileSizeExceed'
+						typeMissmatch='.typeMissmatch'
+						fileAllowed=".fileAllowed">
+						<u:layoutData>
+							<f:GridContainerItemLayoutData rows="1" columns="12" />
+						</u:layoutData>
+					</u:FileUploader>
+					<Image id='projectImage' src="{ui>/imageSrc}" width='450px' height='450px'>
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="8" columns="10" />
+							<f:GridContainerItemLayoutData rows="8" columns="12" />
 						</layoutData>
 					</Image>
 				</f:items>
 			</f:GridContainer>
-          
-
-
-
-
 		</semantic:headerContent>
         <semantic:titleMainAction>
 		</semantic:titleMainAction>
@@ -132,7 +131,8 @@
                 items="{
                     path: 'details>/ZRRE_c_DMPS',
                     parameters: {
-                        $count: true
+                        $count: true,
+						$expand: 'to_mjtxt'
                     }
                 }"
                 growingThreshold='40'
@@ -162,7 +162,13 @@
                     </Column>
                     <Column id='column4' width='100px'>
                         <Text text="楼栋数量" />
-                    </Column>																
+                    </Column>
+					<Column id='column5' width='100px'>
+                        <Text text="建筑面积（万平方）" />
+                    </Column>		
+					<Column id='column6' width='100px'>
+                        <Text text="状态" />
+                    </Column>															
                 </columns>
 
                 <items>
@@ -172,18 +178,33 @@
                                 text="{details>phasid}"/>
                             <Text
                                 text="{details>phsnm}"/>
-                            <Text
-                                text="{details>mainyt}"/>
-                            <Text
-                                text="{details>bld_num}"/>
-                           
-
-                            
+							<HBox>
+								<Text visible="{= !${ui>/editMode}}" text="{details>mainyt}"/>
+								<Input visible="{ui>/editMode}" value="{details>mainyt}" />
+							</HBox>
+							<HBox>
+								<Text visible="{= !${ui>/editMode}}" text="{details>bld_num}"/>
+								<Input visible="{ui>/editMode}" value="{details>bld_num}" type='Number'/>
+							</HBox>
+							<HBox>
+								<Text visible="{= !${ui>/editMode}}" text="{details>cnsetl_area}"/>
+								<Input visible="{ui>/editMode}" value="{details>cnsetl_area}" />
+							</HBox>
+							<Text
+                                text="{details>to_mjtxt/RERMJJD_DESC}"/>
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
 		</semantic:content>
+
+		<semantic:footerMainAction>
+			<semantic:FooterMainAction text="保存" press=".onSave"/>
+		</semantic:footerMainAction>
+
+		<semantic:footerCustomActions>
+			<Button id="cancelAction" text="取消" press=".onCancel"/>
+		</semantic:footerCustomActions>
 
 	</semantic:SemanticPage>
 

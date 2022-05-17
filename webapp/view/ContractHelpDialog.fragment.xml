@@ -1,0 +1,12 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="设计合同"
+		items="{details>/ZRRE_I_CONT}"
+		search=".onValueHelpSearch"
+		confirm=".onValueHelpClose"
+		cancel=".onValueHelpClose">
+		<StandardListItem
+			title="{details>conno}"
+			description="{details>connm}" />
+	</SelectDialog>
+</core:FragmentDefinition>

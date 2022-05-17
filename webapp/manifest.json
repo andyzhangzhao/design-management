@@ -118,10 +118,10 @@
                 "settings": {
                     "synchronizationMode": "None",
                     "operationMode": "Server",
-                    "autoExpandSelect": true,
                     "earlyRequests": true,
-                    "groupId": "$direct",
-                    "useBatch": false,
+                    "defaultBindingMode": "sap.ui.model.BindingMode.TwoWay",
+                    "groupId": "$auto",
+                    "useBatch": true,
                     "metadataUrlParams": {
                         "sap-language": "CN"
                     }
@@ -153,8 +153,13 @@
                 },
                 {
                     "name": "projectDetails",
-                    "pattern": "{projectID}/{section}",
+                    "pattern": "projectDetails/{devProjectID}/{designProjectID}/{section}",
                     "target": ["projectDetails"]
+                },
+                {
+                    "name": "designResultDetails",
+                    "pattern": "designResult/{devProjectID}/{designProjectID}/{mode}/:designResultID:",
+                    "target": ["designResultDetails"]
                 }
             ],
             "targets": {
@@ -169,6 +174,12 @@
                     "transition": "slide",
                     "clearControlAggregation": false,
                     "viewName": "ProjectDetails"
+                },
+                "designResultDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewName": "DesignResultManagementDetails"
                 }
             }
         },

@@ -65,7 +65,14 @@ sap.ui.define(
       },
       toDetail: function (oEvent) {
         this.oRouter.navTo('projectDetails', {
-          projectID: oEvent.getSource().getBindingContext().getObject('DbKey'),
+          devProjectID: oEvent
+            .getSource()
+            .getBindingContext()
+            .getObject('Itmnr'),
+          designProjectID: oEvent
+            .getSource()
+            .getBindingContext()
+            .getObject('DbKey'),
           section: 'A',
         })
       },
@@ -202,7 +209,7 @@ sap.ui.define(
           .getModel('ui')
           .getProperty('/projectPopup')
         var majorCheckedFlag = true
-        if (oProjectData.dspid) {
+        if (!oProjectData.dspid) {
           majorCheckedFlag = false
           oProjectData.projectInfo.forEach(function (ytItem) {
             ytItem.major.forEach(function (majorItem) {
@@ -230,6 +237,7 @@ sap.ui.define(
         oEvent.getSource().getParent().close()
       },
       onSave: function (oEvent) {
+        var oDialog = oEvent.getSource().getParent()
         if (this.validation()) {
           var oProjectData = this.oView
             .getModel('ui')
@@ -258,11 +266,12 @@ sap.ui.define(
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(submitData),
             success: function (response) {
-              oEvent.getSource().getParent().close()
+              oDialog.close()
               MessageToast.show(response.MSGTXT)
-            },
+              this.oProjectListModel.refresh()
+            }.bind(this),
             error: function (err) {
-              MessageBox.Error(err.MSGTXT)
+              MessageBox.error(err.responseJSON.MSGTXT)
             },
             complete: function () {
               BusyIndicator.hide()

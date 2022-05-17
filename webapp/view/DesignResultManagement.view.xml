@@ -46,7 +46,8 @@
                 items="{
                     path: 'details>/ZRRE_C_DMCG',
                     parameters: {
-                        $count: true
+                        count: true,
+                        expand: 'to_cgtyp,to_cgyt,to_cgsts,to_cgver'
                     }
                 }"
                 growingThreshold='40'
@@ -62,32 +63,35 @@
                             text="设计成果管理 ({ui>/designResultManagementCount})"
                             level="H3"/>
                         <ToolbarSpacer />
-                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateInvoice"/>
+                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateDesignResult"/>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
-                    <Column id='column1' width='200px'>
+                    <Column id='column1' width='100px'>
                         <Text text="成果名称" />
                     </Column>
                     <Column id='column2' width='100px' >
                         <Text text="成果类型" />
                     </Column>
-                    <Column id='column3' width='100px'>
-                        <Text text="专业"/>
+                    <Column id='column3' width='60px'>
+                        <Text text="业态"/>
                     </Column>
                     <Column id='column4' width='100px'>
+                        <Text text="专业"/>
+                    </Column>
+                    <Column id='column5' width='60px'>
                         <Text text="版本" />
                     </Column>	
-                    <Column id='column5' width='100px'>
+                    <Column id='column6' width='60px'>
                         <Text text="状态" />
                     </Column>
-                    <Column id='column6' width='100px'>
+                    <Column id='column7' width='100px'>
                         <Text text="创建日期" />
                     </Column>	
-                    <Column id='column7' width='100px'>
+                    <Column id='column8' width='100px'>
                         <Text text="创建人" />
                     </Column>
-                    <Column id='column8' width='100px'>
+                    <Column id='column9' width='100px'>
                         <Text text="操作" />
                     </Column>																			
                 </columns>
@@ -95,25 +99,19 @@
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text
-                                text="{details>cgnm}"/>
-                            <Text
-                                text="{details>cgtyp}"/>
-                            <Text
-                                text="专业"/>
-                            <Text
-                                text="{details>version}"/>
-                            <Text
-                                text="{details>status}"/>
-                            <Text
-                                text="创建日期"/>
-                            <Text
-                                text="创建人"/>
-                            
-                            <HBox alignItems="Center">
-                                <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' />
-                                <Button icon='sap-icon://detail-view' press='.toDetail' />
-                            </HBox>	
+                            <Text text="{details>cgnm}"/>
+                            <Text text="{details>to_cgtyp/TXT_DESC}"/>
+                            <Text text="{details>to_cgyt/YTDESC}"/>
+                            <Text text="{details>majtxt}"/>
+                            <Text text="{details>to_cgver/TXT_DESC}"/>
+                            <Text text="{details>to_cgsts/TXT_DESC}"/>
+                            <Text text="{details>wcdate}"/>
+                            <Text text="创建人"/>
+                            <Button icon='sap-icon://detail-view' press='.toDetail' >
+                                <customData>
+                                    <core:CustomData key="dbKey" value="{details>db_key}" />
+                                </customData>
+                            </Button>
 
                             
                         </cells>

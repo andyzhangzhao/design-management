@@ -46,7 +46,8 @@
                 items="{
                     path: 'details>/ZRRE_C_DMFA',
                     parameters: {
-                        $count: true
+                        $count: true,
+                        expand: 'to_pstyp,to_fayt,to_famj'
                     }
                 }"
                 growingThreshold='40'
@@ -61,55 +62,57 @@
                             id="tableHeader"
                             text="设计成果评审 ({ui>/designResultJudgeCount})"
                             level="H3"/>
-                        <ToolbarSpacer />
-                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateInvoice"/>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
-                    <Column id='column1' width='100px'>
-                        <Text text="评审对象" />
+                    <Column id='column1' width='70px' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+                        <Text text="业态" />
                     </Column>
-                    <Column id='column2' width='100px' >
-                        <Text text="方案类型" />
+                    <Column id='column2' width='100px' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+                        <Text text="专业" />
                     </Column>
-                    <Column id='column3' width='100px'>
-                        <Text text="专业类别"/>
+                    <Column id='column3' width='100px' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+                        <Text text="评审类别"/>
                     </Column>
                     <Column id='column4' width='100px'>
-                        <Text text="评审类别" />
-                    </Column>	
-                    <Column id='column5' width='100px'>
                         <Text text="评审时间" />
                     </Column>
-                    <Column id='column6' width='100px'>
+                    <Column id='column5' width='100px'>
                         <Text text="相关附件" />
                     </Column>	
-                    <Column id='column7' width='100px'>
+                    <Column id='column6' width='100px'>
                         <Text text="评审状态" />
-                    </Column>																		
+                    </Column>
+                    <Column id='column7' width='150px'>
+                        <Text text="操作" />
+                    </Column>
                 </columns>
 
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text
-                                text="评审对象"/>
-                            <Text
-                                text="{details>fatype}"/>
-                            <Text
-                                text="{details>majorid}"/>
-                            <Text
-                                text="{details>pstype}"/>
-                            <Text
-                                text="{details>psdate}"/>
-                            <Text
-                                text="相关附件"/>
-                            <Text
-                                text="评审状态"/>
-                            
-                            
-
-                            
+                            <Text text="{details>to_fayt/YTDESC}">
+                                <customData>
+                                    <core:CustomData key="mergeKey" value="{details>ytid}" />
+                                </customData>
+                            </Text>
+                            <Text text="{details>to_famj/Majordesc}">
+                                <customData>
+                                    <core:CustomData key="mergeKey" value="{details>ytid}{details>majorid}" />
+                                </customData>
+                            </Text>
+                            <Text text="{details>to_pstyp/SNAME}">
+                                <customData>
+                                    <core:CustomData key="mergeKey" value="{details>ytid}{details>majorid}{details>pstype}" />
+                                </customData>
+                            </Text>
+                            <Text text="{details>psdate}"/>
+                            <Text text="相关附件"/>
+                            <Text text="评审状态"/>
+                            <HBox alignItems="Center">
+                                <Link text='发起评审' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
+                                <Link text='查看审批流程' class='sapUiTinyMarginEnd' press='.onEditProject' />
+                            </HBox>	
                         </cells>
                     </ColumnListItem>
                 </items>
