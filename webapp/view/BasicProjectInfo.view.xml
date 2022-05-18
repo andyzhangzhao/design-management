@@ -14,7 +14,7 @@
 		headerPinnable="false"
 		toggleHeaderOnTitleClick="false"
 		showFooter="{ui>/editMode}"
-		class="customerInformationPage">
+		class="basicProjectPage">
 		<semantic:titleHeading>
 			<Title
 				text="项目基本信息"
@@ -24,9 +24,25 @@
 		<semantic:titleMainAction>
 			<semantic:TitleMainAction id="editAction" text="编辑" visible="{= !${ui>/editMode}}" press='.onEdit'/>
 		</semantic:titleMainAction>
-
+		<semantic:titleContent>
+			<u:FileUploader
+				uploadUrl="/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet"
+				mimeType="image/png,image/jpeg"
+				fileType="jpg,png"
+				name="file"
+				uploadOnChange='false'
+				buttonOnly="true"
+				useMultipart="true"
+				sameFilenameAllowed="true"
+				maximumFileSize='4'
+				sendXHR="true"
+				buttonText="上传图片"
+				fileSizeExceed='.fileSizeExceed'
+				typeMissmatch='.typeMissmatch'
+				fileAllowed=".fileAllowed">
+			</u:FileUploader>
+		</semantic:titleContent>
 		<semantic:headerContent>
-		
 			<f:GridContainer>
 				<f:layout>
 					<f:GridContainerSettings rowSize="2rem" columnSize="1.9rem" gap="0.5rem" />
@@ -73,7 +89,7 @@
 							<f:GridContainerItemLayoutData rows="2" columns="22" />
 						</layoutData>
 					</Text>
-					<Input id="projectAddressInput" visible="{ui>/editMode}" value="{details>address}">
+					<Input id="projectAddressInput" visible="{ui>/editMode}" value="{details>address}" maxLength="100">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="22" />
 						</layoutData>
@@ -86,34 +102,14 @@
 					</Label>
 					<Text text="{details>prjdesc}" visible="{= !${ui>/editMode}}" class="labelMargin">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="9" columns="10" />
+							<f:GridContainerItemLayoutData rows="8" columns="10" />
 						</layoutData>
 					</Text>
-					<TextArea id="projectDescInput" visible="{ui>/editMode}" value="{details>prjdesc}" width='376px' height="350px">
+					<TextArea id="projectDescInput" class="projectDescInput" visible="{ui>/editMode}" value="{details>prjdesc}" width='376px' height="350px">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="9" columns="10" />
+							<f:GridContainerItemLayoutData rows="8" columns="10" />
 						</layoutData>
 					</TextArea>
-					<u:FileUploader
-						uploadUrl="/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet"
-						visible="{ui>/editMode}"
-						mimeType="image/png,image/jpeg"
-						fileType="jpg,png"
-						name="file"
-						uploadOnChange='false'
-						buttonOnly="true"
-						useMultipart="true"
-						sameFilenameAllowed="true"
-						maximumFileSize='4'
-						sendXHR="true"
-						buttonText="上传图片"
-						fileSizeExceed='.fileSizeExceed'
-						typeMissmatch='.typeMissmatch'
-						fileAllowed=".fileAllowed">
-						<u:layoutData>
-							<f:GridContainerItemLayoutData rows="1" columns="12" />
-						</u:layoutData>
-					</u:FileUploader>
 					<Image id='projectImage' src="{ui>/imageSrc}" width='450px' height='450px'>
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="8" columns="12" />

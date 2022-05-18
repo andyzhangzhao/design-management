@@ -4,7 +4,7 @@
             <VBox class="sapUiMediumMargin">
                 <HBox alignItems='Center' class="sapUiSmallMarginBottom">
                     <Label text='设计项目名称:' width='100px' required='true'/>
-                    <Input id='projectDescInput' value='{ui>/projectPopup/projectDesc}' valueStateText='项目名称不能为空' enabled='{ui>/projectPopup/projectDescEnabled}' width='400px' liveChange='.validateProjectDesc'/>
+                    <Input id='projectDescInput' value='{ui>/projectPopup/projectDesc}' valueStateText='项目名称不能为空' enabled='{ui>/projectPopup/projectDescEnabled}' maxLength='100' width='400px' liveChange='.validateProjectDesc'/>
                 </HBox>
                 <HBox alignItems='Center' class="sapUiSmallMarginBottom">
                     <Label text='关联项目:' width='100px' required='true'/>

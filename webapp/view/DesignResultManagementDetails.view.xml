@@ -5,6 +5,7 @@
 	xmlns:layout="sap.ui.layout"
     xmlns:f="sap.ui.layout.form"
     xmlns:core="sap.ui.core"
+    xmlns:upload="sap.m.upload"
 	xmlns="sap.m"
 	height="100%">
     <Shell>
@@ -20,7 +21,7 @@
                         </Breadcrumbs>
                     </uxap:breadcrumbs>
                     <uxap:actions>
-                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" press=".onEdit" icon="sap-icon://edit" tooltip="编辑"/>
+                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" press=".onEdit" hideText="false" text="编辑" />
                     </uxap:actions>
                 </uxap:ObjectPageHeader>
             </uxap:headerTitle>
@@ -56,7 +57,12 @@
                                         <Label text="状态" />
                                         <Text text="{details>to_cgsts/TXT_DESC}" />
                                         <Label text="完成时间" />
-                                        <Text text="{details>wcdate}" />
+                                        <Text text="{
+                                                path: 'details>wcdate',
+                                                type: 'sap.ui.model.type.Date',
+                                                formatOptions: {pattern: 'yyyy-MM-dd'}
+
+                                            }" />
                                         <Label text="成果类型" />
                                         <Text text="{details>to_cgtyp/TXT_DESC}" />
                                         <Label text="设计合同" />
@@ -79,9 +85,9 @@
                                         <Label text="成果编号" />
                                         <Text text="{details>cgid}" />
                                         <Label text="成果名称" />
-                                        <Input id='cgnmInput' value="{details>cgnm}" />
+                                        <Input id='cgnmInput' value="{details>cgnm}" valueStateText='成果名称不能为空' liveChange='.validateInput'/>
                                         <Label text="版本" />
-                                        <Select id='versionSelect' selectedKey="{details>cg_ver}" forceSelection='false' items="{
+                                        <Select id='versionSelect' selectedKey="{details>cg_ver}" forceSelection='false' valueStateText='版本不能为空' change='.validateSelect' items="{
                                             path: 'details>/ZRRE_C_TXT_DESC',
                                             filters: [{
                                                 path: 'TXT_TYPE',
@@ -96,7 +102,7 @@
                                         <Label text="完成时间" />
                                         <DatePicker id='wcDatePicker' dateValue="{details>wcdate}" />
                                         <Label text="成果类型" />
-                                        <Select id='typeSelect' selectedKey="{details>cgtyp}" forceSelection='false' items="{
+                                        <Select id='typeSelect' selectedKey="{details>cgtyp}" forceSelection='false' valueStateText='成果名称不能为空' change='.validateSelect' items="{
                                             path: 'details>/ZRRE_C_TXT_DESC',
                                             filters: [{
                                                 path: 'TXT_TYPE',
@@ -138,6 +144,58 @@
 
                                 
                             </VBox>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+
+                <uxap:ObjectPageSection visible="{= ${ui>/mode}!=='create'}" titleUppercase="false" showTitle='false' title="设计图纸">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <upload:UploadSet
+                                id="uploadSet"
+                                instantUpload="false"
+                                uploadEnabled="true"
+                                terminationEnabled="false"
+                                maxFileSize="200"
+                                items="{path: 'ui>/files', templateShareable: false}"
+                                afterItemAdded=".afterItemAdded"
+                                beforeItemAdded=".beforeItemAdded">
+                                <upload:toolbar>
+                                    <OverflowToolbar>
+                                        <Title text="设计图纸"/>
+                                    </OverflowToolbar>
+                                </upload:toolbar>
+                                <upload:items>
+                                    <upload:UploadSetItem
+                                        url='blank'
+                                        visibleEdit="false"
+                                        fileName="{ui>FileName}"
+                                        mediaType="{ui>MimeType}"
+                                        uploadState="Complete"
+                                        attributes="{path: 'ui>attributes', templateShareable: false}"
+                                        removePressed='.removePressed'
+                                        openPressed='.openPressed'>
+                                        <upload:customData>
+										    <core:CustomData key="DocumentInfoRecordDocType" value="{ui>DocumentInfoRecordDocType}" />
+                                            <core:CustomData key="DocumentInfoRecordDocNumber" value="{ui>DocumentInfoRecordDocNumber}" />
+                                            <core:CustomData key="DocumentInfoRecordDocPart" value="{ui>DocumentInfoRecordDocPart}" />
+                                            <core:CustomData key="DocumentInfoRecordDocVersion" value="{ui>DocumentInfoRecordDocVersion}" />
+                                            <core:CustomData key="LogicalDocument" value="{ui>LogicalDocument}" />
+                                            <core:CustomData key="ArchiveDocumentID" value="{ui>ArchiveDocumentID}" />
+                                            <core:CustomData key="LinkedSAPObjectKey" value="{ui>LinkedSAPObjectKey}" />
+                                            <core:CustomData key="BusinessObjectTypeName" value="{ui>BusinessObjectTypeName}" />
+                                            <core:CustomData key="FileName" value="{ui>FileName}" />
+                                        </upload:customData>
+                                        <upload:attributes>
+                                            <ObjectAttribute
+                                                    title="{ui>title}"
+                                                    text="{ui>text}"/>
+                                        </upload:attributes>
+                                    </upload:UploadSetItem>
+                                </upload:items>
+                            </upload:UploadSet>
+                           
+                           
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>
@@ -186,7 +244,12 @@
                                     <ColumnListItem>
                                         <cells>
                                             <Text text="{details>actid}"/>
-                                            <Text text="{details>actdt}"/>
+                                            <Text text="{
+                                                path: 'details>actdt',
+                                                type: 'sap.ui.model.type.Date',
+                                                formatOptions: {pattern: 'yyyy-MM-dd'}
+
+                                            }"/>
                                             <Text text="{details>actby}"/>
 
                                             
@@ -203,7 +266,7 @@
                 <OverflowToolbar>
                     <ToolbarSpacer />
                     <Button type="Emphasized" text="保存" press='.onSave'/>
-                    <Button text="取消" press='.onNavBck'/>
+                    <Button text="取消" press='.onCancel'/>
                 </OverflowToolbar>
             </uxap:footer>
         </uxap:ObjectPageLayout>

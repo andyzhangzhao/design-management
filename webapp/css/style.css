@@ -2,3 +2,12 @@
 .labelMargin{
     margin-top: 6px;
 }
+.basicProjectPage .sapFDynamicPageTitleMainActions{
+    margin-left: unset !important;
+}
+.basicProjectPage .sapFDynamicPageTitleMainContent {
+    margin-left: auto;
+}
+.basicProjectPage .projectDescInput{
+    margin-top: 0 !important;
+}

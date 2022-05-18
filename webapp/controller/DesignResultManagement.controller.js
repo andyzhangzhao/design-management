@@ -3,11 +3,15 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
+    'sap/m/Dialog',
+    'sap/m/Button',
+    'sap/m/Text',
+    'sap/m/MessageToast',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, JSONModel, Filter) {
+  function (Controller, JSONModel, Filter, Dialog, Button, Text, MessageToast) {
     'use strict'
 
     return Controller.extend(
@@ -25,6 +29,8 @@ sap.ui.define(
           this.oRouter
             .getRoute('projectDetails')
             .attachPatternMatched(this._onObjectMatched, this)
+
+          this.oDetailsModel = this.getOwnerComponent().getModel('details')
         },
 
         _onObjectMatched: function (oEvent) {
@@ -58,6 +64,37 @@ sap.ui.define(
             designResultID: oEvent.getSource().data('dbKey'),
             mode: 'display',
           })
+        },
+        onDelete: function (oEvent) {
+          var oObject = oEvent.getSource().data()
+          var oDailog = new Dialog({
+            title: '删除设计成果',
+            content: new Text({
+              text: '确定要删除设计成果' + oObject.cgnm + '吗？',
+            }).addStyleClass('sapUiSmallMargin'),
+            beginButton: new Button({
+              text: '确定',
+              type: 'Emphasized',
+              press: function () {
+                this.oDetailsModel.remove(
+                  "/ZRRE_C_DMCG(guid'" + oObject.dbKey + "')",
+                  {
+                    success: function () {
+                      oDailog.close()
+                      MessageToast.show('设计成果' + oObject.cgnm + '已删除')
+                    }.bind(this),
+                  }
+                )
+              }.bind(this),
+            }),
+            endButton: new Button({
+              text: '取消',
+              press: function () {
+                oDailog.close()
+              },
+            }),
+          })
+          oDailog.open()
         },
         onCreateDesignResult: function () {
           this.oRouter.navTo('designResultDetails', {

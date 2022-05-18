@@ -105,13 +105,26 @@
                             <Text text="{details>majtxt}"/>
                             <Text text="{details>to_cgver/TXT_DESC}"/>
                             <Text text="{details>to_cgsts/TXT_DESC}"/>
-                            <Text text="{details>wcdate}"/>
+                            <Text text="{
+                                path: 'details>wcdate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {pattern: 'yyyy-MM-dd'}
+
+                            }"/>
                             <Text text="创建人"/>
-                            <Button icon='sap-icon://detail-view' press='.toDetail' >
-                                <customData>
-                                    <core:CustomData key="dbKey" value="{details>db_key}" />
-                                </customData>
-                            </Button>
+                            <HBox>
+                                <Button icon='sap-icon://detail-view' class='sapUiTinyMarginEnd' press='.toDetail' >
+                                    <customData>
+                                        <core:CustomData key="dbKey" value="{details>db_key}" />
+                                    </customData>
+                                </Button>
+                                <Button icon='sap-icon://delete' press='.onDelete' >
+                                    <customData>
+                                        <core:CustomData key="dbKey" value="{details>db_key}" />
+                                        <core:CustomData key="cgnm" value="{details>cgnm}" />
+                                    </customData>
+                                </Button>
+                            </HBox>
 
                             
                         </cells>

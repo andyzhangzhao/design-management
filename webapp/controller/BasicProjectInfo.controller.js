@@ -22,7 +22,11 @@ sap.ui.define(
 
         this.oView = this.getView()
         this.oView.setModel(
-          new JSONModel({ editMode: false, imageBusy: false, imageSrc: '' }),
+          new JSONModel({
+            editMode: false,
+            imageBusy: false,
+            imageSrc: '',
+          }),
           'ui'
         )
 
@@ -32,6 +36,9 @@ sap.ui.define(
           .attachPatternMatched(this._onObjectMatched, this)
 
         this.oDetailsModel = this.getOwnerComponent().getModel('details')
+        var oMessageManager = sap.ui.getCore().getMessageManager()
+
+        oMessageManager.registerMessageProcessor(this.oDetailsModel)
       },
 
       _onObjectMatched: function (oEvent) {
@@ -90,6 +97,7 @@ sap.ui.define(
             $format: 'json',
           },
           success: function (response) {
+            this.images = response.d.results
             var original = response.d.results[0]
             var downloadUrl =
               "/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet(DocumentInfoRecordDocType='" +
@@ -152,6 +160,35 @@ sap.ui.define(
             success: function () {
               MessageToast.show('图片上传成功')
               this.oView.getModel('ui').setProperty('/imageSrc', this.picture)
+              this.images.forEach(
+                function (original) {
+                  var deleteUrl =
+                    "/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet(DocumentInfoRecordDocType='" +
+                    original.DocumentInfoRecordDocType +
+                    "',DocumentInfoRecordDocNumber='" +
+                    original.DocumentInfoRecordDocNumber +
+                    "',DocumentInfoRecordDocPart='" +
+                    original.DocumentInfoRecordDocPart +
+                    "',DocumentInfoRecordDocVersion='" +
+                    original.DocumentInfoRecordDocVersion +
+                    "',LogicalDocument='" +
+                    original.LogicalDocument +
+                    "',ArchiveDocumentID='" +
+                    original.ArchiveDocumentID +
+                    "',LinkedSAPObjectKey='" +
+                    original.LinkedSAPObjectKey +
+                    "',BusinessObjectTypeName='" +
+                    original.BusinessObjectTypeName +
+                    "')"
+                  jQuery.ajax({
+                    url: deleteUrl,
+                    method: 'DELETE',
+                    headers: {
+                      'X-CSRF-Token': this.token,
+                    },
+                  })
+                }.bind(this)
+              )
             }.bind(this),
           })
         }.bind(this)
@@ -163,27 +200,52 @@ sap.ui.define(
         MessageBox.error('图片类型不符，类型必须为jpg或者png')
       },
       onSave: function () {
-        this.oDetailsModel.update(this.sPath, {
-          address: this.projectAddressInput.getValue(),
-          prjdesc: this.projectDescInput.getValue(),
-          picture: this.picture,
-        })
+        this.oDetailsModel.update(
+          this.sPath,
+          {
+            address: this.projectAddressInput.getValue(),
+            prjdesc: this.projectDescInput.getValue(),
+          },
+          {
+            error: function (err) {
+              console.log(err)
+            },
+            success: function (err) {
+              console.log(err)
+            },
+          }
+        )
         this.basicProjectInfoTable.getItems().forEach(
           function (tableItem) {
             var sPath = tableItem.getBindingContextPath()
             var items = tableItem.getCells()
-            this.oDetailsModel.update(sPath, {
-              mainyt: items[2].getItems()[1].getValue(),
-              bld_num: parseInt(items[3].getItems()[1].getValue()),
-              cnsetl_area: items[4].getItems()[1].getValue(),
-            })
+            this.oDetailsModel.update(
+              sPath,
+              {
+                mainyt: items[2].getItems()[1].getValue(),
+                bld_num: parseInt(items[3].getItems()[1].getValue()),
+                cnsetl_area: items[4].getItems()[1].getValue(),
+              },
+              {
+                error: function (err) {
+                  console.log(err)
+                },
+                success: function (err) {
+                  console.log(err)
+                },
+              }
+            )
           }.bind(this)
         )
         this.oDetailsModel.submitChanges({
-          success: function () {
+          success: function (res) {
+            console.log(res)
             this.oView.getModel('ui').setProperty('/editMode', false)
             MessageToast.show('项目基本信息更新成功')
           }.bind(this),
+          error: function (err) {
+            console.log(err)
+          },
         })
       },
     })
