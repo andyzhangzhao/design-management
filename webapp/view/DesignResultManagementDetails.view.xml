@@ -115,9 +115,9 @@
                                         <Label text="设计合同" />
                                         <Input id='contractInput' value="{details>contid}" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest"/>
                                         <Label text="设计公司" />
-                                        <Text text="{details>to_cont/vendname}" />
+                                        <Text id='designCompanyText' text="{details>to_cont/vendname}" />
                                         <Label text="合同状态" />
-                                        <Text text="{details>to_cont/status}" />
+                                        <Text id='contractStatusText' text="{details>to_cont/status}" />
                                     </f:content>
                                 </f:SimpleForm>
                                 <HBox alignItems="Center" class="sapUiSmallMargin">
@@ -158,7 +158,6 @@
                                 terminationEnabled="false"
                                 maxFileSize="200"
                                 items="{path: 'ui>/files', templateShareable: false}"
-                                afterItemAdded=".afterItemAdded"
                                 beforeItemAdded=".beforeItemAdded">
                                 <upload:toolbar>
                                     <OverflowToolbar>

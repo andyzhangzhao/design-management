@@ -40,8 +40,16 @@
 					items="{
 						path: '/zrre_c_dmcp',
 						parameters: {
-							$count: true
-						}
+							count: true
+						},
+						sorter: [{
+							path: 'prjnr'
+						},{
+							path: 'Dspid'
+						},
+						{
+							path: 'Ytid'
+						}]
 					}"
 					growingThreshold='40'
 					growing="true"
@@ -73,11 +81,8 @@
 							<Text text="专业" />
 						</Column>	
 						<Column id='column5' width='5%'>
-							<Text text="设计专题会评审" />
+							<Text text="设计评审" />
 						</Column>
-						<Column id='column6' width='5%'>
-							<Text text="设计审查委员会评审" />
-						</Column>	
 						<Column id='column7' width='5%'>
 							<Text text="品控管理" />
 						</Column>
@@ -85,14 +90,8 @@
 							<Text text="图纸管理" />
 						</Column>
 						<Column id='column9' width='5%'>
-							<Text text="设计封样" />
+							<Text text="封样及验收" />
 						</Column>	
-						<Column id='column10' width='5%'>
-							<Text text="施工封样" />
-						</Column>	
-						<Column id='column11' width='5%'>
-							<Text text="样板段/样板间验收" />
-						</Column>
 						<Column id='column12' width='5%'>
 							<Text text="设计变更" />
 						</Column>		
@@ -110,38 +109,32 @@
 					<items>
 						<ColumnListItem>
 							<cells>
-								<Text text="{itmnm}">
+								<Text text="{prjnm}">
 									<customData>
-										<core:CustomData key="mergeKey" value="{itmnm}" />
+										<core:CustomData key="mergeKey" value="{prjnr}" />
 									</customData>
 								</Text>
 								<HBox alignItems="Center">
 									<customData>
-										<core:CustomData key="mergeKey" value="{itmnm}{Dspnm}" />
+										<core:CustomData key="mergeKey" value="{prjnr}{Dspid}" />
 									</customData>
-									<Text text="{Dspnm}" />
+									<Text text="{Dspidnm}" />
 								</HBox>
 								<Text text="{ytdesc}">
 									<customData>
-										<core:CustomData key="mergeKey" value="{itmnm}{Dspnm}{ytdesc}" />
+										<core:CustomData key="mergeKey" value="{prjnr}{Dspid}{Ytid}" />
 									</customData>
 								</Text>
 								<Text
 									text="{majordesc}"/>
-								<Text
-									text="{zthps}"/>
-								<Text
-									text="{wyhps}"/>
+								<Text text="{sjps}" />
 								<Text
 									text="{pkgl}"/>
 								<Text
 									text="{tzgl}"/>
 								<Text
-									text="{sjfy}"/>
-								<Text
-									text="{sgfy}"/>
-								<Text
-									text="{ybj}"/>
+									text="{fyjys}"/>
+									
 								<Text
 									text="{sjbg}"/>
 								<Text
@@ -150,7 +143,7 @@
 									text="{hpg}"/>
 								<HBox alignItems="Center">
 									<customData>
-										<core:CustomData key="mergeKey" value="{itmnm}{Dspnm}" />
+										<core:CustomData key="mergeKey" value="{prjnr}{Dspid}" />
 									</customData>
 									<Button icon='sap-icon://add' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
 									<Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEditProject' />

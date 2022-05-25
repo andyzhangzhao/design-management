@@ -38,6 +38,8 @@
 								<mvc:XMLView id="C1" viewName="projectmanagement.view.DesignResultManagement"/>
 								<mvc:XMLView id="C2" viewName="projectmanagement.view.DesignResultManagement"/>
 								<mvc:XMLView id="C3" viewName="projectmanagement.view.DesignResultManagement"/>
+								<mvc:XMLView id="C4" viewName="projectmanagement.view.DesignResultManagement"/>
+								<mvc:XMLView id="D" viewName="projectmanagement.view.DesignAward"/>
 								<mvc:XMLView id="E" viewName="projectmanagement.view.DesignResultJudge"/>
 								<mvc:XMLView id="E1" viewName="projectmanagement.view.DesignResultJudge"/>
 								<mvc:XMLView id="E2" viewName="projectmanagement.view.DesignResultJudge"/>

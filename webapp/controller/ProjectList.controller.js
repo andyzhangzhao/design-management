@@ -78,9 +78,7 @@ sap.ui.define(
       },
       cleanProjectInfo: function () {
         this.aProjectInfo.forEach(function (ytItem) {
-          ytItem.yt.selected = false
           ytItem.major.forEach(function (majorItem) {
-            majorItem.enabled = false
             majorItem.selected = false
           })
         })
@@ -101,10 +99,9 @@ sap.ui.define(
         this.oView.getModel('ui').setProperty('/projectPopup', {
           projectInfo: this.aProjectInfo,
           title: '创建子项目',
-          projectDescEnabled: true,
           relatedProjectId: oObject.Itmnr,
-          relatedProjectSelectEnabled: false,
-          parentDspid: oObject.Dspid,
+          relatedDevProjectId: oObject.prjnr,
+          parentDspid: oObject.DbKey,
         })
         this.openProjectPopup()
       },
@@ -145,10 +142,9 @@ sap.ui.define(
               projectInfo: this.aProjectInfo,
               title: '编辑项目',
               projectDesc: oObject.Dspnm,
-              projectDescEnabled: false,
               relatedProjectId: oObject.Itmnr,
-              relatedProjectSelectEnabled: false,
-              dspid: oObject.Dspid,
+              relatedDevProjectId: oObject.prjnr,
+              dspid: oObject.DbKey,
             })
             this.openProjectPopup()
           }.bind(this),
@@ -166,22 +162,30 @@ sap.ui.define(
             }.bind(this)
           )
         }
-        this._projectPopup.then(function (oProjectPopup) {
-          oProjectPopup.open()
-        })
-      },
-      onSelectYt: function (oEvent) {
-        var aMajorCheckBox = oEvent
-          .getSource()
-          .getParent()
-          .getParent()
-          .getItems()[1]
-          .getItems()[1]
-          .getItems()
-        aMajorCheckBox.forEach(function (checkBox) {
-          checkBox.setEnabled(oEvent.getParameter('selected'))
-          checkBox.setSelected(false)
-        })
+
+        this._projectPopup.then(
+          function (oProjectPopup) {
+            var relatedDevProjectId = this.oView
+              .getModel('ui')
+              .getProperty('/projectPopup/relatedDevProjectId')
+
+            var relatedProjectSelect = this.getControlById(
+              'relatedProjectSelect'
+            )
+            var listBinding = relatedProjectSelect.getBinding('items')
+            var filter = new Filter({
+              path: 'prjnr',
+              operator: 'EQ',
+              value1: relatedDevProjectId,
+            })
+            if (relatedDevProjectId) {
+              listBinding.filter(filter)
+            } else {
+              listBinding.filter()
+            }
+            oProjectPopup.open()
+          }.bind(this)
+        )
       },
       getControlById: function (id) {
         return sap.ui.getCore().byId(id)

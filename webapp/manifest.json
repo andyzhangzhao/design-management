@@ -153,7 +153,7 @@
                 },
                 {
                     "name": "projectDetails",
-                    "pattern": "projectDetails/{devProjectID}/{designProjectID}/{section}",
+                    "pattern": "projectDetails/{devProjectID}/{designProjectID}/{section}/:filter:",
                     "target": ["projectDetails"]
                 },
                 {

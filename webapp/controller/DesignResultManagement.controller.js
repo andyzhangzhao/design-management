@@ -34,19 +34,38 @@ sap.ui.define(
         },
 
         _onObjectMatched: function (oEvent) {
-          this.designProjectID =
-            oEvent.getParameter('arguments').designProjectID
-          this.devProjectID = oEvent.getParameter('arguments').devProjectID
-          this.section = oEvent.getParameter('arguments').section
-          if (this.section === 'C') {
+          var oArguments = oEvent.getParameter('arguments')
+          this.designProjectID = oArguments.designProjectID
+          this.devProjectID = oArguments.devProjectID
+          this.section = oArguments.section
+          this.filter = oArguments.filter
+          if (
+            this.section === 'C' ||
+            this.section === 'C1' ||
+            this.section === 'C2' ||
+            this.section === 'C3' ||
+            this.section === 'C4'
+          ) {
             var listBinding =
               this.designResultManagementTable.getBinding('items')
-            var filter = new Filter({
-              path: 'to_root/db_key',
-              operator: 'EQ',
-              value1: this.designProjectID,
-            })
-            listBinding.filter(filter)
+            var aFilter = [
+              new Filter({
+                path: 'to_root/db_key',
+                operator: 'EQ',
+                value1: this.designProjectID,
+              }),
+            ]
+            if (this.filter) {
+              aFilter.push(
+                new Filter({
+                  path: 'cgtyp',
+                  operator: 'EQ',
+                  value1: this.filter,
+                })
+              )
+            }
+
+            listBinding.filter(aFilter)
           }
         },
         tableUpdateFinished: function (oEvent) {

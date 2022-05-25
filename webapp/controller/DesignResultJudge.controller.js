@@ -31,7 +31,7 @@ sap.ui.define(
           var filter = new Filter({
             path: 'parent_key',
             operator: 'EQ',
-            value1: this.projdesignProjectIDectID,
+            value1: this.designProjectID,
           })
           listBinding.filter(filter)
         }

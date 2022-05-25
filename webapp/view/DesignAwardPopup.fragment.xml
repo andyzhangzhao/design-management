@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog
+		title="设计获奖及认证"
+		contentWidth="600px">
+
+		<f:SimpleForm
+			editable="true"
+			layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="2"
+			>
+			<f:content>
+				<Label text="奖项名称" />
+				<Input id='jxmcInput' value="{details>jxmc}" />
+				<Label text="颁奖单位" />
+				<Input id='bjdwInput' value="{details>bjdw}" />
+				<Label text="获奖时间" />
+				<DatePicker id='psDatePicker' dateValue="{details>psdate}" />
+				<Label text="乙方设计总监及团队" />
+				<Input id='yftdInput' value="{details>yftd}" />
+				<Label text="设计单位" />
+				<Input id='sjdwInput' value="{details>sjdw}" />
+				<Label text="备注" />
+				<Input id='memoInput' value="{details>memo}" />
+			</f:content>
+		</f:SimpleForm>
+		<HBox alignItems="Center" class="sapUiSmallMargin">
+			<Label vAlign="Middle" text="业态:"/>
+			<RadioButtonGroup columns="5" buttons="{
+				path: 'ui>/ytmj'
+			}">
+				<RadioButton text="{ui>YTDESC}" selected="{ui>selected}"/>
+			</RadioButtonGroup>
+		</HBox>
+		<HBox alignItems="Center" class="sapUiSmallMargin">
+			<Label vAlign="Middle" text="专业:"/>
+			<VBox items="{
+				path: 'ui>/ytmj'
+			}">
+				<RadioButtonGroup visible="{= ${ui>selected}===true}" columns="5" buttons="{
+					path: 'ui>MJD'
+				}">
+					<RadioButton text="{ui>MAJORDESC}" selected="{ui>selected}"/>
+				</RadioButtonGroup>
+			</VBox>
+		</HBox>
+		<beginButton>
+            <Button type='Emphasized' text='保存' press='onSave' >
+				<customData>
+					<core:CustomData key="dbKey" value="{details>db_key}" />
+				</customData>
+			</Button>
+        </beginButton>
+        <endButton>
+            <Button text='取消' press='onCancel'/>
+        </endButton>
+	</Dialog>
+</core:FragmentDefinition>

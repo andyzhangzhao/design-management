@@ -28,7 +28,7 @@
 			<u:FileUploader
 				uploadUrl="/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet"
 				mimeType="image/png,image/jpeg"
-				fileType="jpg,png"
+				fileType="jpg,png,JPG,PNG"
 				name="file"
 				uploadOnChange='false'
 				buttonOnly="true"
@@ -127,8 +127,8 @@
                 items="{
                     path: 'details>/ZRRE_c_DMPS',
                     parameters: {
-                        $count: true,
-						$expand: 'to_mjtxt'
+                        count: true,
+						expand: 'to_mjtxt'
                     }
                 }"
                 growingThreshold='40'

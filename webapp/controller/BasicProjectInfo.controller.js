@@ -99,30 +99,34 @@ sap.ui.define(
           success: function (response) {
             this.images = response.d.results
             var original = response.d.results[0]
-            var downloadUrl =
-              "/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet(DocumentInfoRecordDocType='" +
-              original.DocumentInfoRecordDocType +
-              "',DocumentInfoRecordDocNumber='" +
-              original.DocumentInfoRecordDocNumber +
-              "',DocumentInfoRecordDocPart='" +
-              original.DocumentInfoRecordDocPart +
-              "',DocumentInfoRecordDocVersion='" +
-              original.DocumentInfoRecordDocVersion +
-              "',LogicalDocument='" +
-              original.LogicalDocument +
-              "',ArchiveDocumentID='" +
-              original.ArchiveDocumentID +
-              "',LinkedSAPObjectKey='" +
-              original.LinkedSAPObjectKey +
-              "',BusinessObjectTypeName='" +
-              original.BusinessObjectTypeName +
-              "')/$value"
-            jQuery.ajax({
-              url: downloadUrl,
-              success: function (res) {
-                this.oView.getModel('ui').setProperty('/imageSrc', res)
-              }.bind(this),
-            })
+            if (original) {
+              var downloadUrl =
+                "/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet(DocumentInfoRecordDocType='" +
+                original.DocumentInfoRecordDocType +
+                "',DocumentInfoRecordDocNumber='" +
+                original.DocumentInfoRecordDocNumber +
+                "',DocumentInfoRecordDocPart='" +
+                original.DocumentInfoRecordDocPart +
+                "',DocumentInfoRecordDocVersion='" +
+                original.DocumentInfoRecordDocVersion +
+                "',LogicalDocument='" +
+                original.LogicalDocument +
+                "',ArchiveDocumentID='" +
+                original.ArchiveDocumentID +
+                "',LinkedSAPObjectKey='" +
+                original.LinkedSAPObjectKey +
+                "',BusinessObjectTypeName='" +
+                original.BusinessObjectTypeName +
+                "')/$value"
+              jQuery.ajax({
+                url: downloadUrl,
+                success: function (res) {
+                  this.oView.getModel('ui').setProperty('/imageSrc', res)
+                }.bind(this),
+              })
+            } else {
+              this.oView.getModel('ui').setProperty('/imageSrc', '')
+            }
           }.bind(this),
         })
       },

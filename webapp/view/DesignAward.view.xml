@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="projectmanagement.controller.DesignResultManagement"
+	controllerName="projectmanagement.controller.DesignAward"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.f.semantic"
@@ -13,7 +13,7 @@
 		toggleHeaderOnTitleClick="false">
         <semantic:titleHeading>
 			<Title
-				text="设计成果管理"
+				text="设计获奖及认证"
 				level="H2"/>
 		</semantic:titleHeading>
 
@@ -21,19 +21,19 @@
 		<semantic:headerContent>
             <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
                 <fb:filterGroupItems>
-                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业"  visibleInFilterBar="true" >
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业类别"  visibleInFilterBar="true" >
                         <fb:control>
                             <Input id="majorInput" type="Text"/>
                         </fb:control>
                     </fb:FilterGroupItem>
-					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="version" label="版本"  visibleInFilterBar="true" >
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="version" label="方案类型"  visibleInFilterBar="true" >
                         <fb:control>
-                            <Input id="versionInput" type="Text"/>
+                            <Input id="solutionTypeInput" type="Text"/>
                         </fb:control>
                     </fb:FilterGroupItem>
-					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="status" label="状态"  visibleInFilterBar="true">
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="status" label="评审类别"  visibleInFilterBar="true">
                         <fb:control>
-                            <Input id="statusInput" type="Text"/>
+                            <Input id="judgeTypeInput" type="Text"/>
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
@@ -41,13 +41,13 @@
 		</semantic:headerContent>
         <semantic:content>
             <Table
-                id="designResultManagementTable"
+                id="designAwardTable"
                 width="auto"
                 items="{
-                    path: 'details>/ZRRE_C_DMCG',
+                    path: 'details>/ZRRE_C_DMAW',
                     parameters: {
                         count: true,
-                        expand: 'to_cgtyp,to_cgyt,to_cgsts,to_cgver'
+                        expand: 'to_awyt,to_awmj'
                     }
                 }"
                 growingThreshold='40'
@@ -60,34 +60,37 @@
                     <OverflowToolbar>
                         <Title
                             id="tableHeader"
-                            text="设计成果管理 ({ui>/designResultManagementCount})"
+                            text="设计获奖及认证 ({ui>/designAwardCount})"
                             level="H3"/>
                         <ToolbarSpacer />
-                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateDesignResult"/>
+                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
                     <Column id='column1' width='100px'>
-                        <Text text="成果名称" />
+                        <Text text="业态" />
                     </Column>
                     <Column id='column2' width='100px' >
-                        <Text text="成果类型" />
+                        <Text text="专业" />
                     </Column>
-                    <Column id='column3' width='60px'>
-                        <Text text="业态"/>
+                    <Column id='column3' width='100px'>
+                        <Text text="奖项名称"/>
                     </Column>
                     <Column id='column4' width='100px'>
-                        <Text text="专业"/>
-                    </Column>
-                    <Column id='column5' width='60px'>
-                        <Text text="版本" />
+                        <Text text="颁奖单位" />
                     </Column>	
-                    <Column id='column6' width='60px'>
-                        <Text text="状态" />
+                    <Column id='column5' width='100px'>
+                        <Text text="获奖时间" />
+                    </Column>
+                    <Column id='column6' width='100px'>
+                        <Text text="乙方设计总监及团队" />
                     </Column>
                     <Column id='column7' width='100px'>
-                        <Text text="创建日期" />
-                    </Column>
+                        <Text text="设计单位" />
+                    </Column>	
+                    <Column id='column8' width='100px'>
+                        <Text text="备注" />
+                    </Column>	
                     <Column id='column9' width='100px'>
                         <Text text="操作" />
                     </Column>																			
@@ -96,37 +99,49 @@
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{details>cgnm}"/>
-                            <Text text="{details>to_cgtyp/TXT_DESC}"/>
-                            <Text text="{details>to_cgyt/YTDESC}"/>
-                            <Text text="{details>majtxt}"/>
-                            <Text text="{details>to_cgver/TXT_DESC}"/>
-                            <Text text="{details>to_cgsts/TXT_DESC}"/>
+                            <Text
+                                text="{details>to_awyt/YTDESC}"/>
+                            <Text
+                                text="{details>to_awmj/Majordesc}"/>
+                            <Text
+                                text="{details>jxmc}"/>
+                            <Text
+                                text="{details>bjdw}"/>
                             <Text text="{
-                                path: 'details>wcdate',
+                                path: 'details>psdate',
                                 type: 'sap.ui.model.type.Date',
                                 formatOptions: {pattern: 'yyyy-MM-dd'}
 
-                            }"/>
+                            }" />
+                            <Text
+                                text="{details>yftd}"/>
+                            <Text
+                                text="{details>sjdw}"/>
+                            <Text
+                                text="{details>memo}"/>
                             <HBox>
-                                <Button icon='sap-icon://detail-view' class='sapUiTinyMarginEnd' press='.toDetail' >
+                                <Button icon='sap-icon://add' class='sapUiTinyMarginEnd' press='.onEdit' >
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />
+                                        <core:CustomData key="ytid" value="{details>ytid}" />
+                                        <core:CustomData key="majorid" value="{details>majorid}" />
                                     </customData>
                                 </Button>
                                 <Button icon='sap-icon://delete' press='.onDelete' >
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />
-                                        <core:CustomData key="cgnm" value="{details>cgnm}" />
+                                        <core:CustomData key="jxmc" value="{details>jxmc}" />
                                     </customData>
                                 </Button>
                             </HBox>
-
-                            
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
         </semantic:content>
+
+
+
 	</semantic:SemanticPage>
+
 </mvc:View>

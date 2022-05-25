@@ -51,6 +51,8 @@ sap.ui.define(
           this.typeSelect = this.byId('typeSelect')
           this.wcDatePicker = this.byId('wcDatePicker')
           this.historyRecordTable = this.byId('historyRecordTable')
+          this.designCompanyText = this.byId('designCompanyText')
+          this.contractStatusText = this.byId('contractStatusText')
 
           this.oProjectListModel = this.getOwnerComponent().getModel()
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
@@ -200,12 +202,6 @@ sap.ui.define(
                 this.oView.getModel('ui').setProperty('/ytmj', response)
               }
             }.bind(this),
-            error: function (err) {
-              // MessageBox.error(err.responseJSON.MSGTXT)
-            },
-            complete: function () {
-              // BusyIndicator.hide()
-            },
           })
         },
         onValueHelpRequest: function () {
@@ -233,15 +229,13 @@ sap.ui.define(
         onValueHelpClose: function (oEvent) {
           var oSelectedItem = oEvent.getParameter('selectedItem')
           oEvent.getSource().getBinding('items').filter([])
-
           if (!oSelectedItem) {
             return
           }
+          this.contractStatusText.setText(oSelectedItem.data('status'))
+          this.designCompanyText.setText(oSelectedItem.data('vendname'))
 
           this.contractInput.setValue(oSelectedItem.getTitle())
-        },
-        afterItemAdded: function (oEvent) {
-          console.log(oEvent)
         },
         beforeItemAdded: function (oEvent) {
           var uploadSet = oEvent.getSource()
@@ -352,11 +346,7 @@ sap.ui.define(
         },
         onCancel: function () {
           if (this.oView.getModel('ui').getProperty('/mode') !== 'edit') {
-            this.oRouter.navTo('projectDetails', {
-              devProjectID: this.devProjectID,
-              designProjectID: this.designProjectID,
-              section: 'C',
-            })
+            this.onNavBck()
           } else {
             this.oView.getModel('ui').setProperty('/mode', 'display')
           }
@@ -451,8 +441,7 @@ sap.ui.define(
                 },
                 {
                   success: function (response) {
-                    console.log(response)
-                    this.onNavBck()
+                    this.oView.getModel('ui').setProperty('/mode', 'display')
                     MessageToast.show('设计成果创建成功')
                   }.bind(this),
                 }
@@ -472,8 +461,7 @@ sap.ui.define(
                 },
                 {
                   success: function (response) {
-                    console.log(response)
-                    this.onNavBck()
+                    this.oView.getModel('ui').setProperty('/mode', 'display')
                     MessageToast.show('设计成果更新成功')
                   }.bind(this),
                 }
