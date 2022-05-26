@@ -46,8 +46,7 @@
 							path: 'prjnr'
 						},{
 							path: 'Dspid'
-						},
-						{
+						},{
 							path: 'Ytid'
 						}]
 					}"
@@ -134,7 +133,6 @@
 									text="{tzgl}"/>
 								<Text
 									text="{fyjys}"/>
-									
 								<Text
 									text="{sjbg}"/>
 								<Text
@@ -149,8 +147,6 @@
 									<Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEditProject' />
 									<Button icon='sap-icon://detail-view' press='.toDetail' />
 								</HBox>	
-
-								
 							</cells>
 						</ColumnListItem>
 					</items>
