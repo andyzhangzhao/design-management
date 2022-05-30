@@ -88,7 +88,7 @@
 						<Column id='column8' width='5%'>
 							<Text text="图纸管理" />
 						</Column>
-						<Column id='column9' width='5%'>
+						<Column id='column9' width='7%'>
 							<Text text="封样及验收" />
 						</Column>	
 						<Column id='column12' width='5%'>
@@ -97,7 +97,7 @@
 						<Column id='column13' width='5%'>
 							<Text text="设计限额" />
 						</Column>		
-						<Column id='column14' width='5%'>
+						<Column id='column14' width='7%'>
 							<Text text="设计后评估" />
 						</Column>	
 						<Column id='column15' width='10%' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
@@ -126,19 +126,62 @@
 								</Text>
 								<Text
 									text="{majordesc}"/>
-								<Text text="{sjps}" />
-								<Text
-									text="{pkgl}"/>
-								<Text
-									text="{tzgl}"/>
-								<Text
-									text="{fyjys}"/>
-								<Text
-									text="{sjbg}"/>
-								<Text
-									text="{xesj}"/>
-								<Text
-									text="{hpg}"/>
+								<ObjectStatus
+									text="{sjps}"
+									state="{
+									parts: [
+										{path: 'sjps'}
+									],
+									formatter: '.formatStatus'
+								}" />
+								<ObjectStatus
+									text="{pkgl}"
+									state="{
+									parts: [
+										{path: 'pkgl'}
+									],
+									formatter: '.formatStatus'
+								}" />
+								<ObjectStatus
+									text="{tzgl}"
+									state="{
+									parts: [
+										{path: 'tzgl'}
+									],
+									formatter: '.formatStatus'
+								}" />
+								<ObjectStatus
+									text="{fyjys}"
+									state="{
+									parts: [
+										{path: 'fyjys'}
+									],
+									formatter: '.formatStatus'
+								}" />
+								<ObjectStatus
+									text="{sjbg}"
+									state="{
+									parts: [
+										{path: 'sjbg'}
+									],
+									formatter: '.formatStatus'
+								}" />
+								<ObjectStatus
+									text="{xesj}"
+									state="{
+									parts: [
+										{path: 'xesj'}
+									],
+									formatter: '.formatStatus'
+								}" />
+								<ObjectStatus
+									text="{hpg}"
+									state="{
+									parts: [
+										{path: 'hpg'}
+									],
+									formatter: '.formatStatus'
+								}" />
 								<HBox alignItems="Center">
 									<customData>
 										<core:CustomData key="mergeKey" value="{prjnr}{Dspid}" />

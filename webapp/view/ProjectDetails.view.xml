@@ -21,10 +21,12 @@
 							<tnt:NavigationList items="{path: 'ui>/items'}">
 								<tnt:NavigationListItem
 									text="{ui>title}"
+									icon="{ui>icon}"
 									items="{ui>items}"
 									key="{ui>key}">
 									<tnt:NavigationListItem
 										text="{ui>title}"
+										icon="{ui>icon}"
 										key="{ui>key}" />
 								</tnt:NavigationListItem>
 							</tnt:NavigationList>

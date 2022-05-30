@@ -3,11 +3,12 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
+    'sap/ui/model/Sorter',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, JSONModel, Filter) {
+  function (Controller, JSONModel, Filter, Sorter) {
     'use strict'
 
     return Controller.extend('projectmanagement.controller.ProjectDetails', {
@@ -25,16 +26,26 @@ sap.ui.define(
         this.oDetailsItemsModel =
           this.getOwnerComponent().getModel('detailsItems')
         this.oDetailsItemsModel.read('/zrre_c_dcmss', {
+          sorters: [
+            new Sorter({
+              path: 'Sortid',
+            }),
+          ],
           success: function (response) {
             var aItems = []
             response.results.forEach(function (item) {
               if (item.Sid.length === 1) {
-                aItems.push({ title: item.Sname, key: item.Sid })
+                aItems.push({
+                  title: item.Sname,
+                  key: item.Sid,
+                  icon: item.Pageid,
+                })
               } else {
                 if (aItems[aItems.length - 1].items) {
                   aItems[aItems.length - 1].items.push({
                     title: item.Sname,
                     key: item.Sid,
+                    icon: item.Pageid,
                   })
                 } else {
                   aItems[aItems.length - 1].items = [

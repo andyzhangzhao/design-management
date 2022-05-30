@@ -120,7 +120,7 @@
                             <Text
                                 text="{details>memo}"/>
                             <HBox>
-                                <Button icon='sap-icon://add' class='sapUiTinyMarginEnd' press='.onEdit' >
+                                <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' >
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />
                                         <core:CustomData key="ytid" value="{details>ytid}" />

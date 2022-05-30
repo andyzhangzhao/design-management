@@ -237,6 +237,13 @@ sap.ui.define(
           return false
         }
       },
+      formatStatus: function (text) {
+        if (text === '已完成') {
+          return 'Success'
+        } else if (text === '进行中') {
+          return 'Warning'
+        }
+      },
       onCancel: function (oEvent) {
         oEvent.getSource().getParent().close()
       },

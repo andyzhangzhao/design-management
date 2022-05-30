@@ -172,6 +172,11 @@ sap.ui.define(
         var ytmj = this.oView.getModel('ui').setProperty('/ytmj', ytmj)
         this.onCreateDesignAward("/ZRRE_C_DMAW(guid'" + customData.dbKey + "')")
       },
+      onCancel: function () {
+        this._designAwardPopup.then(function (oDialog) {
+          oDialog.close()
+        })
+      },
       onSave: function (oEvent) {
         var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
         var yt = ''

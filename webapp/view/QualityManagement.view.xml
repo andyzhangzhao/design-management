@@ -46,7 +46,7 @@
                 items="{
                     path: 'details>/ZRRE_C_DMPK',
                     parameters: {
-                        $count: true
+                        count: true
                     }
                 }"
                 growingThreshold='40'
