@@ -10,6 +10,7 @@ sap.ui.define(
     'sap/m/Text',
     'sap/m/Button',
     'sap/ui/core/BusyIndicator',
+    './BaseController',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -24,21 +25,26 @@ sap.ui.define(
     Dialog,
     Text,
     Button,
-    BusyIndicator
+    BusyIndicator,
+    BaseController
   ) {
     'use strict'
 
-    return Controller.extend('projectmanagement.controller.DesignAward', {
+    return BaseController.extend('projectmanagement.controller.DesignAward', {
       onInit: function () {
         this.designAwardTable = this.byId('designAwardTable')
 
         this.oView = this.getView()
-        this.oView.setModel(new JSONModel({}), 'ui')
+        this.oView.setModel(new JSONModel({ fileVisible: false }), 'ui')
+
+        this.businessObjectTypeName = 'ZRRE_DMAW'
 
         this.oRouter = this.getOwnerComponent().getRouter()
         this.oRouter
           .getRoute('projectDetails')
           .attachPatternMatched(this._onObjectMatched, this)
+
+        this.getUploadFileToken()
 
         this.oDetailsModel = this.getOwnerComponent().getModel('details')
       },
@@ -57,36 +63,6 @@ sap.ui.define(
 
           this.getYTMJ()
         }
-      },
-
-      getYTMJ: function (oData) {
-        jQuery.ajax({
-          method: 'GET',
-          url: '/sap/zrre_rest_ytmj?DBKEY=' + this.designProjectID,
-          success: function (response) {
-            if (oData) {
-              response.forEach(function (ytItem) {
-                if (oData.ytid === ytItem.YTID) {
-                  ytItem.selected = true
-                  var aMajorId = oData.majorid.split(',')
-                  ytItem.MJD.forEach(function (majorItem) {
-                    aMajorId.forEach(function (marjorId) {
-                      if (majorItem.MAJORID === marjorId) {
-                        majorItem.selected = true
-                      }
-                    })
-                  })
-                }
-              })
-              this.oView.getModel('ui').setProperty('/ytmj', response)
-            } else {
-              response.forEach(function (item, index) {
-                item.selected = index === 0
-              })
-              this.oView.getModel('ui').setProperty('/ytmj', response)
-            }
-          }.bind(this),
-        })
       },
       getControlById: function (id) {
         return sap.ui.getCore().byId(id)
@@ -123,7 +99,22 @@ sap.ui.define(
         this.oView
           .getModel('ui')
           .setProperty('/designAwardCount', oEvent.getParameter('total'))
+        var oTable = oEvent.getSource()
+        if (!oTable.getSelectedItem() && oTable.getItems().length > 0) {
+          oTable.setSelectedItem(oTable.getItems()[0])
+          this.itemDbKey = oTable
+            .getItems()[0]
+            .getBindingContextPath()
+            .match(/guid'(.*)'\)/)[1]
+          this.getAllFiles()
+        }
+        if (oTable.getItems().length === 0) {
+          this.oView.getModel('ui').setProperty('/fileVisible', false)
+        } else {
+          this.oView.getModel('ui').setProperty('/fileVisible', true)
+        }
       },
+
       onDelete: function (oEvent) {
         var oObject = oEvent.getSource().data()
         var oDailog = new Dialog({
@@ -177,60 +168,105 @@ sap.ui.define(
           oDialog.close()
         })
       },
-      onSave: function (oEvent) {
+      onValidation: function () {
+        var errorFlag = false
+        if (!this.getControlById('jxmcInput').getValue()) {
+          this.getControlById('jxmcInput').setValueState('Error')
+          errorFlag = true
+        }
+        if (!this.getControlById('bjdwInput').getValue()) {
+          this.getControlById('bjdwInput').setValueState('Error')
+          errorFlag = true
+        }
+        if (!this.getControlById('psDatePicker').getDateValue()) {
+          this.getControlById('psDatePicker').setValueState('Error')
+          errorFlag = true
+        }
+        if (!this.getControlById('yftdInput').getValue()) {
+          this.getControlById('yftdInput').setValueState('Error')
+          errorFlag = true
+        }
+        if (!this.getControlById('sjdwInput').getValue()) {
+          this.getControlById('sjdwInput').setValueState('Error')
+          errorFlag = true
+        }
+        var majorFlag = false
         var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
-        var yt = ''
-        var mj = ''
-        ytmj.forEach(function (item) {
-          if (item.selected) {
-            yt = item.YTID
-            item.MJD.forEach(function (mjItem) {
-              if (mjItem.selected) {
-                mj = mjItem.MAJORID
+        ytmj.forEach(function (ytItem) {
+          if (ytItem.selected) {
+            ytItem.MJD.forEach(function (majorItem) {
+              if (majorItem.selected) {
+                majorFlag = true
               }
             })
           }
         })
-        var object = {
-          jxmc: this.getControlById('jxmcInput').getValue(),
-          bjdw: this.getControlById('bjdwInput').getValue(),
-          psdate: this.getControlById('psDatePicker').getDateValue(),
-          yftd: this.getControlById('yftdInput').getValue(),
-          sjdw: this.getControlById('sjdwInput').getValue(),
-          majorid: this.getControlById('memoInput').getValue(),
-          ytid: yt,
-          majorid: mj,
+        if (!majorFlag) {
+          MessageBox.error('至少选择一个专业')
+          errorFlag = true
         }
-        var mode = this.oView.getModel('ui').getProperty('/mode')
-        BusyIndicator.show(0)
-        if (mode === 'create') {
-          this.oDetailsModel.create(
-            "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_aw",
-            object,
-            {
-              success: function (response) {
-                MessageToast.show('设获奖创建成功')
-                BusyIndicator.hide()
-                this._designAwardPopup.then(function (oDialog) {
-                  oDialog.close()
-                })
-              }.bind(this),
-            }
-          )
+        if (!errorFlag) {
+          return true
         } else {
-          this.oDetailsModel.update(
-            "/ZRRE_C_DMAW(guid'" + oEvent.getSource().data('dbKey') + "')",
-            object,
-            {
-              success: function (response) {
-                MessageToast.show('设计获奖修改成功')
-                BusyIndicator.hide()
-                this._designAwardPopup.then(function (oDialog) {
-                  oDialog.close()
-                })
-              }.bind(this),
+          return false
+        }
+      },
+      onSave: function (oEvent) {
+        if (this.onValidation()) {
+          var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
+          var yt = ''
+          var mj = ''
+          ytmj.forEach(function (item) {
+            if (item.selected) {
+              yt = item.YTID
+              item.MJD.forEach(function (mjItem) {
+                if (mjItem.selected) {
+                  mj = mjItem.MAJORID
+                }
+              })
             }
-          )
+          })
+          var object = {
+            jxmc: this.getControlById('jxmcInput').getValue(),
+            bjdw: this.getControlById('bjdwInput').getValue(),
+            psdate: this.getControlById('psDatePicker').getDateValue(),
+            yftd: this.getControlById('yftdInput').getValue(),
+            sjdw: this.getControlById('sjdwInput').getValue(),
+            majorid: this.getControlById('memoInput').getValue(),
+            ytid: yt,
+            majorid: mj,
+          }
+          var mode = this.oView.getModel('ui').getProperty('/mode')
+          BusyIndicator.show(0)
+          if (mode === 'create') {
+            this.oDetailsModel.create(
+              "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_aw",
+              object,
+              {
+                success: function (response) {
+                  MessageToast.show('设获奖创建成功')
+                  BusyIndicator.hide()
+                  this._designAwardPopup.then(function (oDialog) {
+                    oDialog.close()
+                  })
+                }.bind(this),
+              }
+            )
+          } else {
+            this.oDetailsModel.update(
+              "/ZRRE_C_DMAW(guid'" + oEvent.getSource().data('dbKey') + "')",
+              object,
+              {
+                success: function (response) {
+                  MessageToast.show('设计获奖修改成功')
+                  BusyIndicator.hide()
+                  this._designAwardPopup.then(function (oDialog) {
+                    oDialog.close()
+                  })
+                }.bind(this),
+              }
+            )
+          }
         }
       },
     })

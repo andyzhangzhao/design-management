@@ -97,7 +97,7 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{details>cgnm}"/>
-                            <Text text="{details>to_cgtyp/TXT_DESC}"/>
+                            <Text text="{details>to_cgtyp/Sname}"/>
                             <Text text="{details>to_cgyt/YTDESC}"/>
                             <Text text="{details>majtxt}"/>
                             <Text text="{details>to_cgver/TXT_DESC}"/>
@@ -109,7 +109,7 @@
 
                             }"/>
                             <HBox>
-                                <Button icon='sap-icon://detail-view' class='sapUiTinyMarginEnd' press='.toDetail' >
+                                <Button icon='sap-icon://display' class='sapUiTinyMarginEnd' press='.toDetail' >
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />
                                     </customData>

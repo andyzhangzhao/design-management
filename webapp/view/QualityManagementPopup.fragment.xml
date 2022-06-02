@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
 	<Dialog
-		title="设计获奖及认证"
+		title="品控管理"
 		contentWidth="600px">
 
 		<f:SimpleForm
@@ -11,18 +11,25 @@
 			columnsXL="2"
 			>
 			<f:content>
-				<Label text="奖项名称" required="true" />
-				<Input id='jxmcInput' value="{details>jxmc}" change=".validateInput" valueStateText='奖项名称不能为空' />
-				<Label text="颁奖单位" required="true" />
-				<Input id='bjdwInput' value="{details>bjdw}" change=".validateInput" valueStateText='颁奖单位不能为空' />
-				<Label text="获奖时间" required="true" />
-				<DatePicker id='psDatePicker' dateValue="{details>psdate}" change=".validateInput" valueStateText='获奖时间不能为空'/>
-				<Label text="乙方设计总监及团队" required="true" />
-				<Input id='yftdInput' value="{details>yftd}" change=".validateInput" valueStateText='乙方设计总监及团队不能为空'/>
-				<Label text="设计单位" required="true" />
-				<Input id='sjdwInput' value="{details>sjdw}" change=".validateInput" valueStateText='设计单位不能为空'/>
-				<Label text="备注" />
-				<Input id='memoInput' value="{details>memo}" />
+				<Label text="品控类型" required="true" />
+				<Select id='pktypeSelect' selectedKey="{details>pktype}" forceSelection='false' valueStateText='品控类型不能为空' change='.validateSelect' items="{
+					path: 'details>/zrre_i_dcms',
+					filters: [{
+						path: 'Upsid',
+						operator: 'EQ',
+						value1: 'F'
+					}] 
+				}">
+					<core:ListItem key="{details>Sid}" text="{details>Sname}" />
+				</Select>
+				<Label text="设计成果" required="true" />
+				<Select id='cgidSelect' selectedKey="{details>cgid}" forceSelection='false' valueStateText='设计成果不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_DMCG'
+				}">
+					<core:ListItem key="{details>cgid}" text="{details>cgnm}" />
+				</Select>
+				<Label text="完成时间" required="true" />
+				<DatePicker id='wcdatePicker' dateValue="{details>wcdate}" change=".validateInput" valueStateText='完成时间不能为空'/>
 			</f:content>
 		</f:SimpleForm>
 		<HBox alignItems="Center" class="sapUiSmallMargin">

@@ -95,22 +95,6 @@ sap.ui.define(
           designProjectID: this.designProjectID,
           section: pageKey,
         }
-        switch (pageKey) {
-          case 'C1':
-            navObject.filter = '10'
-            break
-          case 'C2':
-            navObject.filter = '20'
-            break
-          case 'C3':
-            navObject.filter = '30'
-            break
-          case 'C4':
-            navObject.filter = '40'
-            break
-          default:
-            break
-        }
         this.oRouter.navTo('projectDetails', navObject)
       },
       onNavBack: function () {

@@ -53,7 +53,7 @@
                                         <Label text="成员名称" />
                                         <Text text="{details>cgnm}" />
                                         <Label text="版本" />
-                                        <Text text="{details>to_cgver/to_cgver}" />
+                                        <Text text="{details>to_cgver/TXT_DESC}" />
                                         <Label text="状态" />
                                         <Text text="{details>to_cgsts/TXT_DESC}" />
                                         <Label text="完成时间" />
@@ -64,7 +64,7 @@
 
                                             }" />
                                         <Label text="成果类型" />
-                                        <Text text="{details>to_cgtyp/TXT_DESC}" />
+                                        <Text text="{details>to_cgtyp/Sname}" />
                                         <Label text="设计合同" />
                                         <Text text="{details>contid}" />
                                         <Label text="设计公司" />
@@ -102,15 +102,15 @@
                                         <Label text="完成时间" />
                                         <DatePicker id='wcDatePicker' dateValue="{details>wcdate}" />
                                         <Label text="成果类型" />
-                                        <Select id='typeSelect' selectedKey="{details>cgtyp}" forceSelection='false' valueStateText='成果名称不能为空' change='.validateSelect' items="{
-                                            path: 'details>/ZRRE_C_TXT_DESC',
+                                        <Select id='typeSelect' selectedKey="{details>cgtyp}" forceSelection='false' valueStateText='成果类型不能为空' change='.validateSelect' items="{
+                                            path: 'details>/zrre_i_dcms',
                                             filters: [{
-                                                path: 'TXT_TYPE',
+                                                path: 'Upsid',
                                                 operator: 'EQ',
-                                                value1: '10'
+                                                value1: 'C'
                                             }] 
                                         }">
-                                            <core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+                                            <core:ListItem key="{details>Sid}" text="{details>Sname}" />
                                         </Select>
                                         <Label text="设计合同" />
                                         <Input id='contractInput' value="{details>contid}" valueHelpOnly="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest"/>
@@ -151,55 +151,10 @@
                 <uxap:ObjectPageSection visible="{= ${ui>/mode}!=='create'}" titleUppercase="false" showTitle='false' title="设计图纸">
                     <uxap:subSections>
                         <uxap:ObjectPageSubSection>
-                            <upload:UploadSet
-                                id="uploadSet"
-                                instantUpload="false"
-                                uploadEnabled="true"
-                                terminationEnabled="false"
-                                maxFileSize="200"
-                                items="{path: 'ui>/files', templateShareable: false}"
-                                beforeItemAdded=".beforeItemAdded">
-                                <upload:toolbar>
-                                    <OverflowToolbar>
-                                        <Title text="设计图纸"/>
-                                    </OverflowToolbar>
-                                </upload:toolbar>
-                                <upload:items>
-                                    <upload:UploadSetItem
-                                        url='blank'
-                                        visibleEdit="false"
-                                        fileName="{ui>FileName}"
-                                        mediaType="{ui>MimeType}"
-                                        uploadState="Complete"
-                                        attributes="{path: 'ui>attributes', templateShareable: false}"
-                                        removePressed='.removePressed'
-                                        openPressed='.openPressed'>
-                                        <upload:customData>
-										    <core:CustomData key="DocumentInfoRecordDocType" value="{ui>DocumentInfoRecordDocType}" />
-                                            <core:CustomData key="DocumentInfoRecordDocNumber" value="{ui>DocumentInfoRecordDocNumber}" />
-                                            <core:CustomData key="DocumentInfoRecordDocPart" value="{ui>DocumentInfoRecordDocPart}" />
-                                            <core:CustomData key="DocumentInfoRecordDocVersion" value="{ui>DocumentInfoRecordDocVersion}" />
-                                            <core:CustomData key="LogicalDocument" value="{ui>LogicalDocument}" />
-                                            <core:CustomData key="ArchiveDocumentID" value="{ui>ArchiveDocumentID}" />
-                                            <core:CustomData key="LinkedSAPObjectKey" value="{ui>LinkedSAPObjectKey}" />
-                                            <core:CustomData key="BusinessObjectTypeName" value="{ui>BusinessObjectTypeName}" />
-                                            <core:CustomData key="FileName" value="{ui>FileName}" />
-                                        </upload:customData>
-                                        <upload:attributes>
-                                            <ObjectAttribute
-                                                    title="{ui>title}"
-                                                    text="{ui>text}"/>
-                                        </upload:attributes>
-                                    </upload:UploadSetItem>
-                                </upload:items>
-                            </upload:UploadSet>
-                           
-                           
+                            <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>
-
-
                 <uxap:ObjectPageSection visible="{= ${ui>/mode}!=='create'}" titleUppercase="false" showTitle='false' title="历史记录">
                     <uxap:subSections>
                         <uxap:ObjectPageSubSection>

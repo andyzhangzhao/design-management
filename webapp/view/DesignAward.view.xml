@@ -40,104 +40,111 @@
 			</fb:FilterBar>
 		</semantic:headerContent>
         <semantic:content>
-            <Table
-                id="designAwardTable"
-                width="auto"
-                items="{
-                    path: 'details>/ZRRE_C_DMAW',
-                    parameters: {
-                        count: true,
-                        expand: 'to_awyt,to_awmj'
-                    }
-                }"
-                growingThreshold='40'
-                growing="true"
-                growingScrollToLoad="true"
-                sticky="ColumnHeaders,HeaderToolbar"
-                class="sapUiMediumMarginBottom"
-                updateFinished=".tableUpdateFinished">
-                <headerToolbar>
-                    <OverflowToolbar>
-                        <Title
-                            id="tableHeader"
-                            text="设计获奖及认证 ({ui>/designAwardCount})"
-                            level="H3"/>
-                        <ToolbarSpacer />
-                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
-                    </OverflowToolbar>
-                </headerToolbar>
-                <columns>
-                    <Column id='column1' width='100px'>
-                        <Text text="业态" />
-                    </Column>
-                    <Column id='column2' width='100px' >
-                        <Text text="专业" />
-                    </Column>
-                    <Column id='column3' width='100px'>
-                        <Text text="奖项名称"/>
-                    </Column>
-                    <Column id='column4' width='100px'>
-                        <Text text="颁奖单位" />
-                    </Column>	
-                    <Column id='column5' width='100px'>
-                        <Text text="获奖时间" />
-                    </Column>
-                    <Column id='column6' width='100px'>
-                        <Text text="乙方设计总监及团队" />
-                    </Column>
-                    <Column id='column7' width='100px'>
-                        <Text text="设计单位" />
-                    </Column>	
-                    <Column id='column8' width='100px'>
-                        <Text text="备注" />
-                    </Column>	
-                    <Column id='column9' width='100px'>
-                        <Text text="操作" />
-                    </Column>																			
-                </columns>
+            <VBox>
+                <Table
+                    id="designAwardTable"
+                    width="auto"
+                    items="{
+                        path: 'details>/ZRRE_C_DMAW',
+                        parameters: {
+                            count: true,
+                            expand: 'to_awyt,to_awmj'
+                        }
+                    }"
+                    mode="SingleSelectMaster"
+                    growingThreshold='40'
+                    growing="true"
+                    growingScrollToLoad="true"
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    class="sapUiMediumMarginBottom"
+                    updateFinished=".tableUpdateFinished"
+                    selectionChange=".selectionChange">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title
+                                id="tableHeader"
+                                text="设计获奖及认证 ({ui>/designAwardCount})"
+                                level="H3"/>
+                            <ToolbarSpacer />
+                            <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column id='column1' width='100px'>
+                            <Text text="业态" />
+                        </Column>
+                        <Column id='column2' width='100px' >
+                            <Text text="专业" />
+                        </Column>
+                        <Column id='column3' width='100px'>
+                            <Text text="奖项名称"/>
+                        </Column>
+                        <Column id='column4' width='100px'>
+                            <Text text="颁奖单位" />
+                        </Column>	
+                        <Column id='column5' width='100px'>
+                            <Text text="获奖时间" />
+                        </Column>
+                        <Column id='column6' width='100px'>
+                            <Text text="乙方设计总监及团队" />
+                        </Column>
+                        <Column id='column7' width='100px'>
+                            <Text text="设计单位" />
+                        </Column>	
+                        <Column id='column8' width='100px'>
+                            <Text text="备注" />
+                        </Column>	
+                        <Column id='column9' width='100px'>
+                            <Text text="操作" />
+                        </Column>																			
+                    </columns>
 
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <Text
-                                text="{details>to_awyt/YTDESC}"/>
-                            <Text
-                                text="{details>to_awmj/Majordesc}"/>
-                            <Text
-                                text="{details>jxmc}"/>
-                            <Text
-                                text="{details>bjdw}"/>
-                            <Text text="{
-                                path: 'details>psdate',
-                                type: 'sap.ui.model.type.Date',
-                                formatOptions: {pattern: 'yyyy-MM-dd'}
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text
+                                    text="{details>to_awyt/YTDESC}"/>
+                                <Text
+                                    text="{details>to_awmj/Majordesc}"/>
+                                <Text
+                                    text="{details>jxmc}"/>
+                                <Text
+                                    text="{details>bjdw}"/>
+                                <Text text="{
+                                    path: 'details>psdate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {pattern: 'yyyy-MM-dd'}
 
-                            }" />
-                            <Text
-                                text="{details>yftd}"/>
-                            <Text
-                                text="{details>sjdw}"/>
-                            <Text
-                                text="{details>memo}"/>
-                            <HBox>
-                                <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' >
-                                    <customData>
-                                        <core:CustomData key="dbKey" value="{details>db_key}" />
-                                        <core:CustomData key="ytid" value="{details>ytid}" />
-                                        <core:CustomData key="majorid" value="{details>majorid}" />
-                                    </customData>
-                                </Button>
-                                <Button icon='sap-icon://delete' press='.onDelete' >
-                                    <customData>
-                                        <core:CustomData key="dbKey" value="{details>db_key}" />
-                                        <core:CustomData key="jxmc" value="{details>jxmc}" />
-                                    </customData>
-                                </Button>
-                            </HBox>
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+                                }" />
+                                <Text
+                                    text="{details>yftd}"/>
+                                <Text
+                                    text="{details>sjdw}"/>
+                                <Text
+                                    text="{details>memo}"/>
+                                <HBox>
+                                    <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' >
+                                        <customData>
+                                            <core:CustomData key="dbKey" value="{details>db_key}" />
+                                            <core:CustomData key="ytid" value="{details>ytid}" />
+                                            <core:CustomData key="majorid" value="{details>majorid}" />
+                                        </customData>
+                                    </Button>
+                                    <Button icon='sap-icon://delete' press='.onDelete' >
+                                        <customData>
+                                            <core:CustomData key="dbKey" value="{details>db_key}" />
+                                            <core:CustomData key="jxmc" value="{details>jxmc}" />
+                                        </customData>
+                                    </Button>
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <VBox visible="{ui>/fileVisible}">
+                    <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+                </VBox>
+            </VBox>
         </semantic:content>
 
 

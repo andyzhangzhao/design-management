@@ -38,7 +38,6 @@ sap.ui.define(
           this.designProjectID = oArguments.designProjectID
           this.devProjectID = oArguments.devProjectID
           this.section = oArguments.section
-          this.filter = oArguments.filter
           if (
             this.section === 'C' ||
             this.section === 'C1' ||
@@ -55,12 +54,17 @@ sap.ui.define(
                 value1: this.designProjectID,
               }),
             ]
-            if (this.filter) {
+            if (
+              this.section === 'C1' ||
+              this.section === 'C2' ||
+              this.section === 'C3' ||
+              this.section === 'C4'
+            ) {
               aFilter.push(
                 new Filter({
                   path: 'cgtyp',
                   operator: 'EQ',
-                  value1: this.filter,
+                  value1: this.section,
                 })
               )
             }

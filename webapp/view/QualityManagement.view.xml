@@ -40,80 +40,95 @@
 			</fb:FilterBar>
 		</semantic:headerContent>
         <semantic:content>
-            <Table
-                id="qualityManagementTable"
-                width="auto"
-                items="{
-                    path: 'details>/ZRRE_C_DMPK',
-                    parameters: {
-                        count: true
-                    }
-                }"
-                growingThreshold='40'
-                growing="true"
-                growingScrollToLoad="true"
-                sticky="ColumnHeaders,HeaderToolbar"
-                class="sapUiMediumMarginBottom"
-                updateFinished=".tableUpdateFinished">
-                <headerToolbar>
-                    <OverflowToolbar>
-                        <Title
-                            id="tableHeader"
-                            text="品控管理 ({ui>/qualityManagementCount})"
-                            level="H3"/>
-                        <ToolbarSpacer />
-                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateInvoice"/>
-                    </OverflowToolbar>
-                </headerToolbar>
-                <columns>
-                    <Column id='column1' width='100px'>
-                        <Text text="品控对象" />
-                    </Column>
-                    <Column id='column2' width='100px' >
-                        <Text text="专业类别" />
-                    </Column>
-                    <Column id='column3' width='100px'>
-                        <Text text="品控类别"/>
-                    </Column>
-                    <Column id='column4' width='100px'>
-                        <Text text="名称" />
-                    </Column>	
-                    <Column id='column5' width='100px'>
-                        <Text text="相关设计成果" />
-                    </Column>
-                    <Column id='column7' width='100px'>
-                        <Text text="完成时间" />
-                    </Column>	
-                    <Column id='column8' width='100px'>
-                        <Text text="附件" />
-                    </Column>																		
-                </columns>
+            <VBox>
+                <Table
+                    id="qualityManagementTable"
+                    width="auto"
+                    mode="SingleSelectMaster"
+                    items="{
+                        path: 'details>/ZRRE_C_DMPK',
+                        parameters: {
+                            count: true,
+                            expand: 'to_pktyp,to_dmcg,to_pkyt,to_pkmj'
+                        }
+                    }"
+                    growingThreshold='40'
+                    growing="true"
+                    growingScrollToLoad="true"
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    class="sapUiMediumMarginBottom"
+                    updateFinished=".tableUpdateFinished"
+                    selectionChange=".selectionChange">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title
+                                id="tableHeader"
+                                text="品控管理 ({ui>/qualityManagementCount})"
+                                level="H3"/>
+                            <ToolbarSpacer />
+                            <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column id='column1' width='100px'>
+                            <Text text="品控类别"/>
+                        </Column>
+                        <Column id='column2' width='100px' >
+                            <Text text="业态" />
+                        </Column>
+                        <Column id='column3' width='100px' >
+                            <Text text="专业" />
+                        </Column>
+                        <Column id='column5' width='100px'>
+                            <Text text="相关设计成果" />
+                        </Column>
+                        <Column id='column7' width='100px'>
+                            <Text text="完成时间" />
+                        </Column>		
+                        <Column id='column9' width='100px'>
+                            <Text text="操作" />
+                        </Column>																
+                    </columns>
 
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <Text
-                                text="品控对象"/>
-                            <Text
-                                text="{details>majorid}"/>
-                            <Text
-                                text="{details>pktype}"/>
-                            <Text
-                                text="名称"/>
-                            <Text
-                                text="{details>cgid}"/>
-                            <Text
-                                text="{details>wcdate}"/>
-                            <Text
-                                text="附件"/>
-                            
-                            
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text
+                                    text="{details>to_pktyp/SNAME}"/>
+                                <Text
+                                    text="{details>to_pkyt/YTDESC}"/>
+                                <Text
+                                    text="{details>to_pkmj/Majordesc}"/>
+                                <Text
+                                    text="{details>to_dmcg/cgnm}"/>
+                                <Text text="{
+                                    path: 'details>wcdate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {pattern: 'yyyy-MM-dd'}
 
-                            
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+                                }" />
+                                <HBox>
+                                    <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' >
+                                        <customData>
+                                            <core:CustomData key="dbKey" value="{details>db_key}" />
+                                            <core:CustomData key="ytid" value="{details>ytid}" />
+                                            <core:CustomData key="majorid" value="{details>majorid}" />
+                                        </customData>
+                                    </Button>
+                                    <Button icon='sap-icon://delete' press='.onDelete' >
+                                        <customData>
+                                            <core:CustomData key="dbKey" value="{details>db_key}" />
+                                        </customData>
+                                    </Button>
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <VBox visible="{ui>/fileVisible}">
+                    <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+                </VBox>
+            </VBox>
         </semantic:content>
 
 

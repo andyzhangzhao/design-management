@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:upload="sap.m.upload">
+    <upload:UploadSet
+        id="upload"
+        instantUpload="false"
+        uploadEnabled="true"
+        terminationEnabled="false"
+        maxFileSize="200"
+        items="{path: 'ui>/files', templateShareable: false}"
+        beforeItemAdded=".beforeItemAdded">
+        <upload:toolbar>
+            <OverflowToolbar>
+                <Title text="附件"/>
+            </OverflowToolbar>
+        </upload:toolbar>
+        <upload:items>
+            <upload:UploadSetItem
+                url='blank'
+                visibleEdit="false"
+                fileName="{ui>FileName}"
+                mediaType="{ui>MimeType}"
+                uploadState="Complete"
+                attributes="{path: 'ui>attributes', templateShareable: false}"
+                removePressed='.removePressed'
+                openPressed='.openPressed'>
+                <upload:customData>
+                    <core:CustomData key="DocumentInfoRecordDocType" value="{ui>DocumentInfoRecordDocType}" />
+                    <core:CustomData key="DocumentInfoRecordDocNumber" value="{ui>DocumentInfoRecordDocNumber}" />
+                    <core:CustomData key="DocumentInfoRecordDocPart" value="{ui>DocumentInfoRecordDocPart}" />
+                    <core:CustomData key="DocumentInfoRecordDocVersion" value="{ui>DocumentInfoRecordDocVersion}" />
+                    <core:CustomData key="LogicalDocument" value="{ui>LogicalDocument}" />
+                    <core:CustomData key="ArchiveDocumentID" value="{ui>ArchiveDocumentID}" />
+                    <core:CustomData key="LinkedSAPObjectKey" value="{ui>LinkedSAPObjectKey}" />
+                    <core:CustomData key="BusinessObjectTypeName" value="{ui>BusinessObjectTypeName}" />
+                    <core:CustomData key="FileName" value="{ui>FileName}" />
+                </upload:customData>
+                <upload:attributes>
+                    <ObjectAttribute
+                            title="{ui>title}"
+                            text="{ui>text}"/>
+                </upload:attributes>
+            </upload:UploadSetItem>
+        </upload:items>
+    </upload:UploadSet>
+</core:FragmentDefinition>
