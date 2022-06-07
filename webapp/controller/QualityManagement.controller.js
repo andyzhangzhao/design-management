@@ -140,9 +140,14 @@ sap.ui.define(
                 })
               } else {
                 oDialog.unbindElement('details')
+                this.getControlById(
+                  'qualityManagementCgidSelect'
+                ).setSelectedKey()
+                this.getControlById('qualityManagementWcdatePicker').setValue()
               }
-              var cgidSelectBinding =
-                this.getControlById('cgidSelect').getBinding('items')
+              var cgidSelectBinding = this.getControlById(
+                'qualityManagementCgidSelect'
+              ).getBinding('items')
               cgidSelectBinding.filter(
                 new Filter({
                   path: 'parent_key',
@@ -185,12 +190,20 @@ sap.ui.define(
             this.getControlById('pktypeSelect').setValueState('Error')
             errorFlag = true
           }
-          if (!this.getControlById('cgidSelect').getSelectedKey()) {
-            this.getControlById('cgidSelect').setValueState('Error')
+          if (
+            !this.getControlById('qualityManagementCgidSelect').getSelectedKey()
+          ) {
+            this.getControlById('qualityManagementCgidSelect').setValueState(
+              'Error'
+            )
             errorFlag = true
           }
-          if (!this.getControlById('wcdatePicker').getDateValue()) {
-            this.getControlById('wcdatePicker').setValueState('Error')
+          if (
+            !this.getControlById('qualityManagementWcdatePicker').getDateValue()
+          ) {
+            this.getControlById('qualityManagementWcdatePicker').setValueState(
+              'Error'
+            )
             errorFlag = true
           }
 
@@ -234,8 +247,12 @@ sap.ui.define(
             })
             var object = {
               pktype: this.getControlById('pktypeSelect').getSelectedKey(),
-              cgid: this.getControlById('cgidSelect').getSelectedKey(),
-              wcdate: this.getControlById('wcdatePicker').getDateValue(),
+              cgid: this.getControlById(
+                'qualityManagementCgidSelect'
+              ).getSelectedKey(),
+              wcdate: this.getControlById(
+                'qualityManagementWcdatePicker'
+              ).getDateValue(),
               ytid: yt,
               majorid: mj,
             }

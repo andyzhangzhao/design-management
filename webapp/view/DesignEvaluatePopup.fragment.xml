@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog
+		title="设计后评估"
+		contentWidth="600px">
+
+		<f:SimpleForm
+			editable="true"
+			layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="2"
+			>
+			<f:content>
+				<Label text="评估时间" required="true" />
+				<DatePicker id='blueprintWcdatePicker' dateValue="{details>wcdate}" change=".validateInput" valueStateText='评估时间不能为空'/>
+			</f:content>
+		</f:SimpleForm>
+		<HBox alignItems="Center" class="sapUiSmallMargin">
+			<Label vAlign="Middle" text="业态:"/>
+			<RadioButtonGroup columns="5" buttons="{
+				path: 'ui>/ytmj'
+			}">
+				<RadioButton text="{ui>YTDESC}" selected="{ui>selected}"/>
+			</RadioButtonGroup>
+		</HBox>
+		<beginButton>
+            <Button type='Emphasized' text='保存' press='onSave' >
+				<customData>
+					<core:CustomData key="dbKey" value="{details>db_key}" />
+				</customData>
+			</Button>
+        </beginButton>
+        <endButton>
+            <Button text='取消' press='onCancel'/>
+        </endButton>
+	</Dialog>
+</core:FragmentDefinition>

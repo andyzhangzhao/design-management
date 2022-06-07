@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
 	<Dialog
-		title="品控管理"
+		title="图纸会审核和交底"
 		contentWidth="600px">
 
 		<f:SimpleForm
@@ -11,25 +11,14 @@
 			columnsXL="2"
 			>
 			<f:content>
-				<Label text="品控类型" required="true" />
-				<Select id='pktypeSelect' selectedKey="{details>pktype}" forceSelection='false' valueStateText='品控类型不能为空' change='.validateSelect' items="{
-					path: 'details>/zrre_i_dcms',
-					filters: [{
-						path: 'Upsid',
-						operator: 'EQ',
-						value1: 'F'
-					}] 
-				}">
-					<core:ListItem key="{details>Sid}" text="{details>Sname}" />
-				</Select>
 				<Label text="设计成果" required="true" />
-				<Select id='qualityManagementCgidSelect' selectedKey="{details>cgid}" forceSelection='false' valueStateText='设计成果不能为空' change='.validateSelect' items="{
+				<Select id='blueprintCgidSelect' selectedKey="{details>cgid}" forceSelection='false' valueStateText='设计成果不能为空' change='.validateSelect' items="{
 					path: 'details>/ZRRE_C_DMCG'
 				}">
 					<core:ListItem key="{details>cgid}" text="{details>cgnm}" />
 				</Select>
 				<Label text="完成时间" required="true" />
-				<DatePicker id='qualityManagementWcdatePicker' dateValue="{details>wcdate}" change=".validateInput" valueStateText='完成时间不能为空'/>
+				<DatePicker id='blueprintWcdatePicker' dateValue="{details>wcdate}" change=".validateInput" valueStateText='完成时间不能为空'/>
 			</f:content>
 		</f:SimpleForm>
 		<HBox alignItems="Center" class="sapUiSmallMargin">

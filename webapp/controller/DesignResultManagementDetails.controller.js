@@ -5,13 +5,7 @@ sap.ui.define(
     'sap/ui/core/Fragment',
     'sap/m/MessageToast',
     'sap/m/MessageBox',
-    'sap/m/Dialog',
-    'sap/m/Button',
-    'sap/m/Text',
-    'sap/m/MessageItem',
-    'sap/m/MessageView',
-    'sap/m/Popover',
-    './BaseUploadSet',
+    './BaseController',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -22,17 +16,11 @@ sap.ui.define(
     Fragment,
     MessageToast,
     MessageBox,
-    Dialog,
-    Button,
-    Text,
-    MessageItem,
-    MessageView,
-    Popover,
-    BaseUploadSet
+    BaseController
   ) {
     'use strict'
 
-    return BaseUploadSet.extend(
+    return BaseController.extend(
       'projectmanagement.controller.DesignResultManagementDetails',
       {
         onInit: function () {

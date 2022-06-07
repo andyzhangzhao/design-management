@@ -81,7 +81,7 @@
                             <Text text="评审时间" />
                         </Column>
                         <Column id='column7' width='150px'>
-                            <Text text="操作" />
+                            <Text text="评审" />
                         </Column>
                     </columns>
 

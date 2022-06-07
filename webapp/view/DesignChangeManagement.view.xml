@@ -66,9 +66,6 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
-                    <Column id='column1' width='100px'>
-                        <Text text="项目分期" />
-                    </Column>
                     <Column id='column2' width='100px' >
                         <Text text="名称" />
                     </Column>
@@ -90,21 +87,15 @@
                     <ColumnListItem>
                         <cells>
                             <Text
-                                text="{details>itmnm}"/>
-                            <Text
                                 text="{details>Revisiont}"/>
                             <Text
                                 text="{details>Esticurr}"/>
                             <Text
-                                text="{details>Dstatus}"/>
+                                text="{details>dsttxt}"/>
                             <Text
                                 text="{details>RevReason}"/>
                             <Text
-                                text="关联合同"/>
-                            
-                            
-
-                            
+                                text="{details>Revisionno}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

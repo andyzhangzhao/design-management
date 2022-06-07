@@ -9,7 +9,7 @@ sap.ui.define(
   function (Controller, MessageToast, Dialog, Button, Text) {
     'use strict'
 
-    return Controller.extend('projectmanagement.controller.BaseUploadSet', {
+    return Controller.extend('projectmanagement.controller.BaseController', {
       validateSelect: function (oEvent) {
         oEvent.getSource().setValueState('None')
       },
