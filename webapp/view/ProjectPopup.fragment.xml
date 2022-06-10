@@ -8,12 +8,12 @@
                 </HBox>
                 <HBox alignItems='Center' class="sapUiSmallMarginBottom">
                     <Label text='关联项目:' width='100px' required='true'/>
-                    <Select id='relatedProjectSelect' width='400px' valueStateText='关联项目不能为空'  forceSelection='false' change='.validateRelatedProject' selectedKey='{ui>/projectPopup/relatedProjectId}' items="{
+                    <ComboBox id='relatedProjectSelect' width='400px' valueStateText='关联项目不能为空' change='.validateRelatedProject' selectedKey='{ui>/projectPopup/relatedProjectId}' items="{
                         path: 'details>/zrre_i_proj',
-                        length: 500
+                        length: 1000
                     }">
                         <core:ListItem key="{details>itmnr}" text="{details>itmnm}"/>
-                    </Select>
+                    </ComboBox>
                 </HBox>
                 
                 <VBox items="{

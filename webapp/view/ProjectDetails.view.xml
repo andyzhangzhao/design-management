@@ -56,6 +56,7 @@
 								<mvc:XMLView id="I" viewName="projectmanagement.view.DesignChangeManagement"/>
 								<mvc:XMLView id="J" viewName="projectmanagement.view.QuotaManagement"/>
 								<mvc:XMLView id="K" viewName="projectmanagement.view.DesignEvaluate"/>
+								<mvc:XMLView id="L" viewName="projectmanagement.view.DesignCompany"/>
 							</pages>
 						</NavContainer>
 					</tnt:mainContents>

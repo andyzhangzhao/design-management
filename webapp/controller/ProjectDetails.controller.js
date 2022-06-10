@@ -22,6 +22,7 @@ sap.ui.define(
           .getRoute('projectDetails')
           .attachPatternMatched(this._onObjectMatched, this)
 
+        this.oView.setModel(new JSONModel({}), 'ui')
         this.oProjectListModel = this.getOwnerComponent().getModel()
         this.oDetailsItemsModel =
           this.getOwnerComponent().getModel('detailsItems')

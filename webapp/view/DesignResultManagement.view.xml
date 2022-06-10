@@ -21,9 +21,13 @@
 		<semantic:headerContent>
             <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
                 <fb:filterGroupItems>
-                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业"  visibleInFilterBar="true" >
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="业态"  visibleInFilterBar="true" >
                         <fb:control>
-                            <Input id="majorInput" type="Text"/>
+                            <Select id='ytSelect' resetOnMissingKey='true' change='.onFilter' forceSelection='false' items="{
+									path: 'ui>/ytmj'
+								}">
+									<core:ListItem key="{ui>YTID}" text="{ui>YTDESC}" />
+							</Select>
                         </fb:control>
                     </fb:FilterGroupItem>
 					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="version" label="版本"  visibleInFilterBar="true" >

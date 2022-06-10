@@ -48,7 +48,8 @@
                     items="{
                         path: 'details>/ZRRE_C_DMPG',
                         parameters: {
-                            count: true
+                            count: true,
+                            expand: 'to_pgyt,to_pgst'
                         }
                     }"
                     growingThreshold='40'
@@ -65,7 +66,7 @@
                                 text="设计后评估 ({ui>/designEvaluateCount})"
                                 level="H3"/>
                             <ToolbarSpacer />
-                            <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreateInvoice"/>
+                            <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
@@ -91,7 +92,7 @@
                                 <Text
                                     text="{details>to_pgyt/YTDESC}"/>
                                 <Text
-                                    text="{details>wytype}"/>
+                                    text="{details>to_pgst/TXT_DESC}"/>
                                 <Text text="{
                                     path: 'details>raisedate',
                                     type: 'sap.ui.model.type.Date',

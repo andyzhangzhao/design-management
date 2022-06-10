@@ -1,26 +1,35 @@
 sap.ui.define(
   [
-    'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/m/Dialog',
     'sap/m/Button',
     'sap/m/Text',
     'sap/m/MessageToast',
+    './BaseController',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, JSONModel, Filter, Dialog, Button, Text, MessageToast) {
+  function (
+    JSONModel,
+    Filter,
+    Dialog,
+    Button,
+    Text,
+    MessageToast,
+    BaseController
+  ) {
     'use strict'
 
-    return Controller.extend(
+    return BaseController.extend(
       'projectmanagement.controller.DesignResultManagement',
       {
         onInit: function () {
           this.designResultManagementTable = this.byId(
             'designResultManagementTable'
           )
+          this.ytSelect = this.byId('ytSelect')
 
           this.oView = this.getView()
           this.oView.setModel(new JSONModel({}), 'ui')
@@ -45,6 +54,7 @@ sap.ui.define(
             this.section === 'C3' ||
             this.section === 'C4'
           ) {
+            this.getYTMJ()
             var listBinding =
               this.designResultManagementTable.getBinding('items')
             var aFilter = [
@@ -71,6 +81,28 @@ sap.ui.define(
 
             listBinding.filter(aFilter)
           }
+        },
+
+        onFilter: function () {
+          var ytid = this.ytSelect.getSelectedKey()
+          var aFilter = [
+            new Filter({
+              path: 'to_root/db_key',
+              operator: 'EQ',
+              value1: this.designProjectID,
+            }),
+          ]
+          if (ytid) {
+            aFilter.push(
+              new Filter({
+                path: 'ytid',
+                operator: 'EQ',
+                value1: ytid,
+              })
+            )
+          }
+          var listBinding = this.designResultManagementTable.getBinding('items')
+          listBinding.filter(aFilter)
         },
         tableUpdateFinished: function (oEvent) {
           this.oView

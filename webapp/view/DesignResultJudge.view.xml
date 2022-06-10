@@ -48,7 +48,7 @@
                         path: 'details>/ZRRE_C_DMFA',
                         parameters: {
                             $count: true,
-                            expand: 'to_pstyp,to_fayt,to_famj'
+                            expand: 'to_pstyp,to_fayt,to_famj,to_fast'
                         }
                     }"
                     mode="SingleSelectMaster"
@@ -77,6 +77,9 @@
                         <Column id='column3' width='100px' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
                             <Text text="评审类别"/>
                         </Column>
+                        <Column id='column5' width='100px'>
+                            <Text text="状态" />
+                        </Column>
                         <Column id='column4' width='100px'>
                             <Text text="评审时间" />
                         </Column>
@@ -104,6 +107,7 @@
                                     </customData>
                                 </Text>
                                 <Text text="{details>psdate}"/>
+                                <Text text="{details>to_fast/TXT_DESC}"/>
                                 <HBox alignItems="Center">
                                     <Link text='发起评审' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
                                     <Link text='查看审批流程' class='sapUiTinyMarginEnd' press='.onEditProject' />

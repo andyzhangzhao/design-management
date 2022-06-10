@@ -1,0 +1,66 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog
+		title="设计单位"
+		contentWidth="600px">
+
+		<f:SimpleForm
+			editable="true"
+			layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="2"
+			>
+			<f:content>
+				<Label text="设计合同" required="true" />
+				<Select id='contractSelect' selectedKey="{details>conno}" forceSelection='false' valueStateText='设计合同不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_I_CONT'
+				}">
+					<core:ListItem key="{details>conno}" text="{details>connm}" />
+				</Select>
+				<Label text="招采方式" required="true" />
+				<Select id='zcfsSelect' selectedKey="{details>zcfs}" forceSelection='false' valueStateText='招采方式不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_TXT_DESC',
+                   filters: [{
+						path: 'TXT_TYPE',
+						operator: 'EQ',
+						value1: '13'
+					}] 
+				}">
+					<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+				</Select>
+				<Label text="合同面积" required="true" />
+				<Input id='htmjInput' value="{details>htmj}" change=".validateInput" type='Number' valueStateText='合同面积不能为空'/>
+			</f:content>
+		</f:SimpleForm>
+		<HBox alignItems="Center" class="sapUiSmallMargin">
+			<Label vAlign="Middle" text="业态:"/>
+			<RadioButtonGroup columns="5" buttons="{
+				path: 'ui>/ytmj'
+			}">
+				<RadioButton text="{ui>YTDESC}" selected="{ui>selected}"/>
+			</RadioButtonGroup>
+		</HBox>
+		<HBox alignItems="Center" class="sapUiSmallMargin">
+            <Label vAlign="Middle" text="专业:"/>
+            <VBox items="{
+                path: 'ui>/ytmj'
+            }">
+                <HBox visible="{= ${ui>selected}===true}" items="{
+                    path: 'ui>MJD'
+                }">
+                    <CheckBox enabled="{= ${ui>/mode}!=='display'}" text="{ui>MAJORDESC}"  selected="{ui>selected}"/>
+                </HBox>
+            </VBox>
+        </HBox>
+		<beginButton>
+            <Button type='Emphasized' text='保存' press='onSave' >
+				<customData>
+					<core:CustomData key="dbKey" value="{details>db_key}" />
+				</customData>
+			</Button>
+        </beginButton>
+        <endButton>
+            <Button text='取消' press='onCancel'/>
+        </endButton>
+	</Dialog>
+</core:FragmentDefinition>

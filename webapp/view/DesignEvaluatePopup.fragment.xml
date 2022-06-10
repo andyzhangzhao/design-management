@@ -12,7 +12,7 @@
 			>
 			<f:content>
 				<Label text="评估时间" required="true" />
-				<DatePicker id='blueprintWcdatePicker' dateValue="{details>wcdate}" change=".validateInput" valueStateText='评估时间不能为空'/>
+				<DatePicker id='raisedatePicker' dateValue="{details>raisedate}" change=".validateInput" valueStateText='评估时间不能为空'/>
 			</f:content>
 		</f:SimpleForm>
 		<HBox alignItems="Center" class="sapUiSmallMargin">

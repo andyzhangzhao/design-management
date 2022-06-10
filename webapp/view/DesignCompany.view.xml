@@ -1,0 +1,160 @@
+<mvc:View
+	controllerName="projectmanagement.controller.DesignCompany"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+    xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+
+	<semantic:SemanticPage
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false">
+        <semantic:titleHeading>
+			<Title
+				text="设计单位"
+				level="H2"/>
+		</semantic:titleHeading>
+
+
+		<semantic:headerContent>
+            <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业类别"  visibleInFilterBar="true" >
+                        <fb:control>
+                            <Input id="majorInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="version" label="方案类型"  visibleInFilterBar="true" >
+                        <fb:control>
+                            <Input id="solutionTypeInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="status" label="评审类别"  visibleInFilterBar="true">
+                        <fb:control>
+                            <Input id="judgeTypeInput" type="Text"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+			</fb:FilterBar>
+		</semantic:headerContent>
+        <semantic:content>
+            <Table
+                id="designCompanyTable"
+                autoPopinMode="true" 
+                contextualWidth="Auto"
+                items="{
+                    path: 'details>/ZRRE_C_DMDW',
+                    parameters: {
+                        count: true,
+                        expand: 'to_cncnt,to_dwyt,to_zcfs'
+                    }
+                }"
+                growingThreshold='40'
+                growing="true"
+                growingScrollToLoad="true"
+                sticky="ColumnHeaders,HeaderToolbar"
+                class="sapUiMediumMarginBottom"
+                updateFinished=".tableUpdateFinished">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="tableHeader"
+                            text="设计单位 ({ui>/designCompanyCount})"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id='column1' width='140px'>
+                        <Text text="供应商名称"/>
+                    </Column>
+                    <Column id='column2' width='120px' >
+                        <Text text="合同名称" />
+                    </Column>
+                    <Column id='column3' width='100px' >
+                        <Text text="业态" />
+                    </Column>
+                    <Column id='column4' width='100px'>
+                        <Text text="专业" />
+                    </Column>
+                    <Column id='column5' width='100px'>
+                        <Text text="招采方式" />
+                    </Column>		
+                    <Column id='column6' width='100px'>
+                        <Text text="合同面积" />
+                    </Column>
+                    <Column id='column12' width='100px'>
+                        <Text text="操作" />
+                    </Column>	
+                    <Column id='column7' width='100px'>
+                        <Text text="目标设计费用" />
+                    </Column>	
+                    <Column id='column8' width='100px'>
+                        <Text text="合同金额" />
+                    </Column>	
+                    <Column id='column9' width='100px'>
+                        <Text text="已付金额" />
+                    </Column>	
+                    <Column id='column10' width='100px'>
+                        <Text text="签约时间" />
+                    </Column>	
+                    <Column id='column11' width='100px'>
+                        <Text text="合同状态" />
+                    </Column>
+                    																
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{details>to_cncnt/vendname}"/>
+                            <Text text="{details>to_cncnt/connm}"/>
+                            <Text text="{details>to_dwyt/YTDESC}"/>
+                            <Text text="{details>majtxt}"/>
+                            <Text text="{details>to_zcfs/TXT_DESC}"/>
+                            <Text text="{details>htmj}"/>
+                            <HBox>
+                                <Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEdit' >
+                                    <customData>
+                                        <core:CustomData key="dbKey" value="{details>db_key}" />
+                                        <core:CustomData key="ytid" value="{details>ytid}" />
+                                        <core:CustomData key="majorid" value="{details>majorid}" />
+                                    </customData>
+                                </Button>
+                                <Button icon='sap-icon://delete' press='.onDelete' >
+                                    <customData>
+                                        <core:CustomData key="dbKey" value="{details>db_key}" />
+                                    </customData>
+                                </Button>
+                            </HBox>
+                            <Text text="{details>to_cncnt/Targetamt}"/>
+                            <Text text="{details>to_cncnt/Contractamt}"/>
+                            <Text text="{details>to_cncnt/Paidamt}"/>
+                            <Text text="{
+                                path: 'details>to_cncnt/Sdate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {pattern: 'yyyy-MM-dd'}
+
+                            }"/>
+                            <Text text="{details>to_cncnt/staus}"/>
+                            <Text text="{
+                                path: 'details>wcdate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {pattern: 'yyyy-MM-dd'}
+
+                            }" />
+                            
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </semantic:content>
+
+
+
+	</semantic:SemanticPage>
+
+</mvc:View>
