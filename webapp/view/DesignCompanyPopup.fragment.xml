@@ -20,7 +20,7 @@
 				<Label text="招采方式" required="true" />
 				<Select id='zcfsSelect' selectedKey="{details>zcfs}" forceSelection='false' valueStateText='招采方式不能为空' change='.validateSelect' items="{
 					path: 'details>/ZRRE_C_TXT_DESC',
-                   filters: [{
+                   	filters: [{
 						path: 'TXT_TYPE',
 						operator: 'EQ',
 						value1: '13'

@@ -48,9 +48,9 @@
                                     columnsXL="4"
                                     >
                                     <f:content>
-                                        <Label text="成员编号" />
+                                        <Label text="成果编号" />
                                         <Text text="{details>cgid}" />
-                                        <Label text="成员名称" />
+                                        <Label text="成果名称" />
                                         <Text text="{details>cgnm}" />
                                         <Label text="版本" />
                                         <Text text="{details>to_cgver/TXT_DESC}" />

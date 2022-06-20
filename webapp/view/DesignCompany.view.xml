@@ -44,6 +44,7 @@
                 id="designCompanyTable"
                 autoPopinMode="true" 
                 contextualWidth="Auto"
+                popinLayout="GridLarge"
                 items="{
                     path: 'details>/ZRRE_C_DMDW',
                     parameters: {
@@ -89,19 +90,19 @@
                     <Column id='column12' width='100px'>
                         <Text text="操作" />
                     </Column>	
-                    <Column id='column7' width='100px'>
+                    <Column id='column7' width='100px' demandPopin="true" minScreenWidth="Desktop">
                         <Text text="目标设计费用" />
                     </Column>	
-                    <Column id='column8' width='100px'>
+                    <Column id='column8' width='100px' demandPopin="true" minScreenWidth="Desktop">
                         <Text text="合同金额" />
                     </Column>	
-                    <Column id='column9' width='100px'>
+                    <Column id='column9' width='100px' demandPopin="true" minScreenWidth="Desktop">
                         <Text text="已付金额" />
                     </Column>	
-                    <Column id='column10' width='100px'>
+                    <Column id='column10' width='100px' demandPopin="true" minScreenWidth="Desktop">
                         <Text text="签约时间" />
                     </Column>	
-                    <Column id='column11' width='100px'>
+                    <Column id='column11' width='100px' demandPopin="true" minScreenWidth="Desktop">
                         <Text text="合同状态" />
                     </Column>
                     																

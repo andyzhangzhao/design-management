@@ -13,8 +13,8 @@
 			<f:content>
 				<Label text="封样名称" required="true" />
 				<Input id='fyInput' value="{details>fydesc}" change=".validateInput" valueStateText='封样名称不能为空' />
-				<Label text="封样类型" required="true" />
-				<Select id='fytypeSelect' selectedKey="{details>fytype}" forceSelection='false' valueStateText='封样类型不能为空' change='.validateSelect' items="{
+				<Label text="封样类别" required="true" />
+				<Select id='fytypeSelect' selectedKey="{details>fytype}" forceSelection='false' valueStateText='封样类别不能为空' change='.validateSelect' items="{
 					path: 'details>/zrre_i_dcms',
 					filters: [{
 						path: 'Upsid',
@@ -23,6 +23,17 @@
 					}] 
 				}">
 					<core:ListItem key="{details>Sid}" text="{details>Sname}" />
+				</Select>
+				<Label text="封样类型" required="true" />
+				<Select id='fycateSelect' selectedKey="{details>fycate}" forceSelection='false' valueStateText='封样类型不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_TXT_DESC',
+                   	filters: [{
+						path: 'TXT_TYPE',
+						operator: 'EQ',
+						value1: '07'
+					}] 
+				}">
+					<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
 				</Select>
 				<Label text="会签完成时间" required="true" />
 				<DatePicker id='hqdatePicker' dateValue="{details>hqdate}" change=".validateInput" valueStateText='会签完成时间不能为空'/>

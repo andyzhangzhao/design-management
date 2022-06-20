@@ -48,59 +48,63 @@
 					<f:GridContainerSettings rowSize="2rem" columnSize="1.9rem" gap="0.5rem" />
 				</f:layout>
 				<f:items>
-					<Label text="项目编码:" class="labelMargin" >
+					<Label text="项目编码:" class="" >
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{details>prjid}" class="labelMargin">
+					<Text text="{details>prjid}" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="6" />
 						</layoutData>
 					</Text>
-					<Label text="项目名称:" class="labelMargin">
+					<Label text="项目名称:" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{details>prjnm}" class="labelMargin">
+					<Text text="{details>prjnm}" class="">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="6" />
+							<f:GridContainerItemLayoutData rows="2" columns="8" />
 						</layoutData>
 					</Text>
-					<Label text="项目状态:" class="labelMargin">
+					<Label text="项目状态:" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{details>to_xmtxt/TXT_DESC}" class="labelMargin">
+					<Text text="{details>to_xmtxt/TXT_DESC}" class="">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="6" />
+							<f:GridContainerItemLayoutData rows="2" columns="4" />
 						</layoutData>
 					</Text>
 
-					<Label text="项目地址:" class="labelMargin">
+					<Label text="项目地址:" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{details>address}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>address}" visible="{= !${ui>/editMode}}" class="">
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="22" />
+							<f:GridContainerItemLayoutData rows="2" columns="10" />
 						</layoutData>
 					</Text>
-					<Input id="projectAddressInput" visible="{ui>/editMode}" value="{details>address}" maxLength="100">
+					<TextArea id="projectAddressInput" visible="{ui>/editMode}" value="{details>address}" maxLength="100" width='376px'>
 						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="22" />
+							<f:GridContainerItemLayoutData rows="2" columns="10" />
 						</layoutData>
-					</Input>
-
-					<Label text="项目简介:" class="labelMargin">
+					</TextArea>
+					<Image id='projectImage' src="{ui>/imageSrc}" width='480px' height='450px' class="projectImage">
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="10" columns="12" />
+						</layoutData>
+					</Image>
+					<Label text="项目简介:" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{details>prjdesc}" visible="{= !${ui>/editMode}}" class="labelMargin">
+					<Text text="{details>prjdesc}" visible="{= !${ui>/editMode}}" class="projectDescText">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="8" columns="10" />
 						</layoutData>
@@ -110,11 +114,7 @@
 							<f:GridContainerItemLayoutData rows="8" columns="10" />
 						</layoutData>
 					</TextArea>
-					<Image id='projectImage' src="{ui>/imageSrc}" width='450px' height='450px'>
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="8" columns="12" />
-						</layoutData>
-					</Image>
+					
 				</f:items>
 			</f:GridContainer>
 		</semantic:headerContent>

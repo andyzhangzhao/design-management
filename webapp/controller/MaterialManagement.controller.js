@@ -187,6 +187,7 @@ sap.ui.define(
               } else {
                 oDialog.unbindElement('details')
                 this.getControlById('fytypeSelect').setSelectedKey()
+                this.getControlById('fycateSelect').setSelectedKey()
                 this.getControlById('hqdatePicker').setValue()
               }
               oDialog.open()
@@ -206,6 +207,10 @@ sap.ui.define(
           }
           if (!this.getControlById('fytypeSelect').getSelectedKey()) {
             this.getControlById('fytypeSelect').setValueState('Error')
+            errorFlag = true
+          }
+          if (!this.getControlById('fycateSelect').getSelectedKey()) {
+            this.getControlById('fycateSelect').setValueState('Error')
             errorFlag = true
           }
           if (!this.getControlById('hqdatePicker').getDateValue()) {
@@ -253,6 +258,7 @@ sap.ui.define(
             var object = {
               fydesc: this.getControlById('fyInput').getValue(),
               fytype: this.getControlById('fytypeSelect').getSelectedKey(),
+              fycate: this.getControlById('fycateSelect').getSelectedKey(),
               hqdate: this.getControlById('hqdatePicker').getDateValue(),
               ytid: yt,
               majorid: mj,

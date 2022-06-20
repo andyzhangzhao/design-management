@@ -49,7 +49,7 @@
                         path: 'details>/ZRRE_C_DMFY',
                         parameters: {
                             count: true,
-                            expand: 'to_fytyp,to_fyyt,to_fymj'
+                            expand: 'to_fytyp,to_fyyt,to_fymj,to_fycat'
                         }
                     }"
                     growingThreshold='40'
@@ -74,18 +74,21 @@
                             <Text text="封样名称" />
                         </Column>
                         <Column id='column2' width='100px'>
+                            <Text text="封样类别" />
+                        </Column>
+                        <Column id='column3' width='100px'>
                             <Text text="封样类型" />
                         </Column>
-                        <Column id='column3' width='100px' >
+                        <Column id='column4' width='100px' >
                             <Text text="业态" />
                         </Column>
-                        <Column id='column4' width='100px'>
+                        <Column id='column5' width='100px'>
                             <Text text="专业"/>
                         </Column>
-                        <Column id='column5' width='100px'>
+                        <Column id='column6' width='100px'>
                             <Text text="会签完成时间" />
                         </Column>	
-                        <Column id='column6' width='100px'>
+                        <Column id='column7' width='100px'>
                             <Text text="操作" />
                         </Column>														
                     </columns>
@@ -95,6 +98,7 @@
                             <cells>
                                 <Text text="{details>fydesc}"/>
                                 <Text text="{details>to_fytyp/SNAME}"/>
+                                <Text text="{details>to_fycat/TXT_DESC}"/>
                                 <Text text="{details>to_fyyt/YTDESC}"/>
                                 <Text text="{details>to_fymj/Majordesc}"/>
                                 <Text text="{

@@ -11,3 +11,9 @@
 .basicProjectPage .projectDescInput{
     margin-top: 0 !important;
 }
+.basicProjectPage .projectDescText {
+    overflow: auto;
+}
+.basicProjectPage .projectImage{
+    margin-left: 1rem;
+}

@@ -4,7 +4,9 @@
         instantUpload="false"
         uploadEnabled="true"
         terminationEnabled="false"
-        maxFileSize="200"
+        fileTypes="png"
+        maxFileSize="2"
+        mediaTypes="image/png,image/jpeg"
         items="{path: 'ui>/files', templateShareable: false}"
         beforeItemAdded=".beforeItemAdded">
         <upload:toolbar>

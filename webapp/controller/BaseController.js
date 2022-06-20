@@ -119,13 +119,16 @@ sap.ui.define(
               LinkedSAPObjectKey: this.itemDbKey,
               'Content-Type': file.type,
               'X-CSRF-Token': this.token,
-              Slug: file.name,
+              Slug: encodeURIComponent(file.name),
             },
             success: function () {
               MessageToast.show(file.name + '文件上传成功')
               this.getAllFiles()
               uploadSet.setBusy(false)
             }.bind(this),
+            error: function (oEvent) {
+              console.log(oEvent)
+            },
           })
         }.bind(this)
         oEvent.preventDefault()
