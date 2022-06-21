@@ -4,14 +4,12 @@
         instantUpload="false"
         uploadEnabled="true"
         terminationEnabled="false"
-        fileTypes="png"
         maxFileSize="2"
-        mediaTypes="image/png,image/jpeg"
         items="{path: 'ui>/files', templateShareable: false}"
         beforeItemAdded=".beforeItemAdded">
         <upload:toolbar>
             <OverflowToolbar>
-                <Title text="附件"/>
+                <Title text="{= ${ui>/uploadTitle} ? ${ui>/uploadTitle} : '附件'}"/>
             </OverflowToolbar>
         </upload:toolbar>
         <upload:items>
