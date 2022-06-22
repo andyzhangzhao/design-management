@@ -36,6 +36,7 @@
 						<NavContainer id="pageContainer" initialPage="A">
 							<pages>
 								<mvc:XMLView id="A" viewName="projectmanagement.view.BasicProjectInfo"/>
+								<mvc:XMLView id="B" viewName="projectmanagement.view.DesignIndex"/>
 								<mvc:XMLView id="C" viewName="projectmanagement.view.DesignResultManagement"/>
 								<mvc:XMLView id="C1" viewName="projectmanagement.view.DesignResultManagement"/>
 								<mvc:XMLView id="C2" viewName="projectmanagement.view.DesignResultManagement"/>

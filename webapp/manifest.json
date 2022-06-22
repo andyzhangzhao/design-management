@@ -126,7 +126,7 @@
           "synchronizationMode": "None",
           "operationMode": "Server",
           "earlyRequests": true,
-          "defaultBindingMode": "sap.ui.model.BindingMode.TwoWay",
+          "defaultBindingMode": "TwoWay",
           "groupId": "$auto",
           "useBatch": true,
           "metadataUrlParams": {
@@ -167,6 +167,11 @@
           "name": "designResultDetails",
           "pattern": "designResult/{devProjectID}/{designProjectID}/{mode}/:designResultID:",
           "target": ["designResultDetails"]
+        },
+        {
+          "name": "designIndexDetails",
+          "pattern": "designIndex/{devProjectID}/{designProjectID}/{mode}/:designIndexID:",
+          "target": ["designIndexDetails"]
         }
       ],
       "targets": {
@@ -187,6 +192,12 @@
           "transition": "slide",
           "clearControlAggregation": false,
           "viewName": "DesignResultManagementDetails"
+        },
+        "designIndexDetails": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewName": "DesignIndexDetails"
         }
       }
     },

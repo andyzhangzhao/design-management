@@ -113,20 +113,18 @@
 
                             }"/>
                             <HBox>
-                                <Button icon='sap-icon://display' class='sapUiTinyMarginEnd' press='.toDetail' >
-                                    <customData>
-                                        <core:CustomData key="dbKey" value="{details>db_key}" />
-                                    </customData>
-                                </Button>
-                                <Button icon='sap-icon://delete' press='.onDelete' >
+                                <Button icon='sap-icon://delete' press='.onDelete' class='sapUiTinyMarginEnd'>
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />
                                         <core:CustomData key="cgnm" value="{details>cgnm}" />
                                     </customData>
                                 </Button>
+                                <Button icon='sap-icon://navigation-right-arrow'  press='.toDetail'>
+                                    <customData>
+                                        <core:CustomData key="dbKey" value="{details>db_key}" />
+                                    </customData>
+                                </Button>
                             </HBox>
-
-                            
                         </cells>
                     </ColumnListItem>
                 </items>

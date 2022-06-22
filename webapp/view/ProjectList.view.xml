@@ -188,7 +188,7 @@
 									</customData>
 									<Button icon='sap-icon://add' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
 									<Button icon='sap-icon://edit' class='sapUiTinyMarginEnd' press='.onEditProject' />
-									<Button icon='sap-icon://detail-view' press='.toDetail' />
+									<Button icon='sap-icon://navigation-right-arrow' press='.toDetail' />
 								</HBox>	
 							</cells>
 						</ColumnListItem>

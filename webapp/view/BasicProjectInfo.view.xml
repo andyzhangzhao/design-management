@@ -73,7 +73,7 @@
 							<f:GridContainerItemLayoutData rows="2" columns="2" />
 						</layoutData>
 					</Label>
-					<Text text="{details>to_xmtxt/TXT_DESC}" class="">
+					<Text text="{details>to_xm/TXT_DESC}" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="4" />
 						</layoutData>
