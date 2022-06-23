@@ -253,6 +253,14 @@ sap.ui.define(
                   oContext.getPath() + '/majorid',
                   mj
                 )
+                var oDate = this.getControlById(
+                  'blueprintWcdatePicker'
+                ).getDateValue()
+                oDate.setHours(oDate.getHours() + 8)
+                this.oDetailsModel.setProperty(
+                  oContext.getPath() + '/wcdate',
+                  oDate
+                )
                 BusyIndicator.show(0)
                 this.oDetailsModel.submitChanges({
                   success: function () {

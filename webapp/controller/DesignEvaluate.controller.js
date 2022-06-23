@@ -209,6 +209,13 @@ sap.ui.define(
               function (oDialog) {
                 var oContext = oDialog.getBindingContext('details')
                 this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+                var oDate =
+                  this.getControlById('raisedatePicker').getDateValue()
+                oDate.setHours(oDate.getHours() + 8)
+                this.oDetailsModel.setProperty(
+                  oContext.getPath() + '/raisedate',
+                  oDate
+                )
                 this.oDetailsModel.submitChanges({
                   success: function (res) {
                     MessageToast.show(

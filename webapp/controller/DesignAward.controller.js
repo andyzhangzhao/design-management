@@ -36,7 +36,6 @@ sap.ui.define(
 
         this.oView = this.getView()
         this.oView.setModel(new JSONModel({ fileVisible: false }), 'ui')
-
         this.businessObjectTypeName = 'ZRRE_DMAW'
 
         this.oRouter = this.getOwnerComponent().getRouter()
@@ -77,6 +76,7 @@ sap.ui.define(
             controller: this,
           }).then(
             function (oDialog) {
+              this.psDatePicker = this.getControlById('psDatePicker')
               this.oView.addDependent(oDialog)
               return oDialog
             }.bind(this)
@@ -193,8 +193,8 @@ sap.ui.define(
           this.getControlById('bjdwInput').setValueState('Error')
           errorFlag = true
         }
-        if (!this.getControlById('psDatePicker').getDateValue()) {
-          this.getControlById('psDatePicker').setValueState('Error')
+        if (!this.psDatePicker.getDateValue()) {
+          this.psDatePicker.setValueState('Error')
           errorFlag = true
         }
         if (!this.getControlById('yftdInput').getValue()) {
@@ -249,11 +249,12 @@ sap.ui.define(
                 oContext.getPath() + '/majorid',
                 mj
               )
+              var oDate = this.psDatePicker.getDateValue()
+              oDate.setHours(oDate.getHours() + 8)
               this.oDetailsModel.setProperty(
                 oContext.getPath() + '/psdate',
-                this.getControlById('psDatePicker').getDateValue()
+                oDate
               )
-              console.log(oContext.getObject())
               BusyIndicator.show(0)
               this.oDetailsModel.submitChanges({
                 success: function () {

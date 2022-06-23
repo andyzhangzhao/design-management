@@ -272,6 +272,12 @@ sap.ui.define(
                   oContext.getPath() + '/majorid',
                   mj
                 )
+                var oDate = this.getControlById('hqdatePicker').getDateValue()
+                oDate.setHours(oDate.getHours() + 8)
+                this.oDetailsModel.setProperty(
+                  oContext.getPath() + '/hqdate',
+                  oDate
+                )
                 BusyIndicator.show(0)
                 this.oDetailsModel.submitChanges({
                   success: function () {
