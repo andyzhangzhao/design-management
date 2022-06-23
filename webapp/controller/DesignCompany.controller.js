@@ -119,15 +119,21 @@ sap.ui.define(
         this._designCompanyPopup.then(
           function (oDialog) {
             if (sPath) {
+              this.mode = 'edit'
               oDialog.bindElement({
                 path: sPath,
                 model: 'details',
               })
             } else {
+              this.mode = 'create'
               oDialog.unbindElement('details')
-              this.getControlById('contractSelect').setSelectedKey()
-              this.getControlById('zcfsSelect').setSelectedKey()
-              this.getControlById('htmjInput').setValue()
+              var oContext = this.oDetailsModel.createEntry(
+                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_dw",
+                {
+                  properties: {},
+                }
+              )
+              oDialog.setBindingContext(oContext, 'details')
             }
             oDialog.open()
           }.bind(this)
@@ -153,9 +159,14 @@ sap.ui.define(
         )
       },
       onCancel: function () {
-        this._designCompanyPopup.then(function (oDialog) {
-          oDialog.close()
-        })
+        this._designCompanyPopup.then(
+          function (oDialog) {
+            oDialog.close()
+            this.oDetailsModel.resetChanges([
+              oDialog.getBindingContext('details').getPath(),
+            ])
+          }.bind(this)
+        )
       },
       onValidation: function () {
         var errorFlag = false
@@ -218,44 +229,35 @@ sap.ui.define(
           if (mjtxt) {
             mjtxt = mjtxt.substring(0, mjtxt.length - 1)
           }
-          var object = {
-            conno: this.getControlById('contractSelect').getSelectedKey(),
-            zcfs: this.getControlById('zcfsSelect').getSelectedKey(),
-            htmj: this.getControlById('htmjInput').getValue(),
-            majorid: mj,
-            ytid: yt,
-            majtxt: mjtxt,
-          }
-          var mode = this.oView.getModel('ui').getProperty('/mode')
-          if (mode === 'create') {
-            this.oDetailsModel.create(
-              "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_dw",
-              object,
-              {
-                success: function (response) {
-                  MessageToast.show('设计单位创建成功')
+
+          this._designCompanyPopup.then(
+            function (oDialog) {
+              var oContext = oDialog.getBindingContext('details')
+              this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+              this.oDetailsModel.setProperty(
+                oContext.getPath() + '/majorid',
+                mj
+              )
+              this.oDetailsModel.setProperty(
+                oContext.getPath() + '/majtxt',
+                mjtxt
+              )
+              this.oDetailsModel.submitChanges({
+                success: function (res) {
+                  MessageToast.show(
+                    this.mode === 'create'
+                      ? '设计单位创建成功'
+                      : '设计单位修改成功'
+                  )
                   BusyIndicator.hide()
-                  this._designCompanyPopup.then(function (oDialog) {
-                    oDialog.close()
-                  })
+                  oDialog.close()
                 }.bind(this),
-              }
-            )
-          } else {
-            this.oDetailsModel.update(
-              "/ZRRE_C_DMDW(guid'" + oEvent.getSource().data('dbKey') + "')",
-              object,
-              {
-                success: function (response) {
-                  MessageToast.show('设计单位修改成功')
-                  BusyIndicator.hide()
-                  this._designCompanyPopup.then(function (oDialog) {
-                    oDialog.close()
-                  })
-                }.bind(this),
-              }
-            )
-          }
+                error: function (error) {
+                  console.log(error)
+                },
+              })
+            }.bind(this)
+          )
         }
       },
     })

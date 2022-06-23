@@ -69,7 +69,6 @@ sap.ui.define(
       },
       onCreate: function () {
         this.onCreateDesignAward()
-        this.oView.getModel('ui').setProperty('/mode', 'create')
       },
       onCreateDesignAward: function (sPath) {
         if (!this._designAwardPopup) {
@@ -83,17 +82,29 @@ sap.ui.define(
             }.bind(this)
           )
         }
-        this._designAwardPopup.then(function (oDialog) {
-          if (sPath) {
-            oDialog.bindElement({
-              path: sPath,
-              model: 'details',
-            })
-          } else {
-            oDialog.unbindElement('details')
-          }
-          oDialog.open()
-        })
+        this._designAwardPopup.then(
+          function (oDialog) {
+            if (sPath) {
+              this.mode = 'edit'
+
+              oDialog.bindElement({
+                path: sPath,
+                model: 'details',
+              })
+            } else {
+              this.mode = 'create'
+              oDialog.unbindElement('details')
+              var oContext = this.oDetailsModel.createEntry(
+                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_aw",
+                {
+                  properties: {},
+                }
+              )
+              oDialog.setBindingContext(oContext, 'details')
+            }
+            oDialog.open()
+          }.bind(this)
+        )
       },
       tableUpdateFinished: function (oEvent) {
         this.oView
@@ -147,7 +158,6 @@ sap.ui.define(
         oDailog.open()
       },
       onEdit: function (oEvent) {
-        this.oView.getModel('ui').setProperty('/mode', 'edit')
         var customData = oEvent.getSource().data()
         var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
         ytmj.forEach(function (item) {
@@ -164,9 +174,14 @@ sap.ui.define(
         this.onCreateDesignAward("/ZRRE_C_DMAW(guid'" + customData.dbKey + "')")
       },
       onCancel: function () {
-        this._designAwardPopup.then(function (oDialog) {
-          oDialog.close()
-        })
+        this._designAwardPopup.then(
+          function (oDialog) {
+            oDialog.close()
+            this.oDetailsModel.resetChanges([
+              oDialog.getBindingContext('details').getPath(),
+            ])
+          }.bind(this)
+        )
       },
       onValidation: function () {
         var errorFlag = false
@@ -226,47 +241,33 @@ sap.ui.define(
               })
             }
           })
-          var object = {
-            jxmc: this.getControlById('jxmcInput').getValue(),
-            bjdw: this.getControlById('bjdwInput').getValue(),
-            psdate: this.getControlById('psDatePicker').getDateValue(),
-            yftd: this.getControlById('yftdInput').getValue(),
-            sjdw: this.getControlById('sjdwInput').getValue(),
-            majorid: this.getControlById('memoInput').getValue(),
-            ytid: yt,
-            majorid: mj,
-          }
-          var mode = this.oView.getModel('ui').getProperty('/mode')
-          BusyIndicator.show(0)
-          if (mode === 'create') {
-            this.oDetailsModel.create(
-              "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_aw",
-              object,
-              {
-                success: function (response) {
-                  MessageToast.show('设获奖创建成功')
+          this._designAwardPopup.then(
+            function (oDialog) {
+              var oContext = oDialog.getBindingContext('details')
+              this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+              this.oDetailsModel.setProperty(
+                oContext.getPath() + '/majorid',
+                mj
+              )
+              this.oDetailsModel.setProperty(
+                oContext.getPath() + '/psdate',
+                this.getControlById('psDatePicker').getDateValue()
+              )
+              console.log(oContext.getObject())
+              BusyIndicator.show(0)
+              this.oDetailsModel.submitChanges({
+                success: function () {
+                  MessageToast.show(
+                    this.mode === 'create'
+                      ? '设计获奖创建成功'
+                      : '设计获奖修改成功'
+                  )
                   BusyIndicator.hide()
-                  this._designAwardPopup.then(function (oDialog) {
-                    oDialog.close()
-                  })
+                  oDialog.close()
                 }.bind(this),
-              }
-            )
-          } else {
-            this.oDetailsModel.update(
-              "/ZRRE_C_DMAW(guid'" + oEvent.getSource().data('dbKey') + "')",
-              object,
-              {
-                success: function (response) {
-                  MessageToast.show('设计获奖修改成功')
-                  BusyIndicator.hide()
-                  this._designAwardPopup.then(function (oDialog) {
-                    oDialog.close()
-                  })
-                }.bind(this),
-              }
-            )
-          }
+              })
+            }.bind(this)
+          )
         }
       },
     })

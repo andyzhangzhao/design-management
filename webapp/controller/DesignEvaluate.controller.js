@@ -152,12 +152,21 @@ sap.ui.define(
           this._designEvaluatePopup.then(
             function (oDialog) {
               if (sPath) {
+                this.mode = 'edit'
                 oDialog.bindElement({
                   path: sPath,
                   model: 'details',
                 })
               } else {
+                this.mode = 'create'
                 oDialog.unbindElement('details')
+                var oContext = this.oDetailsModel.createEntry(
+                  "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_pg",
+                  {
+                    properties: {},
+                  }
+                )
+                oDialog.setBindingContext(oContext, 'details')
                 this.getControlById('raisedatePicker').setValue()
               }
               oDialog.open()
@@ -165,9 +174,14 @@ sap.ui.define(
           )
         },
         onCancel: function () {
-          this._designEvaluatePopup.then(function (oDialog) {
-            oDialog.close()
-          })
+          this._designEvaluatePopup.then(
+            function (oDialog) {
+              oDialog.close()
+              this.oDetailsModel.resetChanges([
+                oDialog.getBindingContext('details').getPath(),
+              ])
+            }.bind(this)
+          )
         },
         onValidation: function () {
           var errorFlag = false
@@ -191,40 +205,26 @@ sap.ui.define(
                 yt = item.YTID
               }
             })
-            var object = {
-              raisedate: this.getControlById('raisedatePicker').getDateValue(),
-              ytid: yt,
-            }
-            var mode = this.oView.getModel('ui').getProperty('/mode')
-            if (mode === 'create') {
-              this.oDetailsModel.create(
-                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_pg",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('设计后评估创建成功')
+            this._designEvaluatePopup.then(
+              function (oDialog) {
+                var oContext = oDialog.getBindingContext('details')
+                this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+                this.oDetailsModel.submitChanges({
+                  success: function (res) {
+                    MessageToast.show(
+                      this.mode === 'create'
+                        ? '设计后评估创建成功'
+                        : '设计后评估修改成功'
+                    )
                     BusyIndicator.hide()
-                    this._designEvaluatePopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
+                    oDialog.close()
                   }.bind(this),
-                }
-              )
-            } else {
-              this.oDetailsModel.update(
-                "/ZRRE_C_DMPG(guid'" + oEvent.getSource().data('dbKey') + "')",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('设计后评估修改成功')
-                    BusyIndicator.hide()
-                    this._designEvaluatePopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
-                  }.bind(this),
-                }
-              )
-            }
+                  error: function (error) {
+                    console.log(error)
+                  },
+                })
+              }.bind(this)
+            )
           }
         },
       }

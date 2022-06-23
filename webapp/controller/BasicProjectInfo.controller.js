@@ -20,6 +20,7 @@ sap.ui.define(
           this.projectDescInput = this.byId('projectDescInput')
           this.projectAddressInput = this.byId('projectAddressInput')
           this.editAction = this.byId('editAction')
+          this.projectBasicInfoPage = this.byId('projectBasicInfoPage')
 
           this.businessObjectTypeName = 'ZRRE_DMBC'
 
@@ -66,7 +67,7 @@ sap.ui.define(
                 this.getAllFiles()
                 this.downloadPicture(this.db_key)
                 this.sPath = "/ZRRE_C_DMBC(guid'" + this.db_key + "')"
-                this.byId('projectBasicInfoPage').bindElement({
+                this.projectBasicInfoPage.bindElement({
                   path: this.sPath,
                   model: 'details',
                   parameters: {
@@ -235,6 +236,9 @@ sap.ui.define(
         },
         onCancel: function () {
           this.oView.getModel('ui').setProperty('/editMode', false)
+          this.oDetailsModel.resetChanges([
+            this.projectBasicInfoPage.getBindingContext('details').getPath(),
+          ])
         },
         tableUpdateFinished: function (oEvent) {
           this.oView
@@ -304,43 +308,6 @@ sap.ui.define(
           MessageBox.error('图片类型不符，类型必须为jpg或者png')
         },
         onSave: function () {
-          this.oDetailsModel.update(
-            this.sPath,
-            {
-              address: this.projectAddressInput.getValue(),
-              prjdesc: this.projectDescInput.getValue(),
-            },
-            {
-              error: function (err) {
-                console.log(err)
-              },
-              success: function (err) {
-                console.log(err)
-              },
-            }
-          )
-          this.basicProjectInfoTable.getItems().forEach(
-            function (tableItem) {
-              var sPath = tableItem.getBindingContextPath()
-              var items = tableItem.getCells()
-              this.oDetailsModel.update(
-                sPath,
-                {
-                  mainyt: items[2].getItems()[1].getValue(),
-                  bld_num: parseInt(items[3].getItems()[1].getValue()),
-                  cnsetl_area: items[4].getItems()[1].getValue(),
-                },
-                {
-                  error: function (err) {
-                    console.log(err)
-                  },
-                  success: function (err) {
-                    console.log(err)
-                  },
-                }
-              )
-            }.bind(this)
-          )
           this.oDetailsModel.submitChanges({
             success: function (res) {
               console.log(res)

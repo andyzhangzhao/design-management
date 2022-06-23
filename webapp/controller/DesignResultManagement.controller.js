@@ -41,7 +41,9 @@ sap.ui.define(
 
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
         },
-
+        formatDate: function (date) {
+          console.log(date)
+        },
         _onObjectMatched: function (oEvent) {
           var oArguments = oEvent.getParameter('arguments')
           this.designProjectID = oArguments.designProjectID

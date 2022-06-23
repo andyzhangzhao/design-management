@@ -23,7 +23,7 @@
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="业态"  visibleInFilterBar="true" >
                         <fb:control>
-                            <Select id='ytSelect' resetOnMissingKey='true' change='.onFilter' forceSelection='false' items="{
+                            <Select id='ytSelect' change='.onFilter' forceSelection='false' items="{
 									path: 'ui>/ytmj'
 								}">
 									<core:ListItem key="{ui>YTID}" text="{ui>YTDESC}" />

@@ -122,10 +122,8 @@ sap.ui.define(
         },
         onCreate: function () {
           this.onCreateBlueprintManagement()
-          this.oView.getModel('ui').setProperty('/mode', 'create')
         },
         onEdit: function (oEvent) {
-          this.oView.getModel('ui').setProperty('/mode', 'edit')
           var customData = oEvent.getSource().data()
           var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
           ytmj.forEach(function (item) {
@@ -158,14 +156,21 @@ sap.ui.define(
           this._blueprintManagementPopup.then(
             function (oDialog) {
               if (sPath) {
+                this.mode = 'edit'
                 oDialog.bindElement({
                   path: sPath,
                   model: 'details',
                 })
               } else {
+                this.mode = 'create'
                 oDialog.unbindElement('details')
-                this.getControlById('blueprintCgidSelect').setSelectedKey()
-                this.getControlById('blueprintWcdatePicker').setValue()
+                var oContext = this.oDetailsModel.createEntry(
+                  "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_tz",
+                  {
+                    properties: {},
+                  }
+                )
+                oDialog.setBindingContext(oContext, 'details')
               }
               var cgidSelectBinding = this.getControlById(
                 'blueprintCgidSelect'
@@ -183,9 +188,14 @@ sap.ui.define(
           )
         },
         onCancel: function () {
-          this._blueprintManagementPopup.then(function (oDialog) {
-            oDialog.close()
-          })
+          this._blueprintManagementPopup.then(
+            function (oDialog) {
+              oDialog.close()
+              this.oDetailsModel.resetChanges([
+                oDialog.getBindingContext('details').getPath(),
+              ])
+            }.bind(this)
+          )
         },
         onValidation: function () {
           var errorFlag = false
@@ -235,44 +245,28 @@ sap.ui.define(
                 })
               }
             })
-            var object = {
-              cgid: this.getControlById('blueprintCgidSelect').getSelectedKey(),
-              wcdate: this.getControlById(
-                'blueprintWcdatePicker'
-              ).getDateValue(),
-              ytid: yt,
-              majorid: mj,
-            }
-            var mode = this.oView.getModel('ui').getProperty('/mode')
-            if (mode === 'create') {
-              this.oDetailsModel.create(
-                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_tz",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('图纸管理创建成功')
+            this._blueprintManagementPopup.then(
+              function (oDialog) {
+                var oContext = oDialog.getBindingContext('details')
+                this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+                this.oDetailsModel.setProperty(
+                  oContext.getPath() + '/majorid',
+                  mj
+                )
+                BusyIndicator.show(0)
+                this.oDetailsModel.submitChanges({
+                  success: function () {
+                    MessageToast.show(
+                      this.mode === 'create'
+                        ? '图纸管理创建成功'
+                        : '图纸管理修改成功'
+                    )
                     BusyIndicator.hide()
-                    this._blueprintManagementPopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
+                    oDialog.close()
                   }.bind(this),
-                }
-              )
-            } else {
-              this.oDetailsModel.update(
-                "/ZRRE_c_DMTZ(guid'" + oEvent.getSource().data('dbKey') + "')",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('图纸管理修改成功')
-                    BusyIndicator.hide()
-                    this._blueprintManagementPopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
-                  }.bind(this),
-                }
-              )
-            }
+                })
+              }.bind(this)
+            )
           }
         },
       }

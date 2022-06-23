@@ -85,6 +85,13 @@ sap.ui.define(
             })
           } else {
             this.ObjectPageLayout.unbindElement('details')
+            var oContext = this.oDetailsModel.createEntry(
+              "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_cg",
+              {
+                properties: {},
+              }
+            )
+            this.ObjectPageLayout.setBindingContext(oContext, 'details')
             this.getYTMJ()
           }
 
@@ -178,6 +185,9 @@ sap.ui.define(
           } else {
             this.oView.getModel('ui').setProperty('/mode', 'display')
           }
+          this.oDetailsModel.resetChanges([
+            this.ObjectPageLayout.getBindingContext('details').getPath(),
+          ])
         },
         onNavBck: function () {
           this.oRouter.navTo('projectDetails', {
@@ -244,53 +254,38 @@ sap.ui.define(
             if (mjtxt) {
               mjtxt = mjtxt.substring(0, mjtxt.length - 1)
             }
-            if (this.oView.getModel('ui').getProperty('/mode') === 'create') {
-              this.oDetailsModel.create(
-                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_cg",
-                {
-                  cgnm: this.cgnmInput.getValue(),
-                  cgtyp: this.typeSelect.getSelectedKey(),
-                  cg_ver: this.versionSelect.getSelectedKey(),
-                  contid: this.contractInput.getValue(),
-                  wcdate: this.wcDatePicker.getDateValue(),
-                  majorid: mj,
-                  ytid: yt,
-                  majtxt: mjtxt,
-                },
-                {
-                  success: function (response) {
-                    this.oView.getModel('ui').setProperty('/mode', 'display')
-                    MessageToast.show('设计成果创建成功')
-                    this.oRouter.navTo('designResultDetails', {
-                      devProjectID: this.devProjectID,
-                      designProjectID: this.designProjectID,
-                      designResultID: response.db_key,
-                      mode: 'display',
-                    })
-                  }.bind(this),
+            var oContext = this.ObjectPageLayout.getBindingContext('details')
+            this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+            this.oDetailsModel.setProperty(oContext.getPath() + '/majorid', mj)
+            this.oDetailsModel.setProperty(
+              oContext.getPath() + '/majtxt',
+              mjtxt
+            )
+            this.oDetailsModel.setProperty(
+              oContext.getPath() + '/wcdate',
+              this.wcDatePicker.getDateValue()
+            )
+            console.log(oContext.getObject().wcdate)
+            this.oDetailsModel.submitChanges({
+              success: function (response) {
+                var mode = this.oView.getModel('ui').getProperty('/mode')
+                if (mode === 'create') {
+                  this.oView.getModel('ui').setProperty('/mode', 'display')
+                  MessageToast.show('设计成果创建成功')
+                  this.oRouter.navTo('designResultDetails', {
+                    devProjectID: this.devProjectID,
+                    designProjectID: this.designProjectID,
+                    designResultID:
+                      response.__batchResponses[0].__changeResponses[0].data
+                        .db_key,
+                    mode: 'display',
+                  })
+                } else {
+                  this.oView.getModel('ui').setProperty('/mode', 'display')
+                  MessageToast.show('设计成果更新成功')
                 }
-              )
-            } else {
-              this.oDetailsModel.update(
-                "/ZRRE_C_DMCG(guid'" + this.itemDbKey + "')",
-                {
-                  cgnm: this.cgnmInput.getValue(),
-                  cgtyp: this.typeSelect.getSelectedKey(),
-                  cg_ver: this.versionSelect.getSelectedKey(),
-                  contid: this.contractInput.getValue(),
-                  wcdate: this.wcDatePicker.getDateValue(),
-                  majorid: mj,
-                  ytid: yt,
-                  majtxt: mjtxt,
-                },
-                {
-                  success: function (response) {
-                    this.oView.getModel('ui').setProperty('/mode', 'display')
-                    MessageToast.show('设计成果更新成功')
-                  }.bind(this),
-                }
-              )
-            }
+              }.bind(this),
+            })
           }
         },
       }

@@ -63,7 +63,7 @@
                         <OverflowToolbar>
                             <Title
                                 id="tableHeader"
-                                text="设计后评估 ({ui>/designEvaluateCount})"
+                                text="设计后评估 ({ui>/designEvaluateTableCount})"
                                 level="H3"/>
                             <ToolbarSpacer />
                             <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>

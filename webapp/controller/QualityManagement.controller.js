@@ -134,16 +134,21 @@ sap.ui.define(
           this._qualityManagementPopup.then(
             function (oDialog) {
               if (sPath) {
+                this.mode = 'edit'
                 oDialog.bindElement({
                   path: sPath,
                   model: 'details',
                 })
               } else {
+                this.mode = 'create'
                 oDialog.unbindElement('details')
-                this.getControlById(
-                  'qualityManagementCgidSelect'
-                ).setSelectedKey()
-                this.getControlById('qualityManagementWcdatePicker').setValue()
+                var oContext = this.oDetailsModel.createEntry(
+                  "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_pk",
+                  {
+                    properties: {},
+                  }
+                )
+                oDialog.setBindingContext(oContext, 'details')
               }
               var cgidSelectBinding = this.getControlById(
                 'qualityManagementCgidSelect'
@@ -180,9 +185,14 @@ sap.ui.define(
           )
         },
         onCancel: function () {
-          this._qualityManagementPopup.then(function (oDialog) {
-            oDialog.close()
-          })
+          this._qualityManagementPopup.then(
+            function (oDialog) {
+              oDialog.close()
+              this.oDetailsModel.resetChanges([
+                oDialog.getBindingContext('details').getPath(),
+              ])
+            }.bind(this)
+          )
         },
         onValidation: function () {
           var errorFlag = false
@@ -245,47 +255,27 @@ sap.ui.define(
                 })
               }
             })
-            var object = {
-              pktype: this.getControlById('pktypeSelect').getSelectedKey(),
-              cgid: this.getControlById(
-                'qualityManagementCgidSelect'
-              ).getSelectedKey(),
-              wcdate: this.getControlById(
-                'qualityManagementWcdatePicker'
-              ).getDateValue(),
-              ytid: yt,
-              majorid: mj,
-            }
-            var mode = this.oView.getModel('ui').getProperty('/mode')
-            if (mode === 'create') {
-              this.oDetailsModel.create(
-                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_pk",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('品控创建成功')
+
+            this._qualityManagementPopup.then(
+              function (oDialog) {
+                var oContext = oDialog.getBindingContext('details')
+                this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+                this.oDetailsModel.setProperty(
+                  oContext.getPath() + '/majorid',
+                  mj
+                )
+                BusyIndicator.show(0)
+                this.oDetailsModel.submitChanges({
+                  success: function () {
+                    MessageToast.show(
+                      this.mode === 'create' ? '品控创建成功' : '品控修改成功'
+                    )
                     BusyIndicator.hide()
-                    this._qualityManagementPopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
+                    oDialog.close()
                   }.bind(this),
-                }
-              )
-            } else {
-              this.oDetailsModel.update(
-                "/ZRRE_C_DMPK(guid'" + oEvent.getSource().data('dbKey') + "')",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('品控修改成功')
-                    BusyIndicator.hide()
-                    this._qualityManagementPopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
-                  }.bind(this),
-                }
-              )
-            }
+                })
+              }.bind(this)
+            )
           }
         },
 

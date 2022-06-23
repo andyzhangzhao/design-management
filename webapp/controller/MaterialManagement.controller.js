@@ -144,10 +144,8 @@ sap.ui.define(
         },
         onCreate: function () {
           this.onCreateMaterialManagement()
-          this.oView.getModel('ui').setProperty('/mode', 'create')
         },
         onEdit: function (oEvent) {
-          this.oView.getModel('ui').setProperty('/mode', 'edit')
           var customData = oEvent.getSource().data()
           var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
           ytmj.forEach(function (item) {
@@ -180,24 +178,35 @@ sap.ui.define(
           this._materialManagementPopup.then(
             function (oDialog) {
               if (sPath) {
+                this.mode = 'edit'
                 oDialog.bindElement({
                   path: sPath,
                   model: 'details',
                 })
               } else {
+                this.mode = 'create'
                 oDialog.unbindElement('details')
-                this.getControlById('fytypeSelect').setSelectedKey()
-                this.getControlById('fycateSelect').setSelectedKey()
-                this.getControlById('hqdatePicker').setValue()
+                var oContext = this.oDetailsModel.createEntry(
+                  "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_fy",
+                  {
+                    properties: {},
+                  }
+                )
+                oDialog.setBindingContext(oContext, 'details')
               }
               oDialog.open()
             }.bind(this)
           )
         },
         onCancel: function () {
-          this._materialManagementPopup.then(function (oDialog) {
-            oDialog.close()
-          })
+          this._materialManagementPopup.then(
+            function (oDialog) {
+              oDialog.close()
+              this.oDetailsModel.resetChanges([
+                oDialog.getBindingContext('details').getPath(),
+              ])
+            }.bind(this)
+          )
         },
         onValidation: function () {
           var errorFlag = false
@@ -255,44 +264,28 @@ sap.ui.define(
                 })
               }
             })
-            var object = {
-              fydesc: this.getControlById('fyInput').getValue(),
-              fytype: this.getControlById('fytypeSelect').getSelectedKey(),
-              fycate: this.getControlById('fycateSelect').getSelectedKey(),
-              hqdate: this.getControlById('hqdatePicker').getDateValue(),
-              ytid: yt,
-              majorid: mj,
-            }
-            var mode = this.oView.getModel('ui').getProperty('/mode')
-            if (mode === 'create') {
-              this.oDetailsModel.create(
-                "/ZRRE_C_DMHD(guid'" + this.designProjectID + "')/to_fy",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('封样管理创建成功')
+            this._materialManagementPopup.then(
+              function (oDialog) {
+                var oContext = oDialog.getBindingContext('details')
+                this.oDetailsModel.setProperty(oContext.getPath() + '/ytid', yt)
+                this.oDetailsModel.setProperty(
+                  oContext.getPath() + '/majorid',
+                  mj
+                )
+                BusyIndicator.show(0)
+                this.oDetailsModel.submitChanges({
+                  success: function () {
+                    MessageToast.show(
+                      this.mode === 'create'
+                        ? '封样管理创建成功'
+                        : '封样管理修改成功'
+                    )
                     BusyIndicator.hide()
-                    this._materialManagementPopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
+                    oDialog.close()
                   }.bind(this),
-                }
-              )
-            } else {
-              this.oDetailsModel.update(
-                "/ZRRE_C_DMFY(guid'" + oEvent.getSource().data('dbKey') + "')",
-                object,
-                {
-                  success: function (response) {
-                    MessageToast.show('封样管理修改成功')
-                    BusyIndicator.hide()
-                    this._materialManagementPopup.then(function (oDialog) {
-                      oDialog.close()
-                    })
-                  }.bind(this),
-                }
-              )
-            }
+                })
+              }.bind(this)
+            )
           }
         },
       }
