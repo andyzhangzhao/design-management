@@ -1,0 +1,178 @@
+<mvc:View 
+    controllerName="projectmanagement.controller.QuotaManagementDetails"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns:layout="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:upload="sap.m.upload"
+	xmlns="sap.m"
+	height="100%">
+    <Shell>
+        <uxap:ObjectPageLayout id="ObjectPageLayout"
+            upperCaseAnchorBar="false"
+            showFooter="{= ${ui>/mode}!=='display'}">
+            <uxap:headerTitle>
+                <uxap:ObjectPageHeader
+                    objectTitle="限额指标">
+                    <uxap:breadcrumbs>
+                        <Breadcrumbs id="breadcrumbsId" currentLocationText="详细信息" >
+                            <Link text="限额设计管理" press=".onNavBck"/>
+                        </Breadcrumbs>
+                    </uxap:breadcrumbs>
+                    <uxap:actions>
+                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" enabled="{= ${details>status}==='00'}" press=".onPublish" hideText="false" text="发布" />
+                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" enabled="{= ${details>status}==='00'}" press=".onEdit" hideText="false" text="编辑" type="Emphasized" />
+                    </uxap:actions>
+                </uxap:ObjectPageHeader>
+            </uxap:headerTitle>
+
+            <uxap:headerContent>
+                <HBox>
+                    <ObjectStatus title="项目" text="{ui>/devProject/prjnm}"/>
+                    <ObjectStatus title="分期" text="{ui>/devProject/itmnm}" visible="{= ${itmty}==='PHAS' }"/>
+                </HBox>
+            </uxap:headerContent>
+
+            <uxap:sections>
+                <uxap:ObjectPageSection titleUppercase="false" title="基本信息">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <VBox>
+                                <f:SimpleForm
+                                    visible="{= ${ui>/mode}==='display'}"
+                                    editable="false"
+                                    layout="ColumnLayout"
+                                    columnsM="2"
+                                    columnsL="3"
+                                    columnsXL="4"
+                                    >
+                                    <f:content>
+                                        <Label text="抗震等级" />
+                                        <Text text="{details>to_kzdj/DDTEXT}" />
+                                        <Label text="阶段" />
+                                        <Text text="{details>to_xever/TXT_DESC}" />
+                                        <Label text="状态" />
+                                        <Text text="{details>to_xest/TXT_DESC}" />
+                                    </f:content>
+                                </f:SimpleForm>
+                                <f:SimpleForm
+                                    visible="{= ${ui>/mode}!=='display'}"
+                                    editable="true"
+                                    layout="ColumnLayout"
+                                    columnsM="2"
+                                    columnsL="3"
+                                    columnsXL="4"
+                                    >
+                                    <f:content>
+                                        <Label text="版本" />
+                                        <Select id='kzdjSelect' selectedKey="{details>kzdj}" forceSelection='false' change=".onChangeKZDJ" items="{
+                                            path: 'details>/DD07T',
+                                            filters: [{
+                                                path: 'DOMNAME',
+                                                operator: 'EQ',
+                                                value1: 'ZRRE_KZDJ'
+                                            }]
+                                        }">
+                                            <core:ListItem key="{details>AS4LOCAL}" text="{details>DDTEXT}" />
+                                        </Select>
+                                        <Label text="阶段" />
+                                        <Text text="{details>to_xever/TXT_DESC}" />
+                                        <Label text="状态" />
+                                        <Text text="{details>to_xest/TXT_DESC}" />
+                                    </f:content>
+                                </f:SimpleForm>
+                            </VBox>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+
+                <uxap:ObjectPageSection titleUppercase="false" showTitle='false' title="面积指标">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <Table
+                                id="quotaManagementDetailsTable"
+                                width="auto"
+                                items="{
+                                    path: 'details>/zrre_c_dmxei',
+                                    parameters: {
+                                        count: true,
+                                        expand: 'to_subtx,to_xecf'
+                                    }
+                                }"
+                                growingThreshold='40'
+                                growing="true"
+                                growingScrollToLoad="true"
+                                sticky="ColumnHeaders,HeaderToolbar"
+                                class="sapUiMediumMarginBottom"
+                                updateFinished=".tableUpdateFinished">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title
+                                            id="tableHeader"
+                                            text="限额指标 ({ui>/quotaManagementDetailsCount})"
+                                            level="H3"/>
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column id='column1' width='100px' mergeDuplicates='true' mergeFunctionName="data#mergeKey">
+                                        <Text text="限额指标" />
+                                    </Column>
+                                    <Column id='column2' width='100px' >
+                                        <Text text="二级业态" />
+                                    </Column>
+                                    <Column id='column3' width='100px'>
+                                        <Text text="成本限额"/>
+                                    </Column>
+                                    <Column id='column4' width='100px'>
+                                        <Text text="合同限额"/>
+                                    </Column>	
+                                    <Column id='column5' width='100px'>
+                                        <Text text="方案值"/>
+                                    </Column>
+                                    <Column id='column6' width='100px'>
+                                        <Text text="重计量值"/>
+                                    </Column>														
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{details>to_xecf/ZBDESC}">
+                                                <customData>
+                                                    <core:CustomData key="mergeKey" value="{details>zbid}" />
+                                                </customData>
+                                            </Text>
+                                            <Text text="{details>to_subtx/SUBTXT}"/>
+                                            <Text text="{details>costxe}"/>
+                                            <HBox>
+                                                <Text visible="{= ${ui>/editable/contEdit}===false || ${ui>/mode}==='display'}" text="{details>contxe}"/>
+                                                <Input visible="{= ${ui>/mode}!=='display' &amp;&amp; ${ui>/editable/contEdit}}" maxLength="10" type="Number" value="{details>contxe}"/>
+                                            </HBox>
+                                            <HBox>
+                                                <Text visible="{= ${ui>/editable/faEdit}===false || ${ui>/mode}==='display'}" text="{details>faxe}"/>
+                                                <Input visible="{= ${ui>/mode}!=='display' &amp;&amp; ${ui>/editable/faEdit}}" maxLength="10" type="Number" value="{details>faxe}"/>
+                                            </HBox>
+                                            <HBox>
+                                                <Text visible="{= ${ui>/editable/cjlEdit}===false || ${ui>/mode}==='display'}" text="{details>cjlxe}"/>
+                                                <Input visible="{= ${ui>/mode}!=='display' &amp;&amp; ${ui>/editable/cjlEdit}}" maxLength="10" type="Number" value="{details>cjlxe}"/>
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                           
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+            <uxap:footer>
+                <OverflowToolbar>
+                    <ToolbarSpacer />
+                    <Button type="Emphasized" text="保存" press='.onSave'/>
+                    <Button text="取消" press='.onCancel'/>
+                </OverflowToolbar>
+            </uxap:footer>
+        </uxap:ObjectPageLayout>
+    </Shell>
+</mvc:View>
