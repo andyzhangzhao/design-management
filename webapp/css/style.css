@@ -17,3 +17,10 @@
 .basicProjectPage .projectImage{
     margin-left: 1rem;
 }
+.projectPopup .projectPopupSeparator {
+    width: 500px !important;
+    height: 0.5rem;
+}
+.projectPopup .projectPopupSeparatorHBox {
+    left: -130px;
+}

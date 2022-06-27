@@ -75,6 +75,22 @@ sap.ui.define(
             section: 'B',
           })
         },
+        pasteData: function (oEvent) {
+          if (this.oView.getModel('ui').getProperty('/mode') === 'edit') {
+            var pasteData = oEvent.getParameter('data')
+            var tableItems = oEvent.getSource().getItems()
+            pasteData.forEach((rowItem, rowIndex) => {
+              rowItem.forEach((cellItem, cellIndex) => {
+                this.oDetailsModel.setProperty(
+                  tableItems[rowIndex].getBindingContextPath() +
+                    '/' +
+                    (cellIndex === 0 ? '/inxvl' : '/remark'),
+                  +cellItem
+                )
+              })
+            })
+          }
+        },
         onEdit: function () {
           this.oView.getModel('ui').setProperty('/mode', 'edit')
         },

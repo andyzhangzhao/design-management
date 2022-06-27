@@ -104,6 +104,7 @@
                                 growingScrollToLoad="true"
                                 sticky="ColumnHeaders,HeaderToolbar"
                                 class="sapUiMediumMarginBottom"
+                                paste=".pasteData"
                                 updateFinished=".tableUpdateFinished">
                                 <headerToolbar>
                                     <OverflowToolbar>

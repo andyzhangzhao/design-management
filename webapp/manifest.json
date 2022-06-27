@@ -172,6 +172,11 @@
           "name": "designIndexDetails",
           "pattern": "designIndex/{devProjectID}/{designProjectID}/{mode}/:designIndexID:",
           "target": ["designIndexDetails"]
+        },
+        {
+          "name": "quotaManagementDetails",
+          "pattern": "quotaManagement/{devProjectID}/{designProjectID}/{mode}/:quotaManagementID:",
+          "target": ["quotaManagementDetails"]
         }
       ],
       "targets": {
@@ -198,6 +203,12 @@
           "transition": "slide",
           "clearControlAggregation": false,
           "viewName": "DesignIndexDetails"
+        },
+        "quotaManagementDetails": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewName": "QuotaManagementDetails"
         }
       }
     },

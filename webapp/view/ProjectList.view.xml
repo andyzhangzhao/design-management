@@ -54,8 +54,7 @@
 					growing="true"
 					growingScrollToLoad="true"
 					sticky="ColumnHeaders,HeaderToolbar"
-					class="sapUiMediumMarginBottom"
-					updateFinished=".tableUpdateFinished">
+					class="sapUiMediumMarginBottom">
 					<headerToolbar>
 						<OverflowToolbar>
 							<Title
@@ -63,7 +62,7 @@
 								text="项目"
 								level="H3"/>
 							<ToolbarSpacer />
-							<Button text="新建项目" enabled='{ui>/tableSelected}' press=".onCreateRootProject"/>
+							<Button id="createProject" text="新建项目" enabled='{ui>/tableSelected}' press=".onCreateRootProject"/>
 						</OverflowToolbar>
 					</headerToolbar>
 					<columns>

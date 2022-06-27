@@ -4,6 +4,7 @@ sap.ui.define(
     'sap/ui/model/json/JSONModel',
     'sap/ui/core/Fragment',
     'sap/ui/model/Filter',
+    'sap/ui/model/Sorter',
     'sap/ui/core/BusyIndicator',
     'sap/m/MessageToast',
     'sap/m/MessageBox',
@@ -16,6 +17,7 @@ sap.ui.define(
     JSONModel,
     Fragment,
     Filter,
+    Sorter,
     BusyIndicator,
     MessageToast,
     MessageBox
@@ -27,12 +29,26 @@ sap.ui.define(
         this.oView = this.getView()
         this.oRouter = this.getOwnerComponent().getRouter()
 
+        this.projectTable = this.byId('projectTable')
         this.oProjectListModel = this.getOwnerComponent().getModel()
         this.oDetailsModel = this.getOwnerComponent().getModel('details')
 
         this.getYtMajorMapping()
 
         this.oView.setModel(new JSONModel({}), 'ui')
+      },
+      selectYT: function (oEvent) {
+        var projectInfo = this.oView
+          .getModel('ui')
+          .getProperty('/projectPopup/projectInfo')
+        projectInfo.forEach((item) => {
+          item.major.forEach((majorItem) => {
+            majorItem.enabled = !!item.yt.selected
+          })
+        })
+        this.oView
+          .getModel('ui')
+          .setProperty('/projectPopup/projectInfo', projectInfo)
       },
       getYtMajorMapping: function () {
         this.oDetailsModel.read('/ZRRE_i_DWCC', {
@@ -216,11 +232,13 @@ sap.ui.define(
         if (!oProjectData.dspid) {
           majorCheckedFlag = false
           oProjectData.projectInfo.forEach(function (ytItem) {
-            ytItem.major.forEach(function (majorItem) {
-              if (majorItem.selected) {
-                majorCheckedFlag = true
-              }
-            })
+            if (ytItem.yt.selected) {
+              ytItem.major.forEach(function (majorItem) {
+                if (majorItem.selected) {
+                  majorCheckedFlag = true
+                }
+              })
+            }
           })
           if (!majorCheckedFlag) {
             MessageBox.error('创建项目至少需要一个专业')
@@ -259,14 +277,16 @@ sap.ui.define(
           submitData.DSPID = oProjectData.dspid
           submitData.DSPID_P = oProjectData.parentDspid
           oProjectData.projectInfo.forEach(function (ytItem) {
-            var majorInfo = []
-            ytItem.major.forEach(function (majorItem) {
-              if (majorItem.selected) {
-                majorInfo.push(majorItem.majorId)
+            if (ytItem.yt.selected) {
+              var majorInfo = []
+              ytItem.major.forEach(function (majorItem) {
+                if (majorItem.selected) {
+                  majorInfo.push(majorItem.majorId)
+                }
+              })
+              if (majorInfo.length > 0) {
+                submitData.YTMJ.push({ YTID: ytItem.yt.ytId, MJID: majorInfo })
               }
-            })
-            if (majorInfo.length > 0) {
-              submitData.YTMJ.push({ YTID: ytItem.yt.ytId, MJID: majorInfo })
             }
           })
           BusyIndicator.show(0)
