@@ -99,12 +99,14 @@
 							<f:GridContainerItemLayoutData rows="10" columns="12" />
 						</layoutData>
 					</Image> -->
-					<Carousel id='projectImageCarousel' loop="true" pages="{ui>/files}" width='480px' height='450px' showPageIndicator="false" class="projectImage">
-						<Image src="{ui>src}" width='480px' height='450px' />
+					<HBox>
+						<Carousel id='projectImageCarousel' loop="true" pages="{ui>/files}" visible="{= ${ui>/files}.length > 0}" width='480px' height='393px' showPageIndicator="false" class="projectImage">
+							<Image src="{ui>src}" width='480px' height='450px' />
+						</Carousel>
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="10" columns="12" />
 						</layoutData>
-					</Carousel>
+					</HBox>
 					<Label text="项目简介:" class="">
 						<layoutData>
 							<f:GridContainerItemLayoutData rows="2" columns="2" />

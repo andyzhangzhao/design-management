@@ -74,7 +74,7 @@
                                                 value1: 'ZRRE_KZDJ'
                                             }]
                                         }">
-                                            <core:ListItem key="{details>AS4LOCAL}" text="{details>DDTEXT}" />
+                                            <core:ListItem key="{details>DOMVALUE_L}" text="{details>DDTEXT}" />
                                         </Select>
                                         <Label text="阶段" />
                                         <Text text="{details>to_xever/TXT_DESC}" />

@@ -15,10 +15,8 @@ sap.ui.define(
       'projectmanagement.controller.DesignResultJudge',
       {
         onInit: function () {
-          this.designResultJudgeTable = this.byId('designResultJudgeTable')
-
           this.oView = this.getView()
-          this.oView.setModel(new JSONModel({}), 'ui')
+          this.oView.setModel(new JSONModel({ filter: { yt: true } }), 'ui')
 
           this.businessObjectTypeName = 'ZRRE_DMFA'
 
@@ -39,27 +37,32 @@ sap.ui.define(
             this.section === 'E1' ||
             this.section === 'E2'
           ) {
-            var listBinding = this.designResultJudgeTable.getBinding('items')
-            var aFilter = [
-              new Filter({
-                path: 'parent_key',
-                operator: 'EQ',
-                value1: this.designProjectID,
-              }),
-            ]
-
-            if (this.section === 'E1' || this.section === 'E2') {
-              aFilter.push(
-                new Filter({
-                  path: 'pstype',
-                  operator: 'EQ',
-                  value1: this.section,
-                })
-              )
-            }
-
-            listBinding.filter(aFilter)
+            this.getYTMJ()
+            var listBinding = this.getListBinding()
+            listBinding.filter(this.getDefaultFilter())
           }
+        },
+        getListBinding: function () {
+          return this.byId('designResultJudgeTable').getBinding('items')
+        },
+        getDefaultFilter: function () {
+          var aFilter = [
+            new Filter({
+              path: 'parent_key',
+              operator: 'EQ',
+              value1: this.designProjectID,
+            }),
+          ]
+          if (this.section === 'E1' || this.section === 'E2') {
+            aFilter.push(
+              new Filter({
+                path: 'pstype',
+                operator: 'EQ',
+                value1: this.section,
+              })
+            )
+          }
+          return aFilter
         },
         tableUpdateFinished: function (oEvent) {
           this.oView

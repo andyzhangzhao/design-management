@@ -1,12 +1,13 @@
 sap.ui.define(
   [
     'sap/ui/core/mvc/Controller',
+    'sap/ui/model/Filter',
     'sap/m/MessageToast',
     'sap/m/Dialog',
     'sap/m/Button',
     'sap/m/Text',
   ],
-  function (Controller, MessageToast, Dialog, Button, Text) {
+  function (Controller, Filter, MessageToast, Dialog, Button, Text) {
     'use strict'
 
     return Controller.extend('projectmanagement.controller.BaseController', {

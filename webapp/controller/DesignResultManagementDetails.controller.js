@@ -262,11 +262,13 @@ sap.ui.define(
               mjtxt
             )
             var oDate = this.wcDatePicker.getDateValue()
-            oDate.setHours(oDate.getHours() + 8)
-            this.oDetailsModel.setProperty(
-              oContext.getPath() + '/wcdate',
-              oDate
-            )
+            if (oDate) {
+              oDate.setHours(oDate.getHours() + 8)
+              this.oDetailsModel.setProperty(
+                oContext.getPath() + '/wcdate',
+                oDate
+              )
+            }
             this.oDetailsModel.submitChanges({
               success: function (response) {
                 var mode = this.oView.getModel('ui').getProperty('/mode')

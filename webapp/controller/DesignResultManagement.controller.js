@@ -26,13 +26,15 @@ sap.ui.define(
       'projectmanagement.controller.DesignResultManagement',
       {
         onInit: function () {
-          this.designResultManagementTable = this.byId(
-            'designResultManagementTable'
-          )
-          this.ytSelect = this.byId('ytSelect')
-
           this.oView = this.getView()
-          this.oView.setModel(new JSONModel({}), 'ui')
+          this.oView.setModel(
+            new JSONModel({
+              filter: {
+                yt: true,
+              },
+            }),
+            'ui'
+          )
 
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
@@ -40,9 +42,6 @@ sap.ui.define(
             .attachPatternMatched(this._onObjectMatched, this)
 
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
-        },
-        formatDate: function (date) {
-          console.log(date)
         },
         _onObjectMatched: function (oEvent) {
           var oArguments = oEvent.getParameter('arguments')
@@ -57,36 +56,14 @@ sap.ui.define(
             this.section === 'C4'
           ) {
             this.getYTMJ()
-            var listBinding =
-              this.designResultManagementTable.getBinding('items')
-            var aFilter = [
-              new Filter({
-                path: 'to_root/db_key',
-                operator: 'EQ',
-                value1: this.designProjectID,
-              }),
-            ]
-            if (
-              this.section === 'C1' ||
-              this.section === 'C2' ||
-              this.section === 'C3' ||
-              this.section === 'C4'
-            ) {
-              aFilter.push(
-                new Filter({
-                  path: 'cgtyp',
-                  operator: 'EQ',
-                  value1: this.section,
-                })
-              )
-            }
-
-            listBinding.filter(aFilter)
+            var listBinding = this.getListBinding()
+            listBinding.filter(this.getDefaultFilter())
           }
         },
-
-        onFilter: function () {
-          var ytid = this.ytSelect.getSelectedKey()
+        getListBinding: function () {
+          return this.byId('designResultManagementTable').getBinding('items')
+        },
+        getDefaultFilter: function () {
           var aFilter = [
             new Filter({
               path: 'to_root/db_key',
@@ -94,18 +71,23 @@ sap.ui.define(
               value1: this.designProjectID,
             }),
           ]
-          if (ytid) {
+          if (
+            this.section === 'C1' ||
+            this.section === 'C2' ||
+            this.section === 'C3' ||
+            this.section === 'C4'
+          ) {
             aFilter.push(
               new Filter({
-                path: 'ytid',
+                path: 'cgtyp',
                 operator: 'EQ',
-                value1: ytid,
+                value1: this.section,
               })
             )
           }
-          var listBinding = this.designResultManagementTable.getBinding('items')
-          listBinding.filter(aFilter)
+          return aFilter
         },
+
         tableUpdateFinished: function (oEvent) {
           this.oView
             .getModel('ui')

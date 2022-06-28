@@ -32,10 +32,11 @@ sap.ui.define(
 
     return BaseController.extend('projectmanagement.controller.DesignAward', {
       onInit: function () {
-        this.designAwardTable = this.byId('designAwardTable')
-
         this.oView = this.getView()
-        this.oView.setModel(new JSONModel({ fileVisible: false }), 'ui')
+        this.oView.setModel(
+          new JSONModel({ fileVisible: false, filter: { yt: true } }),
+          'ui'
+        )
         this.businessObjectTypeName = 'ZRRE_DMAW'
 
         this.oRouter = this.getOwnerComponent().getRouter()
@@ -52,16 +53,23 @@ sap.ui.define(
         this.designProjectID = oEvent.getParameter('arguments').designProjectID
         this.section = oEvent.getParameter('arguments').section
         if (this.section === 'D') {
-          var listBinding = this.designAwardTable.getBinding('items')
-          var filter = new Filter({
+          this.getYTMJ()
+          var listBinding = this.getListBinding()
+          listBinding.filter(this.getDefaultFilter())
+        }
+      },
+      getListBinding: function () {
+        return this.byId('designAwardTable').getBinding('items')
+      },
+      getDefaultFilter: function () {
+        var aFilter = [
+          new Filter({
             path: 'parent_key',
             operator: 'EQ',
             value1: this.designProjectID,
-          })
-          listBinding.filter(filter)
-
-          this.getYTMJ()
-        }
+          }),
+        ]
+        return aFilter
       },
       getControlById: function (id) {
         return sap.ui.getCore().byId(id)
