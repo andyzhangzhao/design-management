@@ -47,7 +47,6 @@ sap.ui.define(
         this.designProjectID = oEvent.getParameter('arguments').designProjectID
         this.section = oEvent.getParameter('arguments').section
         if (this.section === 'L') {
-          this.getYTMJ()
           var listBinding = this.designCompanyTable.getBinding('items')
           var aFilter = [
             new Filter({
@@ -57,6 +56,7 @@ sap.ui.define(
             }),
           ]
           listBinding.filter(aFilter)
+          this.getYTMJ()
         }
       },
 

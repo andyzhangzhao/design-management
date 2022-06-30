@@ -53,7 +53,6 @@ sap.ui.define(
             oEvent.getParameter('arguments').designProjectID
           this.section = oEvent.getParameter('arguments').section
           if (this.section === 'K') {
-            this.getYTMJ()
             var listBinding = this.designEvaluateTable.getBinding('items')
             var filter = new Filter({
               path: 'parent_key',
@@ -61,6 +60,7 @@ sap.ui.define(
               value1: this.designProjectID,
             })
             listBinding.filter(filter)
+            this.getYTMJ()
           }
         },
         tableUpdateFinished: function (oEvent) {

@@ -53,9 +53,9 @@ sap.ui.define(
         this.designProjectID = oEvent.getParameter('arguments').designProjectID
         this.section = oEvent.getParameter('arguments').section
         if (this.section === 'D') {
-          this.getYTMJ()
           var listBinding = this.getListBinding()
           listBinding.filter(this.getDefaultFilter())
+          this.getYTMJ()
         }
       },
       getListBinding: function () {
@@ -94,7 +94,6 @@ sap.ui.define(
           function (oDialog) {
             if (sPath) {
               this.mode = 'edit'
-
               oDialog.bindElement({
                 path: sPath,
                 model: 'details',

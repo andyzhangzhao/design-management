@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<Dialog
+		title="相关设计成果"
+		contentWidth="600px">
+
+		<f:SimpleForm
+			editable="true"
+			layout="ColumnLayout"
+			columnsM="2"
+			columnsL="2"
+			columnsXL="2"
+			>
+			<f:content>
+				<Label text="设计成果" required="true" />
+				<Select id='designResultJudgeCGSelect' selectedKey="{details>cgid}" forceSelection='false' valueStateText='设计成果不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_DMCG'
+				}">
+					<core:ListItem key="{details>cgid}" text="{details>cgnm}" />
+				</Select>
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+            <Button type='Emphasized' text='保存' press='onSaveCG' >
+				<customData>
+					<core:CustomData key="dbKey" value="{details>db_key}" />
+				</customData>
+			</Button>
+        </beginButton>
+        <endButton>
+            <Button text='取消' press='onCancelCG'/>
+        </endButton>
+	</Dialog>
+</core:FragmentDefinition>

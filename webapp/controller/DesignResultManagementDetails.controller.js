@@ -70,6 +70,7 @@ sap.ui.define(
             }.bind(this),
           })
 
+          this.oDetailsModel.resetChanges()
           if (this.mode === 'display') {
             this.ObjectPageLayout.bindElement({
               path: "/ZRRE_C_DMCG(guid'" + this.itemDbKey + "')",
@@ -230,6 +231,9 @@ sap.ui.define(
           } else {
             return false
           }
+        },
+        onExit: function () {
+          console.log(123)
         },
         onSave: function () {
           if (this.onValidation()) {

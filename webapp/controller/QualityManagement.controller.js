@@ -84,7 +84,7 @@ sap.ui.define(
           return sap.ui.getCore().byId(id)
         },
         onDelete: function (oEvent) {
-          var oObject = oEvent.getSource().data()
+          var sPath = oEvent.getSource().getBindingContext('details').getPath()
           var oDailog = new Dialog({
             title: '删除品控管理',
             content: new Text({
@@ -94,15 +94,12 @@ sap.ui.define(
               text: '确定',
               type: 'Emphasized',
               press: function () {
-                this.oDetailsModel.remove(
-                  "/ZRRE_C_DMPK(guid'" + oObject.dbKey + "')",
-                  {
-                    success: function () {
-                      oDailog.close()
-                      MessageToast.show('品控管理已删除')
-                    }.bind(this),
-                  }
-                )
+                this.oDetailsModel.remove(sPath, {
+                  success: function () {
+                    oDailog.close()
+                    MessageToast.show('品控管理已删除')
+                  }.bind(this),
+                })
               }.bind(this),
             }),
             endButton: new Button({
@@ -166,8 +163,9 @@ sap.ui.define(
           )
         },
         onEdit: function (oEvent) {
+          var oContext = oEvent.getSource().getBindingContext('details')
           this.oView.getModel('ui').setProperty('/mode', 'edit')
-          var customData = oEvent.getSource().data()
+          var customData = oContext.getObject()
           var ytmj = this.oView.getModel('ui').getProperty('/ytmj')
           ytmj.forEach(function (item) {
             if (item.YTID === customData.ytid) {
@@ -180,9 +178,7 @@ sap.ui.define(
             }
           })
           var ytmj = this.oView.getModel('ui').setProperty('/ytmj', ytmj)
-          this.onCreateQualityManagement(
-            "/ZRRE_C_DMPK(guid'" + customData.dbKey + "')"
-          )
+          this.onCreateQualityManagement(oContext.getPath())
         },
         onCancel: function () {
           this._qualityManagementPopup.then(

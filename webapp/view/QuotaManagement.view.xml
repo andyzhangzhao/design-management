@@ -86,7 +86,6 @@
                         <Text text="操作" />
                     </Column>																		
                 </columns>
-
                 <items>
                     <ColumnListItem>
                         <cells>

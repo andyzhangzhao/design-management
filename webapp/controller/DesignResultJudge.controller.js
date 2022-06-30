@@ -17,9 +17,6 @@ sap.ui.define(
         onInit: function () {
           this.oView = this.getView()
           this.oView.setModel(new JSONModel({ filter: { yt: true } }), 'ui')
-
-          this.businessObjectTypeName = 'ZRRE_DMFA'
-
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
             .getRoute('projectDetails')
@@ -31,6 +28,7 @@ sap.ui.define(
         _onObjectMatched: function (oEvent) {
           this.designProjectID =
             oEvent.getParameter('arguments').designProjectID
+          this.devProjectID = oEvent.getParameter('arguments').devProjectID
           this.section = oEvent.getParameter('arguments').section
           if (
             this.section === 'E' ||
@@ -63,6 +61,14 @@ sap.ui.define(
             )
           }
           return aFilter
+        },
+        toDetail: function (oEvent) {
+          this.oRouter.navTo('designResultJudgeDetails', {
+            devProjectID: this.devProjectID,
+            designProjectID: this.designProjectID,
+            designResultJudgeID: oEvent.getSource().data('dbKey'),
+            mode: 'display',
+          })
         },
         tableUpdateFinished: function (oEvent) {
           this.oView

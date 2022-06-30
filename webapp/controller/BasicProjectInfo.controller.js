@@ -72,7 +72,6 @@ sap.ui.define(
                   model: 'details',
                   parameters: {
                     expand: 'to_xmtxt',
-                    groupId: 'myId',
                   },
                 })
               }.bind(this),

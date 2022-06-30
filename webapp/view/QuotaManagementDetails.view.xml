@@ -62,10 +62,9 @@
                                     layout="ColumnLayout"
                                     columnsM="2"
                                     columnsL="3"
-                                    columnsXL="4"
-                                    >
+                                    columnsXL="4">
                                     <f:content>
-                                        <Label text="版本" />
+                                        <Label text="抗震等级" />
                                         <Select id='kzdjSelect' selectedKey="{details>kzdj}" forceSelection='false' change=".onChangeKZDJ" items="{
                                             path: 'details>/DD07T',
                                             filters: [{
@@ -134,7 +133,6 @@
                                         <Text text="重计量值"/>
                                     </Column>														
                                 </columns>
-
                                 <items>
                                     <ColumnListItem>
                                         <cells>
@@ -161,7 +159,6 @@
                                     </ColumnListItem>
                                 </items>
                             </Table>
-                           
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>

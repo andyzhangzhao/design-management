@@ -39,8 +39,6 @@ sap.ui.define(
           this.oRouter
             .getRoute('quotaManagementDetails')
             .attachPatternMatched(this._onObjectMatched, this)
-
-          this.oDetailsModel = this.getOwnerComponent().getModel('details')
         },
 
         _onObjectMatched: function (oEvent) {

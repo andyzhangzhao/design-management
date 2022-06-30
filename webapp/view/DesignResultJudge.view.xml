@@ -84,7 +84,7 @@
                             <Text text="评审时间" />
                         </Column>
                         <Column id='column7' width='150px'>
-                            <Text text="评审" />
+                            <Text text="操作" />
                         </Column>
                     </columns>
 
@@ -106,25 +106,28 @@
                                         <core:CustomData key="mergeKey" value="{details>ytid}{details>majorid}{details>pstype}" />
                                     </customData>
                                 </Text>
-                                <Text text="{details>psdate}"/>
                                 <Text text="{details>to_fast/TXT_DESC}"/>
+                                <Text text="{
+                                    path: 'details>psdate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {pattern: 'yyyy-MM-dd'}
+
+                                }" />
+
                                 <HBox alignItems="Center">
-                                    <Link text='发起评审' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
-                                    <Link text='查看审批流程' class='sapUiTinyMarginEnd' press='.onEditProject' />
+                                    <Button text='发起评审' class='sapUiTinyMarginEnd' />
+                                    <Button text='查看审批流程' class='sapUiTinyMarginEnd' />
+                                    <Button icon='sap-icon://navigation-right-arrow'  press='.toDetail'>
+                                        <customData>
+                                            <core:CustomData key="dbKey" value="{details>db_key}" />
+                                        </customData>
+                                    </Button>
                                 </HBox>	
                             </cells>
                         </ColumnListItem>
                     </items>
                 </Table>
-
-                <VBox visible="{ui>/fileVisible}">
-                    <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
-                </VBox>
             </VBox>
         </semantic:content>
-
-
-
 	</semantic:SemanticPage>
-
 </mvc:View>
