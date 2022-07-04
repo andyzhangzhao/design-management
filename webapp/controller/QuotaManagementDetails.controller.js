@@ -42,6 +42,7 @@ sap.ui.define(
         },
 
         _onObjectMatched: function (oEvent) {
+          this.oDetailsModel.resetChanges()
           this.devProjectID = oEvent.getParameter('arguments').devProjectID
           this.designProjectID =
             oEvent.getParameter('arguments').designProjectID
@@ -77,7 +78,6 @@ sap.ui.define(
                   faEdit: receivedData.lrjd === '01',
                   cjlEdit: receivedData.lrjd === '02',
                 })
-                console.log(oEvent.getParameter('data').lrjd)
               }.bind(this),
             },
           })
@@ -97,28 +97,22 @@ sap.ui.define(
           })
         },
         onChangeKZDJ: function (oEvent) {
-          // MessageBox.confirm(
-          //   '切换抗震等级会保存已经编辑的限额指标,确定要切换吗',
-          //   {
-          //     onClose: function (action) {
-          //       console.log(oEvent)
-          //     },
-          //   }
-          // )
-          this.oDetailsModel.setProperty(
-            oEvent.getSource().getBindingContext('details').getPath() + '/kzdj',
-            oEvent.getParameters().selectedItem.getKey()
-          )
-          BusyIndicator.show(0)
-          this.oDetailsModel.submitChanges({
-            success: function () {
+          BusyIndicator.show(500)
+          this.oDetailsModel.callFunction('/ZRRE_C_DMXEUpdate_kzdj', {
+            method: 'POST',
+            urlParameters: {
+              db_key: this.quotaManagementID,
+              Key: this.quotaManagementID,
+              kzdj: oEvent.getParameters().selectedItem.getKey(),
+            },
+            success: function (res) {
+              Utils.popMessage()
               BusyIndicator.hide()
-              this.oView.getModel('ui').setProperty('/mode', 'display')
-              MessageToast.show('面积指标更新成功')
+              this.oDetailsModel.refresh()
             }.bind(this),
             error: function (error) {
-              console.log(error)
               BusyIndicator.hide()
+              console.log(error)
             },
           })
         },

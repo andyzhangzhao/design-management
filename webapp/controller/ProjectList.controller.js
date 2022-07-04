@@ -118,6 +118,7 @@ sap.ui.define(
           relatedProjectId: oObject.Itmnr,
           relatedDevProjectId: oObject.prjnr,
           parentDspid: oObject.DbKey,
+          parentDspidnm: oObject.Dspidnm,
         })
         this.openProjectPopup()
       },
@@ -161,6 +162,8 @@ sap.ui.define(
               relatedProjectId: oObject.Itmnr,
               relatedDevProjectId: oObject.prjnr,
               dspid: oObject.DbKey,
+              dspno: oObject.Dspid,
+              edit: true,
             })
             this.openProjectPopup()
           }.bind(this),
@@ -206,6 +209,14 @@ sap.ui.define(
       getControlById: function (id) {
         return sap.ui.getCore().byId(id)
       },
+      validateProjectNoInput: function () {
+        var projectDescInput = this.getControlById('projectNoInput')
+        if (projectDescInput.getValue()) {
+          projectDescInput.setValueState('None')
+        } else {
+          projectDescInput.setValueState('Error')
+        }
+      },
       validateProjectDesc: function () {
         var projectDescInput = this.getControlById('projectDescInput')
         if (projectDescInput.getValue()) {
@@ -228,6 +239,9 @@ sap.ui.define(
         var oProjectData = this.oView
           .getModel('ui')
           .getProperty('/projectPopup')
+        if (oProjectData.edit) {
+          this.validateProjectNoInput()
+        }
         var majorCheckedFlag = true
         if (!oProjectData.dspid) {
           majorCheckedFlag = false
@@ -248,7 +262,8 @@ sap.ui.define(
         if (
           majorCheckedFlag &&
           oProjectData.projectDesc &&
-          oProjectData.relatedProjectId
+          oProjectData.relatedProjectId &&
+          (!oProjectData.edit || oProjectData.dspno)
         ) {
           return true
         } else {
@@ -276,6 +291,9 @@ sap.ui.define(
           submitData.ITMNR = oProjectData.relatedProjectId
           submitData.DSPID = oProjectData.dspid
           submitData.DSPID_P = oProjectData.parentDspid
+          if (oProjectData.edit) {
+            submitData.dspno = oProjectData.dspno
+          }
           oProjectData.projectInfo.forEach(function (ytItem) {
             if (ytItem.yt.selected) {
               var majorInfo = []

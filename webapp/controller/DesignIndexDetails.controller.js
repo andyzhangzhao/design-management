@@ -33,6 +33,7 @@ sap.ui.define(
         },
 
         _onObjectMatched: function (oEvent) {
+          this.oDetailsModel.resetChanges()
           this.devProjectID = oEvent.getParameter('arguments').devProjectID
           this.designProjectID =
             oEvent.getParameter('arguments').designProjectID

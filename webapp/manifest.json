@@ -70,6 +70,7 @@
         "sap.ui.generic.app": {},
         "sap.ui.table": {},
         "sap.ushell": {},
+        "sap.ui.unified": { "lazy": false },
         "sap.uxap": {
           "lazy": false
         },
@@ -123,11 +124,9 @@
         "dataSource": "projectDetails",
         "preload": true,
         "settings": {
-          "synchronizationMode": "None",
           "operationMode": "Server",
           "earlyRequests": true,
           "defaultBindingMode": "TwoWay",
-          "groupId": "$auto",
           "useBatch": true,
           "metadataUrlParams": {
             "sap-language": "ZH"

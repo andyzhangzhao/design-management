@@ -2,13 +2,21 @@
 	<Dialog title='{ui>/projectPopup/title}' class="projectPopup">
 		<content>
             <VBox class="sapUiMediumMargin">
+                <HBox visible="{= !!${ui>/projectPopup/parentDspidnm}}" alignItems='Center' class="sapUiSmallMarginBottom">
+                    <Label text='父节点:' width='100px' required='true'/>
+                    <Input value='{ui>/projectPopup/parentDspidnm}' enabled='false' maxLength='100' width='400px'/>
+                </HBox>
+                <HBox visible="{= !!${ui>/projectPopup/edit}}" alignItems='Center' class="sapUiSmallMarginBottom">
+                    <Label text='设计项目编码:' width='100px' required='true'/>
+                    <Input id='projectNoInput' value='{ui>/projectPopup/dspno}' valueStateText='项目编码不能为空' maxLength='100' width='400px' liveChange='.validateProjectNoInput'/>
+                </HBox>
                 <HBox alignItems='Center' class="sapUiSmallMarginBottom">
                     <Label text='设计项目名称:' width='100px' required='true'/>
                     <Input id='projectDescInput' value='{ui>/projectPopup/projectDesc}' valueStateText='项目名称不能为空' maxLength='100' width='400px' liveChange='.validateProjectDesc'/>
                 </HBox>
                 <HBox alignItems='Center' class="sapUiSmallMarginBottom">
                     <Label text='关联项目:' width='100px' required='true'/>
-                    <ComboBox id='relatedProjectSelect' width='400px' valueStateText='关联项目不能为空' change='.validateRelatedProject' selectedKey='{ui>/projectPopup/relatedProjectId}' items="{
+                    <ComboBox id='relatedProjectSelect' enabled="{= !${ui>/projectPopup/edit}}" width='400px' valueStateText='关联项目不能为空' change='.validateRelatedProject' selectedKey='{ui>/projectPopup/relatedProjectId}' items="{
                         path: 'details>/zrre_i_proj',
                         length: 1000
                     }">

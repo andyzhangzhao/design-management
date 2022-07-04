@@ -19,7 +19,7 @@
 
 
 		<semantic:headerContent>
-            <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
+            <!-- <fb:FilterBar id="filterbar" reset="onReset" search="filter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业类别"  visibleInFilterBar="true" >
                         <fb:control>
@@ -37,7 +37,7 @@
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
-			</fb:FilterBar>
+			</fb:FilterBar> -->
 		</semantic:headerContent>
         <semantic:content>
             <Table

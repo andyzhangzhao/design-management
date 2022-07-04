@@ -24,24 +24,6 @@
 		<semantic:titleMainAction>
 			<semantic:TitleMainAction id="editAction" text="编辑" visible="{= !${ui>/editMode}}" press='.onEdit'/>
 		</semantic:titleMainAction>
-		<!-- <semantic:titleContent>
-			<u:FileUploader
-				uploadUrl="/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet"
-				mimeType="image/png,image/jpeg"
-				fileType="jpg,png,JPG,PNG"
-				name="file"
-				uploadOnChange='false'
-				buttonOnly="true"
-				useMultipart="true"
-				sameFilenameAllowed="true"
-				maximumFileSize='4'
-				sendXHR="true"
-				buttonText="上传图片"
-				fileSizeExceed='.fileSizeExceed'
-				typeMissmatch='.typeMissmatch'
-				fileAllowed=".fileAllowed">
-			</u:FileUploader>
-		</semantic:titleContent> -->
 		<semantic:headerContent>
 			<f:GridContainer>
 				<f:layout>

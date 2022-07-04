@@ -52,6 +52,7 @@ sap.ui.define(
             oEvent.getParameter('arguments').designResultJudgeID
           this.mode = oEvent.getParameter('arguments').mode
           this.oView.getModel('ui').setProperty('/mode', this.mode)
+          this.oDetailsModel.resetChanges()
           this.oDetailsModel.read('/zrre_i_proj', {
             filters: [
               new Filter({
