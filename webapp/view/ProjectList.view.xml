@@ -20,14 +20,42 @@
 			<semantic:headerContent>
 				<fb:FilterBar id="filterbar" reset="onReset" search="onFilter" useToolbar="false" showGoOnFB="true" showRestoreOnFB="true">	
 					<fb:filterGroupItems>
-						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="djh" label="开发项目"  visibleInFilterBar="true" >
+						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="cityCompany" label="城市公司"  visibleInFilterBar="true" >
 							<fb:control>
-								<Input id="devProjectInput" type="Text"/>
+								<Select id='cityCompanySelect' selectedKey="{details>pgresult}" forceSelection='false' items="{
+									path: 'details>/ZRRE_C_TXT_DESC',
+									filters: [{
+										path: 'TXT_TYPE',
+										operator: 'EQ',
+										value1: '09'
+									}] 
+								}">
+								
+									<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+								</Select>
 							</fb:control>
 						</fb:FilterGroupItem>
-						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="companyCode" label="设计项目"  visibleInFilterBar="true">
+						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="designProject" label="设计项目名称"  visibleInFilterBar="true">
 							<fb:control>
 								<Input id="designProjectInput" type="Text"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="yt" label="业态"  visibleInFilterBar="true">
+							<fb:control>
+								<Select id='ytSelect' forceSelection='false' items="{
+									path: 'details>/ZRRE_C_YT_DES'
+								}">
+									<core:ListItem key="{details>YTID}" text="{details>YTDESC}" />
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="major" label="专业"  visibleInFilterBar="true">
+							<fb:control>
+								<Select id='majorSelect' forceSelection='false' items="{
+									path: 'details>/ZRRE_I_MAJOR_DES'
+								}">
+									<core:ListItem key="{details>Majorid}" text="{details>Majordesc}" />
+								</Select>
 							</fb:control>
 						</fb:FilterGroupItem>
 					</fb:filterGroupItems>
@@ -127,14 +155,16 @@
 									text="{majordesc}"/>
 								<ObjectStatus
 									text="{sjps}"
+									active="{= ${sjps}!=='/'}"
+									press='.navToDetailsJudge'
 									state="{
-									parts: [
-										{path: 'sjps'}
-									],
-									formatter: '.formatStatus'
+										parts: [{path: 'sjps'}],
+										formatter: '.formatStatus'
 								}" />
 								<ObjectStatus
 									text="{pkgl}"
+									active="{= ${pkgl}!=='/'}"
+									press='.navToDetailsQuality'
 									state="{
 									parts: [
 										{path: 'pkgl'}
@@ -143,6 +173,8 @@
 								}" />
 								<ObjectStatus
 									text="{tzgl}"
+									active="{= ${tzgl}!=='/'}"
+									press='.navToDetailsBlueprint'
 									state="{
 									parts: [
 										{path: 'tzgl'}
@@ -151,6 +183,8 @@
 								}" />
 								<ObjectStatus
 									text="{fyjys}"
+									active="{= ${fyjys}!=='/'}"
+									press='.navToDetailsMaterial'
 									state="{
 									parts: [
 										{path: 'fyjys'}
@@ -159,6 +193,8 @@
 								}" />
 								<ObjectStatus
 									text="{sjbg}"
+									active="{= ${sjbg}!=='/'}"
+									press='.navToDetailsChange'
 									state="{
 									parts: [
 										{path: 'sjbg'}
@@ -167,6 +203,8 @@
 								}" />
 								<ObjectStatus
 									text="{xesj}"
+									active="{= ${xesj}!=='/'}"
+									press='.navToDetailsQuota'
 									state="{
 									parts: [
 										{path: 'xesj'}
@@ -175,6 +213,8 @@
 								}" />
 								<ObjectStatus
 									text="{hpg}"
+									active="{= ${hpg}!=='/'}"
+									press='.navToDetailsEvaluate'
 									state="{
 									parts: [
 										{path: 'hpg'}

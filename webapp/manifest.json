@@ -64,12 +64,12 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.f": {},
-        "sap.suite.ui.generic.template": {},
-        "sap.ui.comp": {},
-        "sap.ui.generic.app": {},
-        "sap.ui.table": {},
-        "sap.ushell": {},
+        "sap.f": { "lazy": false },
+        "sap.suite.ui.generic.template": { "lazy": false },
+        "sap.ui.comp": { "lazy": false },
+        "sap.ui.generic.app": { "lazy": false },
+        "sap.ui.table": { "lazy": false },
+        "sap.ushell": { "lazy": false },
         "sap.ui.unified": { "lazy": false },
         "sap.uxap": {
           "lazy": false

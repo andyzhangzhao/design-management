@@ -11,7 +11,7 @@
 			columnsXL="2"
 			>
 			<f:content>
-				<Label text="设计成果" required="true" />
+				<Label text="相关设计成果" required="true" />
 				<Select id='blueprintCgidSelect' selectedKey="{details>cgid}" forceSelection='false' valueStateText='设计成果不能为空' change='.validateSelect' items="{
 					path: 'details>/ZRRE_C_DMCG'
 				}">

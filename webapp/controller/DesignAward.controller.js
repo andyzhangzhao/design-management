@@ -34,7 +34,11 @@ sap.ui.define(
       onInit: function () {
         this.oView = this.getView()
         this.oView.setModel(
-          new JSONModel({ fileVisible: false, filter: { yt: true } }),
+          new JSONModel({
+            fileVisible: false,
+            showDetail: true,
+            filter: { yt: true },
+          }),
           'ui'
         )
         this.businessObjectTypeName = 'ZRRE_DMAW'
@@ -47,6 +51,12 @@ sap.ui.define(
         this.getUploadFileToken()
 
         this.oDetailsModel = this.getOwnerComponent().getModel('details')
+      },
+      onDetailMore: function (oEvent) {
+        this.oView.getModel('ui').setProperty('/showDetail', true)
+      },
+      onDetailLess: function () {
+        this.oView.getModel('ui').setProperty('/showDetail', false)
       },
 
       _onObjectMatched: function (oEvent) {

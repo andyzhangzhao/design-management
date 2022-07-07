@@ -102,11 +102,6 @@
                             <Text text="{details>createby}"/>
                             <Text text="{details>to_ixst/TXT_DESC}"/>
                             <HBox>
-                                <Button icon='sap-icon://shipping-status' class='sapUiTinyMarginEnd' enabled="{= ${details>status}==='00'}" press='.onPublish' >
-                                    <customData>
-                                        <core:CustomData key="dbKey" value="{details>db_key}" />
-                                    </customData>
-                                </Button>
                                 <Button icon='sap-icon://navigation-right-arrow' class='sapUiTinyMarginEnd' press='.onDisplay' >
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />

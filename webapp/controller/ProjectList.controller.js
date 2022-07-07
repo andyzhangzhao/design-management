@@ -30,12 +30,68 @@ sap.ui.define(
         this.oRouter = this.getOwnerComponent().getRouter()
 
         this.projectTable = this.byId('projectTable')
+        this.cityCompanySelect = this.byId('cityCompanySelect')
+        this.designProjectInput = this.byId('designProjectInput')
+        this.ytSelect = this.byId('ytSelect')
+        this.majorSelect = this.byId('majorSelect')
         this.oProjectListModel = this.getOwnerComponent().getModel()
         this.oDetailsModel = this.getOwnerComponent().getModel('details')
 
         this.getYtMajorMapping()
 
         this.oView.setModel(new JSONModel({}), 'ui')
+      },
+      onFilter: function (oEvent) {
+        var aFilter = []
+        var selectionSet = oEvent.getParameter('selectionSet')
+        var cityCompany = selectionSet[0].getProperty('selectedKey')
+        if (cityCompany) {
+          aFilter.push(
+            new Filter({
+              path: 'DbKey',
+              operator: 'EQ',
+              value1: oObject.DbKey,
+            })
+          )
+        }
+        var designProject = selectionSet[1].getProperty('value')
+        if (cityCompany) {
+          aFilter.push(
+            new Filter({
+              path: 'Dspnm',
+              operator: 'Contains',
+              value1: designProject,
+            })
+          )
+        }
+        var yt = selectionSet[2].getProperty('selectedKey')
+        if (yt) {
+          aFilter.push(
+            new Filter({
+              path: 'Ytid',
+              operator: 'EQ',
+              value1: yt,
+            })
+          )
+        }
+        var major = selectionSet[3].getProperty('selectedKey')
+        if (major) {
+          aFilter.push(
+            new Filter({
+              path: 'Majorid',
+              operator: 'EQ',
+              value1: major,
+            })
+          )
+        }
+        this.projectTable.getBinding('items').filter(aFilter)
+      },
+      onReset: function () {
+        this.cityCompanySelect.setSelectedKey()
+        this.designProjectInput.setValue()
+        this.ytSelect.setSelectedKey()
+        this.majorSelect.setSelectedKey()
+        this.projectTable.getBinding('items').filter()
       },
       selectYT: function (oEvent) {
         var projectInfo = this.oView
@@ -79,18 +135,45 @@ sap.ui.define(
           }.bind(this),
         })
       },
-      toDetail: function (oEvent) {
+      navToDetail: function (devProjectID, designProjectID, section) {
         this.oRouter.navTo('projectDetails', {
-          devProjectID: oEvent
-            .getSource()
-            .getBindingContext()
-            .getObject('Itmnr'),
-          designProjectID: oEvent
-            .getSource()
-            .getBindingContext()
-            .getObject('DbKey'),
-          section: 'A',
+          devProjectID,
+          designProjectID,
+          section: section || 'A',
         })
+      },
+      toDetail: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey)
+      },
+      navToDetailsJudge: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'E')
+      },
+      navToDetailsQuality: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'F')
+      },
+
+      navToDetailsBlueprint: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'G')
+      },
+      navToDetailsMaterial: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'H')
+      },
+      navToDetailsChange: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'I')
+      },
+      navToDetailsQuota: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'J')
+      },
+      navToDetailsEvaluate: function (oEvent) {
+        const oObject = oEvent.getSource().getBindingContext().getObject()
+        this.navToDetail(oObject.Itmnr, oObject.DbKey, 'K')
       },
       cleanProjectInfo: function () {
         this.aProjectInfo.forEach(function (ytItem) {
@@ -318,6 +401,13 @@ sap.ui.define(
               oDialog.close()
               MessageToast.show(response.MSGTXT)
               this.oProjectListModel.refresh()
+              if (!oProjectData.edit) {
+                this.oRouter.navTo('projectDetails', {
+                  devProjectID: submitData.ITMNR,
+                  designProjectID: response.DBKEY,
+                  section: 'A',
+                })
+              }
             }.bind(this),
             error: function (err) {
               MessageBox.error(err.responseJSON.MSGTXT)

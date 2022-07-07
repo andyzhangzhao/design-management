@@ -83,16 +83,16 @@
                     <Column id='column4' width='100px'>
                         <Text text="专业"/>
                     </Column>
-                    <Column id='column5' width='60px'>
+                    <Column id='column5' width='100px'>
                         <Text text="版本" />
                     </Column>	
                     <Column id='column6' width='60px'>
                         <Text text="状态" />
                     </Column>
                     <Column id='column7' width='100px'>
-                        <Text text="创建日期" />
+                        <Text text="完成日期" />
                     </Column>
-                    <Column id='column9' width='100px'>
+                    <Column id='column9' width='80px'>
                         <Text text="操作" />
                     </Column>																			
                 </columns>

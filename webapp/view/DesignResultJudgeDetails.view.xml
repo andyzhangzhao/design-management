@@ -14,14 +14,14 @@
             showFooter="{= ${ui>/mode}!=='display'}">
             <uxap:headerTitle>
                 <uxap:ObjectPageHeader
-                    objectTitle="发起评审">
+                    objectTitle="评审类型文本">
                     <uxap:breadcrumbs>
                         <Breadcrumbs id="breadcrumbsId" currentLocationText="详细信息" >
                             <Link text="设计成果评审" press=".onNavBck"/>
                         </Breadcrumbs>
                     </uxap:breadcrumbs>
                     <uxap:actions>
-                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" enabled="{= ${details>pgstatus}==='00'}" press=".onPublish" hideText="false" text="发布起评审" />
+                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" enabled="{= ${details>pgstatus}==='00'}" press=".onPublish" hideText="false" text="发起评审" />
                         <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" enabled="{= ${details>pgstatus}==='00'}" press=".onEdit" hideText="false" text="编辑" type="Emphasized" />
                     </uxap:actions>
                 </uxap:ObjectPageHeader>

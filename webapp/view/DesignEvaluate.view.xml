@@ -49,7 +49,7 @@
                         path: 'details>/ZRRE_C_DMPG',
                         parameters: {
                             count: true,
-                            expand: 'to_pgyt,to_pgst'
+                            expand: 'to_pgyt,to_pgst,to_pgrt'
                         }
                     }"
                     growingThreshold='40'
@@ -74,13 +74,16 @@
                             <Text text="业态" />
                         </Column>
                         <Column id='column3' width='100px'>
-                            <Text text="评估状态"/>
+                            <Text text="评估结果"/>
                         </Column>
                         <Column id='column4' width='100px'>
                             <Text text="评估时间" />
                         </Column>	
+                        <Column id='column1' width='100px'>
+                            <Text text="状态" />
+                        </Column>	
                         <Column id='column5' width='150px'>
-                            <Text text="评审" />
+                            <Text text="审批" />
                         </Column>	
                         <Column id='column6' width='100px'>
                             <Text text="操作" />
@@ -92,15 +95,17 @@
                                 <Text
                                     text="{details>to_pgyt/YTDESC}"/>
                                 <Text
-                                    text="{details>to_pgst/TXT_DESC}"/>
+                                    text="{details>to_pgrt/TXT_DESC}"/>
                                 <Text text="{
                                     path: 'details>raisedate',
                                     type: 'sap.ui.model.type.Date',
                                     formatOptions: {pattern: 'yyyy-MM-dd'}
 
                                 }" />
+                                <Text
+                                    text="{details>to_pgst/TXT_DESC}"/>
                                 <HBox alignItems="Center">
-                                    <Link text='发起评审' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
+                                    <Link text='发起审批' class='sapUiTinyMarginEnd' press='.onCreateChildProject' />
                                     <Link text='查看审批流程' class='sapUiTinyMarginEnd' press='.onEditProject' />
                                 </HBox>	
                                 <HBox>

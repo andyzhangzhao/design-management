@@ -22,7 +22,7 @@
 				}">
 					<core:ListItem key="{details>Sid}" text="{details>Sname}" />
 				</Select>
-				<Label text="设计成果" required="true" />
+				<Label text="相关设计成果" required="true" />
 				<Select id='qualityManagementCgidSelect' selectedKey="{details>cgid}" forceSelection='false' valueStateText='设计成果不能为空' change='.validateSelect' items="{
 					path: 'details>/ZRRE_C_DMCG'
 				}">

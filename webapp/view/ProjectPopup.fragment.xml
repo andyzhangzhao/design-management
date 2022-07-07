@@ -3,7 +3,7 @@
 		<content>
             <VBox class="sapUiMediumMargin">
                 <HBox visible="{= !!${ui>/projectPopup/parentDspidnm}}" alignItems='Center' class="sapUiSmallMarginBottom">
-                    <Label text='父节点:' width='100px' required='true'/>
+                    <Label text='上级项目名称:' width='100px' required='true'/>
                     <Input value='{ui>/projectPopup/parentDspidnm}' enabled='false' maxLength='100' width='400px'/>
                 </HBox>
                 <HBox visible="{= !!${ui>/projectPopup/edit}}" alignItems='Center' class="sapUiSmallMarginBottom">

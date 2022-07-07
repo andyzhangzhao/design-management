@@ -185,6 +185,10 @@ sap.ui.define(
         },
         onValidation: function () {
           var errorFlag = false
+          if (!this.getControlById('pgresultSelect').getSelectedKey()) {
+            this.getControlById('pgresultSelect').setValueState('Error')
+            errorFlag = true
+          }
           if (!this.getControlById('raisedatePicker').getDateValue()) {
             this.getControlById('raisedatePicker').setValueState('Error')
             errorFlag = true

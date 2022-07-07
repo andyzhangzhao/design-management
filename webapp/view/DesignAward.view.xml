@@ -43,7 +43,8 @@
             <VBox>
                 <Table
                     id="designAwardTable"
-                    width="auto"
+                    contextualWidth="Auto"
+                    popinLayout="GridLarge"
                     items="{
                         path: 'details>/ZRRE_C_DMAW',
                         parameters: {
@@ -66,6 +67,12 @@
                                 text="设计获奖及认证 ({ui>/designAwardCount})"
                                 level="H3"/>
                             <ToolbarSpacer />
+                            <SegmentedButton selectedKey="more" selectionChange=".onDetailColumn">
+                                <items>
+                                    <SegmentedButtonItem icon="sap-icon://drill-down" key="more" press=".onDetailMore" />
+                                    <SegmentedButtonItem icon="sap-icon://drill-up" key="less" press=".onDetailLess" />
+                                </items>
+                            </SegmentedButton>
                             <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
                         </OverflowToolbar>
                     </headerToolbar>
@@ -82,16 +89,16 @@
                         <Column id='column4' width='100px'>
                             <Text text="颁奖单位" />
                         </Column>	
-                        <Column id='column5' width='100px'>
+                        <Column id='column5' width='100px' visible="{ui>/showDetail}" demandPopin="true" minScreenWidth="Desktop">
                             <Text text="获奖时间" />
                         </Column>
-                        <Column id='column6' width='100px'>
+                        <Column id='column6' width='100px' visible="{ui>/showDetail}" demandPopin="true" minScreenWidth="Desktop">
                             <Text text="乙方设计总监及团队" />
                         </Column>
-                        <Column id='column7' width='100px'>
+                        <Column id='column7' width='100px' visible="{ui>/showDetail}" demandPopin="true" minScreenWidth="Desktop">
                             <Text text="设计单位" />
                         </Column>	
-                        <Column id='column8' width='100px'>
+                        <Column id='column8' width='100px' visible="{ui>/showDetail}" demandPopin="true" minScreenWidth="Desktop">
                             <Text text="备注" />
                         </Column>	
                         <Column id='column9' width='100px'>

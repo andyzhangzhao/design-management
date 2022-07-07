@@ -47,7 +47,7 @@
                     path: 'details>/ZRRE_C_DMXE',
                     parameters: {
                         count: true,
-                        expand: 'to_xever,to_xest'
+                        expand: 'to_xever,to_xest,to_kzdj'
                     }
                 }"
                 growingThreshold='40'
@@ -70,11 +70,11 @@
                     <Column id='column1' width='100px'>
                         <Text text="阶段" />
                     </Column>
+                    <Column id='column7' width='100px'>
+                        <Text text="抗震等级" />
+                    </Column>
                     <Column id='column2' width='100px' >
                         <Text text="录入人" />
-                    </Column>
-                    <Column id='column3' width='100px'>
-                        <Text text="录入日期"/>
                     </Column>
                     <Column id='column4' width='100px'>
                         <Text text="发布日期" />
@@ -90,13 +90,8 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{details>to_xever/TXT_DESC}"/>
+                            <Text text="{details>to_kzdj/DDTEXT}"/>
                             <Text text="{details>createby}"/>
-                            <Text text="{
-                                path: 'details>createat',
-                                type: 'sap.ui.model.type.Date',
-                                formatOptions: {pattern: 'yyyy-MM-dd'}
-
-                            }" />
                             <Text text="{
                                 path: 'details>fdate',
                                 type: 'sap.ui.model.type.Date',
@@ -105,11 +100,6 @@
                             }" />
                             <Text text="{details>to_xest/TXT_DESC}"/>
                             <HBox>
-                                <Button icon='sap-icon://shipping-status' class='sapUiTinyMarginEnd' enabled="{= ${details>status}==='00'}" press='.onPublish' >
-                                    <customData>
-                                        <core:CustomData key="dbKey" value="{details>db_key}" />
-                                    </customData>
-                                </Button>
                                 <Button icon='sap-icon://navigation-right-arrow' class='sapUiTinyMarginEnd' press='.onDisplay' >
                                     <customData>
                                         <core:CustomData key="dbKey" value="{details>db_key}" />

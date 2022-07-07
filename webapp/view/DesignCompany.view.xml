@@ -42,7 +42,6 @@
         <semantic:content>
             <Table
                 id="designCompanyTable"
-                autoPopinMode="true" 
                 contextualWidth="Auto"
                 popinLayout="GridLarge"
                 items="{

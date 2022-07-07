@@ -114,7 +114,6 @@
                                 }" />
 
                                 <HBox alignItems="Center">
-                                    <Button text='发起评审' class='sapUiTinyMarginEnd' />
                                     <Button text='查看审批流程' class='sapUiTinyMarginEnd' />
                                     <Button icon='sap-icon://navigation-right-arrow'  press='.toDetail'>
                                         <customData>

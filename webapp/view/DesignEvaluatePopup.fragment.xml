@@ -11,6 +11,17 @@
 			columnsXL="2"
 			>
 			<f:content>
+				<Label text="评估结果" required="true" />
+				<Select id='pgresultSelect' selectedKey="{details>pgresult}" forceSelection='false' valueStateText='评估结果不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_TXT_DESC',
+                   	filters: [{
+						path: 'TXT_TYPE',
+						operator: 'EQ',
+						value1: '09'
+					}] 
+				}">
+					<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+				</Select>
 				<Label text="评估时间" required="true" />
 				<DatePicker id='raisedatePicker' dateValue="{details>raisedate}" change=".validateInput" valueStateText='评估时间不能为空'/>
 			</f:content>
