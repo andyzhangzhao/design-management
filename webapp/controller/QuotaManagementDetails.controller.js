@@ -1,28 +1,28 @@
 sap.ui.define(
   [
-    'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/m/MessageToast',
     'sap/ui/core/BusyIndicator',
     'sap/m/MessageBox',
     '../utils/Utils',
+    './BaseController',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
   function (
-    Controller,
     JSONModel,
     Filter,
     MessageToast,
     BusyIndicator,
     MessageBox,
-    Utils
+    Utils,
+    BaseController
   ) {
     'use strict'
 
-    return Controller.extend(
+    return BaseController.extend(
       'projectmanagement.controller.QuotaManagementDetails',
       {
         onInit: function () {
@@ -35,6 +35,8 @@ sap.ui.define(
           )
           this.ObjectPageLayout = this.byId('ObjectPageLayout')
 
+          this.businessObjectTypeName = 'ZRRE_DMXE'
+
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
             .getRoute('quotaManagementDetails')
@@ -46,10 +48,12 @@ sap.ui.define(
           this.devProjectID = oEvent.getParameter('arguments').devProjectID
           this.designProjectID =
             oEvent.getParameter('arguments').designProjectID
-          this.quotaManagementID =
+          this.quotaManagementID = this.itemDbKey =
             oEvent.getParameter('arguments').quotaManagementID
+
           this.mode = oEvent.getParameter('arguments').mode
           this.oView.getModel('ui').setProperty('/mode', this.mode)
+          this.getYTMJ()
           this.oDetailsModel.read('/zrre_i_proj', {
             filters: [
               new Filter({
@@ -88,6 +92,9 @@ sap.ui.define(
             value1: this.quotaManagementID,
           })
           listBinding.filter(filter)
+
+          this.getUploadFileToken()
+          this.getAllFiles()
         },
         onNavBck: function () {
           this.oRouter.navTo('projectDetails', {

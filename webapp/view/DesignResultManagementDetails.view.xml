@@ -21,6 +21,7 @@
                         </Breadcrumbs>
                     </uxap:breadcrumbs>
                     <uxap:actions>
+                        <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" press=".xxxxx" hideText="false" text="发起评审" />
                         <uxap:ObjectPageHeaderActionButton visible="{= ${ui>/mode}==='display'}" press=".onEdit" hideText="false" text="编辑" />
                     </uxap:actions>
                 </uxap:ObjectPageHeader>

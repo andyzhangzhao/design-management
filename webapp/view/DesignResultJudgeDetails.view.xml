@@ -154,7 +154,7 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <Text text="{details>cgid}"/>
+                                            <Link text="{details>cgid}" press=".navToCG"/>
                                             <Text text="{details>to_facg/cgnm}"/>
                                             <Text text="{details>to_facg/to_cgtyp/Sname}"/>
                                             <Text text="{details>to_facg/to_cgver/TXT_DESC}"/>

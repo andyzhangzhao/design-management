@@ -21,8 +21,6 @@ sap.ui.define(
           this.oRouter
             .getRoute('projectDetails')
             .attachPatternMatched(this._onObjectMatched, this)
-
-          this.getUploadFileToken()
         },
 
         _onObjectMatched: function (oEvent) {

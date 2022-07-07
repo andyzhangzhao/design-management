@@ -93,7 +93,6 @@ sap.ui.define(
               }
             )
             this.ObjectPageLayout.setBindingContext(oContext, 'details')
-            this.getYTMJ()
           }
 
           if (this.itemDbKey) {

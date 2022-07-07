@@ -86,7 +86,18 @@ sap.ui.define(
             this.oDetailsModel.getDeferredGroups().concat(['judgeCG'])
           )
         },
-        onCreateCG() {
+        navToCG: function (oEvent) {
+          this.oRouter.navTo('designResultDetails', {
+            devProjectID: this.devProjectID,
+            designProjectID: this.designProjectID,
+            designResultID: oEvent
+              .getSource()
+              .getBindingContext('details')
+              .getProperty('db_key'),
+            mode: 'display',
+          })
+        },
+        onCreateCG: function () {
           if (!this._cgPopup) {
             this._cgPopup = Fragment.load({
               name: 'projectmanagement.view.DesignResultJudgeDetailsPopup',

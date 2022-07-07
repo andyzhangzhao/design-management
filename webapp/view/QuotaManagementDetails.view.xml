@@ -162,6 +162,13 @@
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" showTitle='false' title="附件">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
             </uxap:sections>
             <uxap:footer>
                 <OverflowToolbar>

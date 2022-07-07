@@ -121,7 +121,7 @@
         <semantic:titleMainAction>
 		</semantic:titleMainAction>
 		<semantic:content>
-			<Table
+			<!-- <Table
                 id="basicProjectInfoTable"
                 width="auto"
                 items="{
@@ -191,7 +191,7 @@
                         </cells>
                     </ColumnListItem>
                 </items>
-            </Table>
+            </Table> -->
 		</semantic:content>
 
 		<semantic:footerMainAction>

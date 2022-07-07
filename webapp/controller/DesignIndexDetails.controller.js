@@ -1,19 +1,26 @@
 sap.ui.define(
   [
-    'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/m/MessageToast',
     'sap/ui/core/BusyIndicator',
     '../utils/Utils',
+    './BaseController',
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, JSONModel, Filter, MessageToast, BusyIndicator, Utils) {
+  function (
+    JSONModel,
+    Filter,
+    MessageToast,
+    BusyIndicator,
+    Utils,
+    BaseController
+  ) {
     'use strict'
 
-    return Controller.extend(
+    return BaseController.extend(
       'projectmanagement.controller.DesignIndexDetails',
       {
         onInit: function () {
@@ -23,6 +30,8 @@ sap.ui.define(
 
           this.designIndexDetailsTable = this.byId('designIndexDetailsTable')
           this.ObjectPageLayout = this.byId('ObjectPageLayout')
+
+          this.businessObjectTypeName = 'ZRRE_DMZB'
 
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
@@ -37,7 +46,8 @@ sap.ui.define(
           this.devProjectID = oEvent.getParameter('arguments').devProjectID
           this.designProjectID =
             oEvent.getParameter('arguments').designProjectID
-          this.designIndexID = oEvent.getParameter('arguments').designIndexID
+          this.designIndexID = this.itemDbKey =
+            oEvent.getParameter('arguments').designIndexID
           this.mode = oEvent.getParameter('arguments').mode
           this.oView.getModel('ui').setProperty('/mode', this.mode)
           this.oDetailsModel.read('/zrre_i_proj', {
@@ -68,6 +78,9 @@ sap.ui.define(
             value1: this.designIndexID,
           })
           listBinding.filter(filter)
+
+          this.getUploadFileToken()
+          this.getAllFiles()
         },
         onNavBck: function () {
           this.oRouter.navTo('projectDetails', {
@@ -86,7 +99,7 @@ sap.ui.define(
                   tableItems[rowIndex].getBindingContextPath() +
                     '/' +
                     (cellIndex === 0 ? '/inxvl' : '/remark'),
-                  +cellItem
+                  cellItem
                 )
               })
             })

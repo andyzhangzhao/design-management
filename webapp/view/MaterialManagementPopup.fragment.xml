@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
 	<Dialog
-		title="材料封样"
+		title="材料封样及样板间验收"
 		contentWidth="600px">
 
 		<f:SimpleForm
@@ -11,7 +11,7 @@
 			columnsXL="2"
 			>
 			<f:content>
-				<Label text="封样名称" required="true" />
+				<Label text="封样/验收范围" required="true" />
 				<Input id='fyInput' value="{details>fydesc}" change=".validateInput" valueStateText='封样名称不能为空' />
 				<Label text="封样类别" required="true" />
 				<Select id='fytypeSelect' selectedKey="{details>fytype}" forceSelection='false' valueStateText='封样类别不能为空' change='.validateSelect' items="{

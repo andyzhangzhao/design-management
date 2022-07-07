@@ -13,7 +13,7 @@
 		toggleHeaderOnTitleClick="false">
         <semantic:titleHeading>
 			<Title
-				text="材料封样管理"
+				text="材料封样及样板间验收"
 				level="H2"/>
 		</semantic:titleHeading>
 
@@ -63,7 +63,7 @@
                         <OverflowToolbar>
                             <Title
                                 id="tableHeader"
-                                text="材料封样管理 ({ui>/materialManagementCount})"
+                                text="材料封样及样板间验收 ({ui>/materialManagementCount})"
                                 level="H3"/>
                             <ToolbarSpacer />
                             <Button text="新建" enabled='{ui>/tableSelected}' press=".onCreate"/>
@@ -71,7 +71,7 @@
                     </headerToolbar>
                     <columns>
                         <Column id='column1' width='100px'>
-                            <Text text="封样名称" />
+                            <Text text="封样/验收范围" />
                         </Column>
                         <Column id='column2' width='100px'>
                             <Text text="封样类别" />
