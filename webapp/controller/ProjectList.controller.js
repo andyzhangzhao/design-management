@@ -48,14 +48,14 @@ sap.ui.define(
         if (cityCompany) {
           aFilter.push(
             new Filter({
-              path: 'DbKey',
+              path: 'to_projct/entnr',
               operator: 'EQ',
-              value1: oObject.DbKey,
+              value1: cityCompany,
             })
           )
         }
         var designProject = selectionSet[1].getProperty('value')
-        if (cityCompany) {
+        if (designProject) {
           aFilter.push(
             new Filter({
               path: 'Dspnm',

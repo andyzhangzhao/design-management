@@ -82,7 +82,7 @@
 						</layoutData>
 					</Image> -->
 					<HBox>
-						<Carousel id='projectImageCarousel' loop="true" pages="{ui>/files}" visible="{= ${ui>/files}.length > 0}" width='480px' height='393px' showPageIndicator="false" class="projectImage">
+						<Carousel id='projectImageCarousel' loop="true" pages="{ui>/files}" visible="{= ${ui>/files}.length > 0}" width='480px' height='393px' showPageIndicator="true" class="projectImage">
 							<Image src="{ui>src}" width='480px' height='450px' />
 						</Carousel>
 						<layoutData>
@@ -114,7 +114,11 @@
 							}" columns="24" />
 						</layoutData>
                 	</VBox>
-					
+					<VBox>
+						<layoutData>
+							<f:GridContainerItemLayoutData rows="6" columns="24" />
+						</layoutData>
+                	</VBox>
 				</f:items>
 			</f:GridContainer>
 		</semantic:headerContent>

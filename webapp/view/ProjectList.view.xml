@@ -22,16 +22,10 @@
 					<fb:filterGroupItems>
 						<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="cityCompany" label="城市公司"  visibleInFilterBar="true" >
 							<fb:control>
-								<Select id='cityCompanySelect' selectedKey="{details>pgresult}" forceSelection='false' items="{
-									path: 'details>/ZRRE_C_TXT_DESC',
-									filters: [{
-										path: 'TXT_TYPE',
-										operator: 'EQ',
-										value1: '09'
-									}] 
+								<Select id='cityCompanySelect' forceSelection='false' items="{
+									path: '/zrre_i_city'
 								}">
-								
-									<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+									<core:ListItem key="{entnr}" text="{entnm}" />
 								</Select>
 							</fb:control>
 						</fb:FilterGroupItem>
@@ -68,7 +62,8 @@
 					items="{
 						path: '/zrre_c_dmcp',
 						parameters: {
-							count: true
+							count: true,
+							expand: 'to_projct'
 						},
 						sorter: [{
 							path: 'prjnr'

@@ -76,13 +76,13 @@ sap.ui.define(
                 })
               }.bind(this),
             })
-            var listBinding = this.basicProjectInfoTable.getBinding('items')
-            var filter = new Filter({
-              path: 'parent_key',
-              operator: 'EQ',
-              value1: this.designProjectID,
-            })
-            listBinding.filter(filter)
+            // var listBinding = this.basicProjectInfoTable.getBinding('items')
+            // var filter = new Filter({
+            //   path: 'parent_key',
+            //   operator: 'EQ',
+            //   value1: this.designProjectID,
+            // })
+            // listBinding.filter(filter)
 
             jQuery.ajax({
               method: 'GET',
@@ -98,10 +98,10 @@ sap.ui.define(
         },
 
         initCarouselSwipe: function () {
-          var projectImageCarousel = this.byId('projectImageCarousel')
-          setInterval(function () {
-            projectImageCarousel.next()
-          }, 3000)
+          // var projectImageCarousel = this.byId('projectImageCarousel')
+          // setInterval(function () {
+          //   projectImageCarousel.next()
+          // }, 3000)
         },
 
         setRestrictionForUploader: function () {
