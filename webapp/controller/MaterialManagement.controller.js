@@ -205,6 +205,8 @@ sap.ui.define(
               this.oDetailsModel.resetChanges([
                 oDialog.getBindingContext('details').getPath(),
               ])
+              this._materialManagementPopup=null
+              oDialog.destroy()
             }.bind(this)
           )
         },

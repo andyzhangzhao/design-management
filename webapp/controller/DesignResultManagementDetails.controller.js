@@ -92,6 +92,7 @@ sap.ui.define(
                 properties: {},
               }
             )
+            this.getYTMJ()
             this.ObjectPageLayout.setBindingContext(oContext, 'details')
           }
 

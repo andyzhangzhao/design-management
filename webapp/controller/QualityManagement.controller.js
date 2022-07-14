@@ -48,7 +48,6 @@ sap.ui.define(
 
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
         },
-
         _onObjectMatched: function (oEvent) {
           this.designProjectID =
             oEvent.getParameter('arguments').designProjectID
@@ -187,6 +186,8 @@ sap.ui.define(
               this.oDetailsModel.resetChanges([
                 oDialog.getBindingContext('details').getPath(),
               ])
+              this._qualityManagementPopup=null
+              oDialog.destroy()
             }.bind(this)
           )
         },

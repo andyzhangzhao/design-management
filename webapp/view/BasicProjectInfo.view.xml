@@ -3,7 +3,7 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:semantic="sap.f.semantic"
-    xmlns:f="sap.f"
+    xmlns:f="sap.ui.layout.form"
 	xmlns:fb="sap.ui.comp.filterbar"
     xmlns:form="sap.ui.layout.form"
 	xmlns:u="sap.ui.unified"
@@ -24,107 +24,86 @@
 		<semantic:titleMainAction>
 			<semantic:TitleMainAction id="editAction" text="编辑" visible="{= !${ui>/editMode}}" press='.onEdit'/>
 		</semantic:titleMainAction>
+
+		
 		<semantic:headerContent>
-			<f:GridContainer>
-				<f:layout>
-					<f:GridContainerSettings rowSize="2rem" columnSize="1.9rem" gap="0.5rem" />
-				</f:layout>
-				<f:items>
-					<Label text="项目编码:" class="" >
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="2" />
-						</layoutData>
-					</Label>
-					<Text text="{details>prjid}" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="6" />
-						</layoutData>
-					</Text>
-					<Label text="项目名称:" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="2" />
-						</layoutData>
-					</Label>
-					<Text text="{details>prjnm}" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="8" />
-						</layoutData>
-					</Text>
-					<Label text="项目状态:" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="2" />
-						</layoutData>
-					</Label>
-					<Text text="{details>to_xm/TXT_DESC}" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="4" />
-						</layoutData>
-					</Text>
-
-					<Label text="项目地址:" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="2" />
-						</layoutData>
-					</Label>
-					<Text text="{details>address}" visible="{= !${ui>/editMode}}" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="10" />
-						</layoutData>
-					</Text>
-					<TextArea id="projectAddressInput" visible="{ui>/editMode}" value="{details>address}" maxLength="100" width='376px'>
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="10" />
-						</layoutData>
-					</TextArea>
-					<!-- <Image id='projectImage' src="{ui>/imageSrc}" width='480px' height='450px' class="projectImage">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="10" columns="12" />
-						</layoutData>
-					</Image> -->
-					<HBox>
-						<Carousel id='projectImageCarousel' loop="true" pages="{ui>/files}" visible="{= ${ui>/files}.length > 0}" width='480px' height='393px' showPageIndicator="true" class="projectImage">
-							<Image src="{ui>src}" width='480px' height='450px' />
-						</Carousel>
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="10" columns="12" />
-						</layoutData>
-					</HBox>
-					<Label text="项目简介:" class="">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="2" columns="2" />
-						</layoutData>
-					</Label>
-					<Text text="{details>prjdesc}" visible="{= !${ui>/editMode}}" class="projectDescText">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="8" columns="10" />
-						</layoutData>
-					</Text>
-					<TextArea id="projectDescInput" class="projectDescInput" visible="{ui>/editMode}" value="{details>prjdesc}" width='376px' height="350px">
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="8" columns="10" />
-						</layoutData>
-					</TextArea>
-
-					<VBox visible="{ui>/editMode}">
-                    	<core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
-						<layoutData>
-							<f:GridContainerItemLayoutData minRows="{
-								parts: [{path:'ui>/files'}],
-								formatter: '.formatImageRow'
-							}" columns="24" />
-						</layoutData>
-                	</VBox>
-					<VBox>
-						<layoutData>
-							<f:GridContainerItemLayoutData rows="6" columns="24" />
-						</layoutData>
-                	</VBox>
-				</f:items>
-			</f:GridContainer>
+			<VBox>
+				<ObjectStatus title="项目编码" text="{details>prjid}"/>
+				<ObjectStatus title="项目名称" text="{details>prjnm}"/>
+			</VBox>
 		</semantic:headerContent>
-        <semantic:titleMainAction>
-		</semantic:titleMainAction>
 		<semantic:content>
+			<VBox>
+				<HBox>
+					<VBox width="100%">
+						<layoutData>
+							<FlexItemData
+								growFactor="2"
+								baseSize="0"
+								backgroundDesign="Solid"
+								styleClass="sapUiTinyMargin" />
+						</layoutData>
+						<f:SimpleForm
+							visible="{= !${ui>/editMode}}"
+							editable="false"
+							layout="ColumnLayout"
+							columnsM="1"
+							columnsL="1"
+							columnsXL="1"
+							>
+							<f:content>
+								<Label text="项目状态" />
+								<Text text="{details>to_xmtxt/TXT_DESC}" />
+								<Label text="项目地址" />
+								<Text text="{details>address}" />
+								<Label text="项目简介" />
+								<Text text="{details>prjdesc}" />
+							</f:content>
+						</f:SimpleForm>
+						<f:SimpleForm
+							visible="{= ${ui>/editMode}}"
+							editable="true"
+							layout="ColumnLayout"
+							columnsM="1"
+							columnsL="1"
+							columnsXL="1"
+							>
+							<f:content>
+								<Label text="项目状态" />
+								<Select id='statusSelect' selectedKey="{details>status}" forceSelection='false' items="{
+									path: 'details>/ZRRE_C_TXT_DESC',
+									filters: [{
+										path: 'TXT_TYPE',
+										operator: 'EQ',
+										value1: '0'
+									}] 
+								}">
+									<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+								</Select>
+								<Label text="项目地址" />
+								<Input id='addressInput' value="{details>address}" />
+								<Label text="项目简介" />
+								<TextArea id='descriptionInput' value="{details>prjdesc}" growing="true" />
+							</f:content>
+						</f:SimpleForm>
+					</VBox>
+					<HBox>
+						<layoutData>
+							<FlexItemData
+								growFactor="3"
+								baseSize="0"
+								backgroundDesign="Solid"
+								styleClass="sapUiTinyMargin" />
+						</layoutData>
+						<Carousel id='projectImageCarousel' loop="true" pages="{ui>/files}" visible="{= ${ui>/files}.length > 0}" width='100%' showPageIndicator="true" class="projectImage">
+							<Image src="{ui>src}" />
+						</Carousel>
+					</HBox>
+				</HBox>
+				<VBox visible="{ui>/editMode}">
+					<core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+				</VBox>
+			</VBox>
 			<!-- <Table
                 id="basicProjectInfoTable"
                 width="auto"

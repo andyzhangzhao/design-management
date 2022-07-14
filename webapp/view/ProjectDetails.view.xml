@@ -4,7 +4,7 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:tnt="sap.tnt"
 	height="100%">
-	<Shell id="shell">
+	<Shell id="shell" appWidthLimited='false'>
 		<Page title="{ui>/projectTitle}" showNavButton="true" navButtonPress=".onNavBack">
 			<headerContent>
 			</headerContent>
