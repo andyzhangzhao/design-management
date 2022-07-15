@@ -35,12 +35,12 @@ sap.ui.define(
           )
           this.ObjectPageLayout = this.byId('ObjectPageLayout')
 
-          this.businessObjectTypeName = 'ZRRE_DMXE'
-
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
             .getRoute('quotaManagementDetails')
             .attachPatternMatched(this._onObjectMatched, this)
+
+          this.addAttachmentComponent('ZRRE_DMXE')
         },
 
         _onObjectMatched: function (oEvent) {
@@ -93,8 +93,7 @@ sap.ui.define(
           })
           listBinding.filter(filter)
 
-          this.getUploadFileToken()
-          this.getAllFiles()
+          this.oView.getModel('ui').setProperty('/selectItemKey', this.itemDbKey)
         },
         onNavBck: function () {
           this.oRouter.navTo('projectDetails', {

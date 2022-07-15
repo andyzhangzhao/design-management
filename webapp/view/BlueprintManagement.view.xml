@@ -118,7 +118,8 @@
                     </items>
                 </Table>
                 <VBox visible="{ui>/fileVisible}">
-                    <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+                    <core:ComponentContainer id="attachmentComponentContainer" usage="attachmentReuseComponent" propagateModel="true">
+	                </core:ComponentContainer>
                 </VBox>
             </VBox>
         </semantic:content>

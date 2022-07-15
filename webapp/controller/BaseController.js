@@ -53,7 +53,7 @@ sap.ui.define(
       getUploadFileToken: function () {
         jQuery.ajax({
           method: 'GET',
-          url: '/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/',
+          url: '/sap/opu/odata/sap/CV_ATTACHMENT_SRV/',
           beforeSend: function (xhr) {
             xhr.setRequestHeader('X-CSRF-Token', 'Fetch')
           },
@@ -65,28 +65,24 @@ sap.ui.define(
       getAllFiles: function () {
         jQuery.ajax({
           method: 'GET',
-          url: '/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/GetAllOriginals',
+          url: '/sap/opu/odata/sap/CV_ATTACHMENT_SRV/GetAllOriginals',
           data: {
-            LinkedSAPObjectKey: "'" + this.itemDbKey + "'",
-            BusinessObjectTypeName: "'" + this.businessObjectTypeName + "'",
+            ObjectKey: "'" + this.itemDbKey + "'",
+            ObjectType: "'" + this.businessObjectTypeName + "'",
             $format: 'json',
           },
           success: function (response) {
             response.d.results.forEach(
               function (item) {
                 item.attributes = [
-                  { title: '上传人', text: item.CreatedByUserFullName },
+                  { title: '上传人', text: item.FullName },
                   {
                     title: '上传时间',
-                    text: sap.ui.core.format.DateFormat.getDateInstance({
-                      pattern: 'yyyy-MM-dd HH:mm',
-                    }).format(
-                      new Date(+item.CreationDateTime.match(/(\d{13})/)[0])
-                    ),
+                    text: item.CreatedAt,
                   },
                   {
                     title: '文件大小',
-                    text: this.getFileSize(item.FileSize),
+                    text: this.getFileSize(parseInt(item.Filesize)),
                   },
                 ]
               }.bind(this)
@@ -112,15 +108,21 @@ sap.ui.define(
         reader.readAsDataURL(file)
         reader.onload = function (fileEvent) {
           jQuery.ajax({
-            url: '/sap/opu/odata/SAP/API_CV_ATTACHMENT_SRV/AttachmentContentSet',
+            url: '/sap/opu/odata/SAP/CV_ATTACHMENT_SRV/OriginalContentSet',
             method: 'POST',
             data: fileEvent.target.result,
             headers: {
-              BusinessObjectTypeName: this.businessObjectTypeName,
-              LinkedSAPObjectKey: this.itemDbKey,
+              ObjectType: this.businessObjectTypeName,
+              ObjectKey: this.itemDbKey,
               'Content-Type': file.type,
               'X-CSRF-Token': this.token,
               Slug: encodeURIComponent(file.name),
+              documentType: "",
+              documentNumber: "",
+              documentVersion: "",
+              documentPart: "",
+              semanticobjecttype: "",
+              Accept: "application/json"
             },
             success: function () {
               MessageToast.show(file.name + '文件上传成功')
@@ -136,7 +138,7 @@ sap.ui.define(
       },
       getUrl: function (original, mode) {
         var url =
-          "/sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/AttachmentContentSet(DocumentInfoRecordDocType='" +
+          "/sap/opu/odata/sap/CV_ATTACHMENT_SRV/AttachmentContentSet(DocumentInfoRecordDocType='" +
           original.DocumentInfoRecordDocType +
           "',DocumentInfoRecordDocNumber='" +
           original.DocumentInfoRecordDocNumber +
@@ -215,7 +217,30 @@ sap.ui.define(
         var sPath = oEvent.getParameters().listItem.getBindingContextPath()
         this.itemDbKey = sPath.match(/guid'(.*)'\)/)[1]
         this.getAllFiles()
+        this.oView.getModel('ui').setProperty('/selectItemKey', this.itemDbKey)
       },
+      addAttachmentComponent: function(objectType){
+        var oAttachmentComponentPromise = this.getOwnerComponent().createComponent({ usage:"attachmentReuseComponent",
+            settings: {
+              mode: "C",
+              objectKey: "{ui>/selectItemKey}",
+              objectType: objectType,
+              semanticObject: "",
+              attributeHandling: {
+                _VisibleActions: {
+                    "RENAME": false,
+                    "DELETE": true,
+                    "ADD": true,
+                    "ADDURL": false,
+                    "DOWNLOAD": false
+                }
+            }
+            }
+			    }); 
+          oAttachmentComponentPromise.then(function(successValue){ 
+            this.byId('attachmentComponentContainer').setComponent(successValue); 
+          }.bind(this));	
+      }
     })
   }
 )

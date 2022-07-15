@@ -152,7 +152,8 @@
                 <uxap:ObjectPageSection visible="{= ${ui>/mode}!=='create'}" titleUppercase="false" showTitle='false' title="设计图纸">
                     <uxap:subSections>
                         <uxap:ObjectPageSubSection>
-                            <core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+                            <core:ComponentContainer id="attachmentComponentContainer" usage="attachmentReuseComponent" propagateModel="true">
+	                        </core:ComponentContainer>
                         </uxap:ObjectPageSubSection>
                     </uxap:subSections>
                 </uxap:ObjectPageSection>

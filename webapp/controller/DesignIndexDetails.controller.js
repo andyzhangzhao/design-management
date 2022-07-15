@@ -31,14 +31,14 @@ sap.ui.define(
           this.designIndexDetailsTable = this.byId('designIndexDetailsTable')
           this.ObjectPageLayout = this.byId('ObjectPageLayout')
 
-          this.businessObjectTypeName = 'ZRRE_DMZB'
-
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
             .getRoute('designIndexDetails')
             .attachPatternMatched(this._onObjectMatched, this)
 
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
+
+          this.addAttachmentComponent('ZRRE_DMZB')
         },
 
         _onObjectMatched: function (oEvent) {
@@ -78,9 +78,7 @@ sap.ui.define(
             value1: this.designIndexID,
           })
           listBinding.filter(filter)
-
-          this.getUploadFileToken()
-          this.getAllFiles()
+          this.oView.getModel('ui').setProperty('/selectItemKey', this.designIndexID)
         },
         onNavBck: function () {
           this.oRouter.navTo('projectDetails', {

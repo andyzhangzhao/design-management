@@ -37,8 +37,6 @@ sap.ui.define(
           this.designCompanyText = this.byId('designCompanyText')
           this.contractStatusText = this.byId('contractStatusText')
 
-          this.businessObjectTypeName = 'ZRRE_DMCG'
-
           this.oProjectListModel = this.getOwnerComponent().getModel()
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
 
@@ -46,6 +44,8 @@ sap.ui.define(
           this.oRouter
             .getRoute('designResultDetails')
             .attachPatternMatched(this._onObjectMatched, this)
+
+          this.addAttachmentComponent('ZRRE_DMCG')
         },
 
         _onObjectMatched: function (oEvent) {
@@ -104,8 +104,7 @@ sap.ui.define(
               value1: this.itemDbKey,
             })
             listBinding.filter(filter)
-            this.getUploadFileToken()
-            this.getAllFiles()
+            this.oView.getModel('ui').setProperty('/selectItemKey', this.itemDbKey)
           }
         },
 

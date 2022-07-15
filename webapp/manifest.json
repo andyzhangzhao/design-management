@@ -59,6 +59,12 @@
   },
   "sap.ui5": {
     "flexEnabled": true,
+    "componentUsages": {
+			"attachmentReuseComponent": {
+				"name": "sap.se.mi.plm.lib.attachmentservice.attachment",
+				"settings": {}
+			}
+		},
     "dependencies": {
       "minUI5Version": "1.100.2",
       "libs": {
@@ -76,8 +82,15 @@
         },
         "sap.tnt": {
           "lazy": false
-        }
-      }
+        },
+        "sap.se.mi.plm.lib.attachmentservice": {
+					"minVersion": "Active",
+					"lazy": true
+				}
+      },
+      "components": {
+				"sap.se.mi.plm.lib.attachmentservice.attachment": {}
+			}
     },
     "contentDensities": {
       "compact": true,

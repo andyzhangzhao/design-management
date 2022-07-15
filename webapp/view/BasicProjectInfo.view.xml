@@ -101,7 +101,8 @@
 					</HBox>
 				</HBox>
 				<VBox visible="{ui>/editMode}">
-					<core:Fragment fragmentName="projectmanagement.view.UploadSet" type="XML" />
+					<core:ComponentContainer id="attachmentComponentContainer" usage="attachmentReuseComponent" propagateModel="true">
+	                </core:ComponentContainer>
 				</VBox>
 			</VBox>
 			<!-- <Table

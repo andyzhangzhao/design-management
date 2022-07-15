@@ -41,16 +41,15 @@ sap.ui.define(
           }),
           'ui'
         )
-        this.businessObjectTypeName = 'ZRRE_DMAW'
 
         this.oRouter = this.getOwnerComponent().getRouter()
         this.oRouter
           .getRoute('projectDetails')
           .attachPatternMatched(this._onObjectMatched, this)
 
-        this.getUploadFileToken()
-
         this.oDetailsModel = this.getOwnerComponent().getModel('details')
+
+        this.addAttachmentComponent('ZRRE_DMAW')
       },
       onDetailMore: function (oEvent) {
         this.oView.getModel('ui').setProperty('/showDetail', true)
@@ -134,7 +133,7 @@ sap.ui.define(
             .getItems()[0]
             .getBindingContextPath()
             .match(/guid'(.*)'\)/)[1]
-          this.getAllFiles()
+          this.oView.getModel('ui').setProperty('/selectItemKey', this.itemDbKey)
         }
         if (oTable.getItems().length === 0) {
           this.oView.getModel('ui').setProperty('/fileVisible', false)

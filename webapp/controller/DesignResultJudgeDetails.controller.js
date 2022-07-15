@@ -35,13 +35,13 @@ sap.ui.define(
           this.oView = this.getView()
           this.oView.setModel(new JSONModel({}), 'ui')
           this.oDetailsModel = this.getOwnerComponent().getModel('details')
-          this.businessObjectTypeName = 'ZRRE_DMFA'
           this.ObjectPageLayout = this.byId('ObjectPageLayout')
           this.cgTable = this.byId('cgTable')
           this.oRouter = this.getOwnerComponent().getRouter()
           this.oRouter
             .getRoute('designResultJudgeDetails')
             .attachPatternMatched(this._onObjectMatched, this)
+          this.addAttachmentComponent('ZRRE_DMFA')
         },
 
         _onObjectMatched: function (oEvent) {
@@ -79,9 +79,8 @@ sap.ui.define(
               }.bind(this),
             },
           })
+          this.oView.getModel('ui').setProperty('/selectItemKey', this.itemDbKey)
 
-          this.getUploadFileToken()
-          this.getAllFiles()
           this.oDetailsModel.setDeferredGroups(
             this.oDetailsModel.getDeferredGroups().concat(['judgeCG'])
           )

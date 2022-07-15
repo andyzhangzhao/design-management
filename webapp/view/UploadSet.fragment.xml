@@ -16,8 +16,8 @@
             <upload:UploadSetItem
                 url='blank'
                 visibleEdit="false"
-                fileName="{ui>FileName}"
-                mediaType="{ui>MimeType}"
+                fileName="{ui>Filename}"
+                mediaType="{ui>ContentType}"
                 uploadState="Complete"
                 attributes="{path: 'ui>attributes', templateShareable: false}"
                 removePressed='.removePressed'

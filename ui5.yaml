@@ -26,7 +26,9 @@ server:
             url: http://lnerpdev.cgdg.com:8000/
           - path: /sap/zrre_rest_ytmj/
             url: http://lnerpdev.cgdg.com:8000/
-          - path: /sap/opu/odata/sap/API_CV_ATTACHMENT_SRV/
+          - path: /sap/opu/odata/sap/CV_ATTACHMENT_SRV/
+            url: http://lnerpdev.cgdg.com:8000/
+          - path: /sap/bc/
             url: http://lnerpdev.cgdg.com:8000/
     - name: fiori-tools-appreload
       afterMiddleware: compression
