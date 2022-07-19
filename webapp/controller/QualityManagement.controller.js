@@ -276,6 +276,8 @@ sap.ui.define(
                     )
                     BusyIndicator.hide()
                     oDialog.close()
+                    oDialog.destroy()
+                    this._qualityManagementPopup = null
                   }.bind(this),
                 })
               }.bind(this)

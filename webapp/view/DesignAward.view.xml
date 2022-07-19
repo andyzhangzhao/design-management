@@ -49,7 +49,7 @@
                         path: 'details>/ZRRE_C_DMAW',
                         parameters: {
                             count: true,
-                            expand: 'to_awyt,to_awmj'
+                            expand: 'to_awyt,to_awmj,to_jxjb,to_jxfl'
                         }
                     }"
                     mode="SingleSelectMaster"
@@ -88,7 +88,13 @@
                         </Column>
                         <Column id='column4' width='100px'>
                             <Text text="颁奖单位" />
-                        </Column>	
+                        </Column>
+                        <Column id='column10' width='100px'>
+                            <Text text="奖项级别"/>
+                        </Column>
+                        <Column id='column11' width='100px'>
+                            <Text text="奖项分类" />
+                        </Column>		
                         <Column id='column5' width='100px' visible="{ui>/showDetail}" demandPopin="true" minScreenWidth="Desktop">
                             <Text text="获奖时间" />
                         </Column>
@@ -117,6 +123,10 @@
                                     text="{details>jxmc}"/>
                                 <Text
                                     text="{details>bjdw}"/>
+                                <Text
+                                    text="{details>to_jxjb/TXT_DESC}"/>
+                                <Text
+                                    text="{details>to_jxfl/TXT_DESC}"/>
                                 <Text text="{
                                     path: 'details>psdate',
                                     type: 'sap.ui.model.type.Date',

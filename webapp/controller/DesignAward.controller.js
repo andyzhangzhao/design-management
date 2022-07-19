@@ -67,6 +67,13 @@ sap.ui.define(
           this.getYTMJ()
         }
       },
+      jxmcSelect: function(oEvent){
+        var selectedData = oEvent.getParameter('selectedItem').data()
+        this.getControlById('jxmcInput').setValue(selectedData.Jxmc)
+        this.getControlById('bjdwInput').setValue(selectedData.Bjdw)
+        this.getControlById('jxjbSelect').setSelectedKey(selectedData.Jxjb)
+        this.getControlById('jxflSelect').setSelectedKey(selectedData.Jxfl)
+      },
       getListBinding: function () {
         return this.byId('designAwardTable').getBinding('items')
       },
@@ -196,6 +203,8 @@ sap.ui.define(
             this.oDetailsModel.resetChanges([
               oDialog.getBindingContext('details').getPath(),
             ])
+            this._designAwardPopup = null
+            oDialog.destroy()
           }.bind(this)
         )
       },
@@ -207,6 +216,14 @@ sap.ui.define(
         }
         if (!this.getControlById('bjdwInput').getValue()) {
           this.getControlById('bjdwInput').setValueState('Error')
+          errorFlag = true
+        }
+        if (!this.getControlById('jxjbSelect').getSelectedKey()) {
+          this.getControlById('jxjbSelect').setValueState('Error')
+          errorFlag = true
+        }
+        if (!this.getControlById('jxflSelect').getSelectedKey()) {
+          this.getControlById('jxflSelect').setValueState('Error')
           errorFlag = true
         }
         if (!this.psDatePicker.getDateValue()) {
@@ -281,6 +298,8 @@ sap.ui.define(
                   )
                   BusyIndicator.hide()
                   oDialog.close()
+                  this._designAwardPopup = null
+                  oDialog.destroy()
                 }.bind(this),
               })
             }.bind(this)

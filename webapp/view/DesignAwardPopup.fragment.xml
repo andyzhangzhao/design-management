@@ -11,10 +11,47 @@
 			columnsXL="2"
 			>
 			<f:content>
+				<Label text="选择奖项" />
+				<Select id='jxmcSelect' forceSelection='false' change='.jxmcSelect' items="{
+					path: 'details>/ZRRE_I_DMCPAW'
+				}">
+					<core:ListItem key="{details>Jxmc}" text="{details>Jxmc}" >
+						<core:customData>
+							<core:CustomData key="Jxmc" value="{details>Jxmc}" />
+							<core:CustomData key="Bjdw" value="{details>Bjdw}" />
+							<core:CustomData key="Jxjb" value="{details>Jxjb}" />
+							<core:CustomData key="Jxfl" value="{details>Jxfl}" />
+						</core:customData>
+					</core:ListItem>
+				</Select>
 				<Label text="奖项名称" required="true" />
 				<Input id='jxmcInput' value="{details>jxmc}" change=".validateInput" valueStateText='奖项名称不能为空' />
-				<Label text="颁奖单位" required="true" />
+				<Label text="举办单位" required="true" />
 				<Input id='bjdwInput' value="{details>bjdw}" change=".validateInput" valueStateText='颁奖单位不能为空' />
+				<Label text="奖项级别" required="true" />
+				<Select id='jxjbSelect' selectedKey="{details>jxjb}" forceSelection='false' valueStateText='奖项级别不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_TXT_DESC',
+					filters: [{
+						path: 'TXT_TYPE',
+						operator: 'EQ',
+						value1: '20'
+					}] 
+				}">
+					<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+				</Select>
+
+				<Label text="奖项分类" required="true" />
+				<Select id='jxflSelect' selectedKey="{details>jxfl}" forceSelection='false' valueStateText='奖项级别不能为空' change='.validateSelect' items="{
+					path: 'details>/ZRRE_C_TXT_DESC',
+					filters: [{
+						path: 'TXT_TYPE',
+						operator: 'EQ',
+						value1: '21'
+					}] 
+				}">
+					<core:ListItem key="{details>TXT_ID}" text="{details>TXT_DESC}" />
+				</Select>
+
 				<Label text="获奖时间" required="true" />
 				<DatePicker id='psDatePicker' dateValue="{details>psdate}" change=".validateInput" valueStateText='获奖时间不能为空'/>
 				<Label text="乙方设计总监及团队" required="true" />
