@@ -82,7 +82,7 @@ sap.ui.define(
               .getItems()[0]
               .getBindingContextPath()
               .match(/guid'(.*)'\)/)[1]
-            this.getAllFiles()
+            //this.getAllFiles()
           }
           if (oTable.getItems().length === 0) {
             this.oView.getModel('ui').setProperty('/fileVisible', false)
